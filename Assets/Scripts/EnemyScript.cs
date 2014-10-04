@@ -103,31 +103,43 @@ public class EnemyScript : MonoBehaviour
 	{
 		if (other.gameObject.tag == "FireBall")
 		{
-			onFire = true;
-			fireDamage++;
-			Destroy(other.gameObject);
-			if(health<=0)
+			FireBallScript script = other.gameObject.GetComponent<FireBallScript>();
+			if(script.getIsThrown() || script.getIsTouched())
 			{
-				Destroy(gameObject);
+				onFire = true;
+				fireDamage++;
+				Destroy(other.gameObject);
+				if(health<=0)
+				{
+					Destroy(gameObject);
+				}
 			}
 		}
 
 		else if(other.gameObject.tag == "Arrow")
 		{
-			health -= 30;
-			Destroy(other.gameObject);
-			if(health<=0)
+			ArrowScript script = other.gameObject.GetComponent<ArrowScript>();
+			if(script.getIsThrown())
 			{
-				Destroy(gameObject);
+				health -= 30;
+				Destroy(other.gameObject);
+				if(health<=0)
+				{
+					Destroy(gameObject);
+				}
 			}
 		}
 		else if(other.gameObject.tag == "Sword")
 		{
-			health -= 20;
-			Destroy(other.gameObject);
-			if(health<=0)
+			SwordScript script = other.gameObject.GetComponent<SwordScript>();
+			if(script.getIsThrown() || script.getIsTouched())
 			{
-				Destroy(gameObject);
+				health -= 20;
+				Destroy(other.gameObject);
+				if(health<=0)
+				{
+					Destroy(gameObject);
+				}
 			}
 		}
 	}

@@ -15,6 +15,7 @@ public class FireBallScript : MonoBehaviour
 	private float lifeTime = 10;
 	private float timeElapsed;
 	private bool halfLife = false;
+	private float fingerRadius = 0.3f;
 
 	private Vector3 v;
 
@@ -34,7 +35,7 @@ public class FireBallScript : MonoBehaviour
 			{
 				Vector3 wp = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 				Vector2 touchPos = new Vector2(wp.x, wp.y);
-				if (collider2D == Physics2D.OverlapCircle(touchPos, 0.2f))
+				if (collider2D == Physics2D.OverlapCircle(touchPos, fingerRadius))
 				{
 					isTouched = true;		
 					startPosition = transform.position;
@@ -48,8 +49,6 @@ public class FireBallScript : MonoBehaviour
 			{
 				Vector2 pos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 				transform.position = pos;
-				//isTouched = true;
-				//movement = Input.GetTouch(0).deltaPosition;
 			}
 			else if(Input.GetTouch(0).phase == TouchPhase.Ended && isTouched)
 			{
@@ -87,5 +86,15 @@ public class FireBallScript : MonoBehaviour
 		{
 			rigidbody2D.velocity = (endPosition - startPosition).normalized*speed;
 		}
+	}
+
+	public bool getIsThrown()
+	{
+		return isThrown;
+	}
+
+	public bool getIsTouched()
+	{
+		return isTouched;
 	}
 }

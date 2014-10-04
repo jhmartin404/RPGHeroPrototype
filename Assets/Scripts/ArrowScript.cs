@@ -13,6 +13,7 @@ public class ArrowScript : MonoBehaviour {
 	private float lifeTime = 10;
 	private float timeElapsed;
 	private bool halfLife = false;
+	private float fingerRadius = 0.3f;
 	
 	private Vector3 v;
 	
@@ -32,7 +33,7 @@ public class ArrowScript : MonoBehaviour {
 			{
 				Vector3 wp = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 				Vector2 touchPos = new Vector2(wp.x, wp.y);
-				if (collider2D == Physics2D.OverlapCircle(touchPos, 0.2f))
+				if (collider2D == Physics2D.OverlapCircle(touchPos, fingerRadius))
 				{
 					isTouched = true;
 					startPosition = transform.position;
@@ -84,5 +85,10 @@ public class ArrowScript : MonoBehaviour {
 		{
 			rigidbody2D.velocity = (startPosition - endPosition).normalized*speed;
 		}
+	}
+
+	public bool getIsThrown()
+	{
+		return isThrown;
 	}
 }

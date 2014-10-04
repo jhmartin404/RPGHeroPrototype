@@ -7,12 +7,13 @@ public class SwordScript : MonoBehaviour
 	public float degreesPerSecond = 65.0f;
 	private bool isTouched = false;
 	private bool isThrown = false;
-	private float speed = 5.0f;
-	private Vector2 startPosition;
-	private Vector2 endPosition;
+	//private float speed = 5.0f;
+	//private Vector2 startPosition;
+	//private Vector2 endPosition;
 	private float lifeTime = 10;
 	private float timeElapsed;
 	private bool halfLife = false;
+	private float fingerRadius = 0.3f;
 	
 	private Vector3 v;
 	
@@ -32,10 +33,10 @@ public class SwordScript : MonoBehaviour
 			{
 				Vector3 wp = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 				Vector2 touchPos = new Vector2(wp.x, wp.y);
-				if (collider2D == Physics2D.OverlapCircle(touchPos, 0.2f))
+				if (collider2D == Physics2D.OverlapCircle(touchPos, fingerRadius))
 				{
 					isTouched = true;
-					startPosition = transform.position;
+					//startPosition = transform.position;
 					rigidbody2D.isKinematic = true;
 					Layout.setIconSelected(true);
 				}
@@ -52,7 +53,7 @@ public class SwordScript : MonoBehaviour
 			{
 				isTouched = false;
 				isThrown = true;
-				endPosition = transform.position;
+				//endPosition = transform.position;
 				rigidbody2D.isKinematic = false;
 				Layout.setIconSelected(false);
 				Destroy(gameObject);
@@ -81,9 +82,19 @@ public class SwordScript : MonoBehaviour
 	
 	void LateUpdate()
 	{
-		if(isThrown)
-		{
-			rigidbody2D.velocity = (endPosition - startPosition).normalized*speed;
-		}
+		//if(isThrown)
+		//{
+		//	rigidbody2D.velocity = (endPosition - startPosition).normalized*speed;
+		//}
+	}
+
+	public bool getIsThrown()
+	{
+		return isThrown;
+	}
+
+	public bool getIsTouched()
+	{
+		return isTouched;
 	}
 }
