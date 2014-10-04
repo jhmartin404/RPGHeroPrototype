@@ -3,28 +3,29 @@ using System.Collections;
 
 public class EnemyScript : MonoBehaviour 
 {
-	/// <summary>
-	/// Object speed
-	/// </summary>
-	public Vector2 speed = new Vector2(250, 250);
-	
-	/// <summary>
-	/// Moving direction
-	/// </summary>
-	public Vector2 direction = new Vector2(-1, 0);
+	private float speed = 5.0f;
+	private float xDirection = 1.0f;
+	private float yDirection = 0.0f;
+	private float enemyYPostion;
+	private float attackDistance = 4.5f;
+	private float sizeChangeSpeed = 1.0f;
 
 	private Vector2 movement;
 
 	private static float health = 100;
 
 	private bool onFire = false;
+	private bool isAttacking = false;
 	private int fireDamage = 0;
 	private float fireTime = 0.0f;
+	private float attackTimer = 0.0f;
+	private Vector3 size = new Vector3(1,1,0);
 
 	// Use this for initialization
 	void Start () 
 	{
-
+		rigidbody2D.isKinematic = true;
+		enemyYPostion = transform.position.y;
 	}
 
 	public static int getHealth()
@@ -35,18 +36,43 @@ public class EnemyScript : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		if (Camera.main.WorldToViewportPoint (this.transform.position).x < 0) 
+		attackTimer += Time.deltaTime;
+		//Move left to right
+		if(!isAttacking)
 		{
-			direction.x = 1;
+			movement.y = 0;
+			movement.x = xDirection * speed * Time.deltaTime;
 		}
-		else if(Camera.main.WorldToViewportPoint (this.transform.position).x > 1)
+		//Move up down
+		else if(isAttacking)
 		{
-			direction.x = -1;
+			movement.x = 0;
+			movement.y = yDirection * speed * Time.deltaTime;
+			transform.localScale += size*sizeChangeSpeed*Time.deltaTime;
+			if(transform.position.y <= enemyYPostion-attackDistance && sizeChangeSpeed >0)
+			{
+				yDirection = 1.0f;
+				sizeChangeSpeed = -1.0f;
+				Layout.AttackPlayer(10);//remove 10 health from player
+			}
+
+			if(yDirection>= 0.0f && transform.position.y >= enemyYPostion && sizeChangeSpeed <0)
+			{
+				isAttacking = false;
+				sizeChangeSpeed = 1.0f;
+				attackTimer = 0;
+			}
 		}
-			// 2 - Movement
-			movement = new Vector2 (
-				speed.x * direction.x * Time.deltaTime,
-				speed.y * direction.y * Time.deltaTime);
+		if (Camera.main.WorldToViewportPoint (this.transform.position).x < 0.15) 
+		{
+			xDirection = 1;
+		}
+		else if(Camera.main.WorldToViewportPoint (this.transform.position).x > 0.85)
+		{
+			xDirection = -1;
+		}
+
+		//if on fire cause damage over time
 		if(onFire)
 		{
 			health-= fireDamage*Time.deltaTime;
@@ -58,16 +84,19 @@ public class EnemyScript : MonoBehaviour
 				fireTime = 0.0f;
 			}
 		}
+		//if dead - destroy gameobject
 		if(health<=0)
 		{
 			Destroy(gameObject);
 		}
-	}
 
-	void FixedUpdate()
-	{
-		// Apply movement to the rigidbody
-		rigidbody2D.velocity = movement;
+		if(attackTimer > 5.0 && health>0 && !isAttacking)
+		{
+			isAttacking = true;
+			yDirection = -1.0f;
+		}
+
+		transform.Translate (movement);
 	}
 
 	void OnTriggerEnter2D(Collider2D other)
@@ -81,10 +110,6 @@ public class EnemyScript : MonoBehaviour
 			{
 				Destroy(gameObject);
 			}
-		}
-		else if(other.gameObject.tag == "Coin")
-		{
-
 		}
 
 		else if(other.gameObject.tag == "Arrow")

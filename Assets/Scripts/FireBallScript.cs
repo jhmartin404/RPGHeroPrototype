@@ -19,6 +19,7 @@ public class FireBallScript : MonoBehaviour
 	void Start () 
 	{
 		v = transform.position - center.position;
+		collider2D.enabled = false;
 	}
 	
 	// Update is called once per frame
@@ -27,6 +28,8 @@ public class FireBallScript : MonoBehaviour
 
 		if (Input.touchCount > 0 && !isThrown)
 		{
+			if(!collider2D.enabled)
+				collider2D.enabled = true;
 			if(Input.GetTouch(0).phase == TouchPhase.Began || (Input.GetTouch(0).phase == TouchPhase.Moved && !isTouched && !Layout.getIconSelected()))
 			{
 				Vector3 wp = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);

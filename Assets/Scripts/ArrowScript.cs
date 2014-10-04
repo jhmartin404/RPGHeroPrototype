@@ -17,6 +17,7 @@ public class ArrowScript : MonoBehaviour {
 	void Start () 
 	{
 		v = transform.position - center.position;
+		collider2D.enabled = false;
 	}
 	
 	// Update is called once per frame
@@ -25,6 +26,8 @@ public class ArrowScript : MonoBehaviour {
 		
 		if (Input.touchCount > 0 && !isThrown)
 		{
+			if(!collider2D.enabled)
+				collider2D.enabled = true;
 			if(Input.GetTouch(0).phase == TouchPhase.Began || (Input.GetTouch(0).phase == TouchPhase.Moved && !isTouched && !Layout.getIconSelected()))
 			{
 				Vector3 wp = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
@@ -40,15 +43,7 @@ public class ArrowScript : MonoBehaviour {
 				
 			}
 			else if(Input.GetTouch(0).phase == TouchPhase.Moved && isTouched) 
-			{
-				
-				// Get movement of the finger since last frame
-				//Vector2 touchDeltaPosition = Input.GetTouch(0).deltaPosition;
-				
-				// Move object across XY plane
-				//transform.Translate (touchDeltaPosition.x * speed, 
-				//                 touchDeltaPosition.y * speed, 0);
-				
+			{				
 				Vector2 pos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 				if(Vector2.Distance(startPosition,pos)<1)
 					transform.position = pos;
@@ -60,7 +55,6 @@ public class ArrowScript : MonoBehaviour {
 				endPosition = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 				rigidbody2D.isKinematic = false;
 				Layout.setIconSelected(false);
-				//v = transform.position - center.position;
 			}
 		}
 		

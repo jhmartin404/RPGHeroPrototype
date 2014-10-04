@@ -5,6 +5,7 @@ public class Layout : MonoBehaviour
 {
 	private static int coins = 0;
 	private static bool iconSelected = false;
+	private static int playerHealth = 100;
 	// Use this for initialization
 	void Start () 
 	{
@@ -38,9 +39,16 @@ public class Layout : MonoBehaviour
 		}
 	}
 
+	//Add coins
 	public static void addCoin()
 	{
 		coins++;
+	}
+
+	//Attack player
+	public static void AttackPlayer(int damage)
+	{
+		playerHealth -= damage;
 	}
 
 	void OnGUI()
@@ -50,10 +58,9 @@ public class Layout : MonoBehaviour
 		int healthWidth = (int)(Screen.width * 0.3);
 		int healthHeight = (int)(Screen.height * 0.08);
 
-		GUI.skin.label.fontSize = Screen.width / 25;
+		GUI.skin.label.fontSize = Screen.width / 20;
 		
-		// Determine the button's place on screen
-		// Center in X, 2/3 of the height in Y
+
 		Rect buttonRect = new Rect(
 			Screen.width / 2 - (buttonWidth / 2),
 			5,
@@ -69,6 +76,15 @@ public class Layout : MonoBehaviour
 			healthWidth,
 			healthHeight);
 
-		GUI.Label (healthRect, "HP: " + EnemyScript.getHealth ());
+		GUI.Label (healthRect, "Opponent HP: " + EnemyScript.getHealth ());
+
+		Rect playerHealthRect = new Rect (
+			Screen.width-300,
+			5,
+			healthWidth,
+			healthHeight
+			);
+
+		GUI.Label (playerHealthRect, "HP: " + playerHealth);
 	}
 }
