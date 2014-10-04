@@ -12,6 +12,9 @@ public class FireBallScript : MonoBehaviour
 	private Vector2 movement;
 	private Vector2 startPosition;
 	private Vector2 endPosition;
+	private float lifeTime = 10;
+	private float timeElapsed;
+	private bool halfLife = false;
 
 	private Vector3 v;
 
@@ -19,7 +22,6 @@ public class FireBallScript : MonoBehaviour
 	void Start () 
 	{
 		v = transform.position - center.position;
-		collider2D.enabled = false;
 	}
 	
 	// Update is called once per frame
@@ -28,13 +30,11 @@ public class FireBallScript : MonoBehaviour
 
 		if (Input.touchCount > 0 && !isThrown)
 		{
-			if(!collider2D.enabled)
-				collider2D.enabled = true;
 			if(Input.GetTouch(0).phase == TouchPhase.Began || (Input.GetTouch(0).phase == TouchPhase.Moved && !isTouched && !Layout.getIconSelected()))
 			{
 				Vector3 wp = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 				Vector2 touchPos = new Vector2(wp.x, wp.y);
-				if (collider2D == Physics2D.OverlapPoint(touchPos))
+				if (collider2D == Physics2D.OverlapCircle(touchPos, 0.2f))
 				{
 					isTouched = true;		
 					startPosition = transform.position;
@@ -46,14 +46,6 @@ public class FireBallScript : MonoBehaviour
 			}
 			else if(Input.GetTouch(0).phase == TouchPhase.Moved && isTouched) 
 			{
-			
-				// Get movement of the finger since last frame
-				//Vector2 touchDeltaPosition = Input.GetTouch(0).deltaPosition;
-			
-				// Move object across XY plane
-				//transform.Translate (touchDeltaPosition.x * speed, 
-			    //                 touchDeltaPosition.y * speed, 0);
-
 				Vector2 pos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 				transform.position = pos;
 				//isTouched = true;
@@ -66,7 +58,6 @@ public class FireBallScript : MonoBehaviour
 				endPosition = transform.position;
 				rigidbody2D.isKinematic = false;
 				Layout.setIconSelected(false);
-				//v = transform.position - center.position;
 			}
 		}
 
@@ -74,6 +65,19 @@ public class FireBallScript : MonoBehaviour
 		{
 			v = Quaternion.AngleAxis (degreesPerSecond * Time.deltaTime, Vector3.forward) * v;
 			transform.position = center.position + v;
+		}
+
+		timeElapsed += Time.deltaTime;
+		if(timeElapsed >= lifeTime/2 && !halfLife)
+		{
+			Color originalColor = renderer.material.color;
+			renderer.material.color = new Color (originalColor.r, originalColor.g, originalColor.b, 0.5f);
+			halfLife = true;
+		}
+		
+		if(timeElapsed >= lifeTime)
+		{
+			Destroy(gameObject);
 		}
 	}
 

@@ -10,6 +10,9 @@ public class ArrowScript : MonoBehaviour {
 	private float speed = 10.0f;
 	private Vector2 startPosition;
 	private Vector2 endPosition;
+	private float lifeTime = 10;
+	private float timeElapsed;
+	private bool halfLife = false;
 	
 	private Vector3 v;
 	
@@ -17,7 +20,6 @@ public class ArrowScript : MonoBehaviour {
 	void Start () 
 	{
 		v = transform.position - center.position;
-		collider2D.enabled = false;
 	}
 	
 	// Update is called once per frame
@@ -26,13 +28,11 @@ public class ArrowScript : MonoBehaviour {
 		
 		if (Input.touchCount > 0 && !isThrown)
 		{
-			if(!collider2D.enabled)
-				collider2D.enabled = true;
 			if(Input.GetTouch(0).phase == TouchPhase.Began || (Input.GetTouch(0).phase == TouchPhase.Moved && !isTouched && !Layout.getIconSelected()))
 			{
 				Vector3 wp = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 				Vector2 touchPos = new Vector2(wp.x, wp.y);
-				if (collider2D == Physics2D.OverlapPoint(touchPos))
+				if (collider2D == Physics2D.OverlapCircle(touchPos, 0.2f))
 				{
 					isTouched = true;
 					startPosition = transform.position;
@@ -63,6 +63,19 @@ public class ArrowScript : MonoBehaviour {
 			v = Quaternion.AngleAxis (degreesPerSecond * Time.deltaTime, Vector3.forward) * v;
 			transform.position = center.position + v;
 		}
+		timeElapsed += Time.deltaTime;
+		if(timeElapsed >= lifeTime/2 && !halfLife)
+		{
+			Color originalColor = renderer.material.color;
+			renderer.material.color = new Color (originalColor.r, originalColor.g, originalColor.b, 0.5f);
+			halfLife = true;
+		}
+
+		if(timeElapsed >= lifeTime)
+		{
+			Destroy(gameObject);
+		}
+
 	}
 	
 	void LateUpdate()
