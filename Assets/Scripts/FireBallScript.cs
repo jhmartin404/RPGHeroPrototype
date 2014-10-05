@@ -9,7 +9,6 @@ public class FireBallScript : MonoBehaviour
 	private bool isTouched = false;
 	private bool isThrown = false;
 	private float speed = 5.0f;
-	private Vector2 movement;
 	private Vector2 startPosition;
 	private Vector2 endPosition;
 	private float lifeTime = 10;
