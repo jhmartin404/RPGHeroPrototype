@@ -6,6 +6,7 @@ public class Prototype2ArrowScript : MonoBehaviour
 	private bool isTouched = false;
 	private bool isThrown = false;
 	private float speed = 3.0f;
+	private float arrowSpeed = 10.0f;
 	private float xDirection = 1.0f;
 	private Vector2 startPosition;
 	private Vector2 endPosition;
@@ -73,7 +74,7 @@ public class Prototype2ArrowScript : MonoBehaviour
 	{
 		if(isThrown)
 		{
-			rigidbody2D.velocity = (startPosition - endPosition).normalized*speed;
+			rigidbody2D.velocity = (startPosition - endPosition).normalized*arrowSpeed;
 		}
 	}
 	
