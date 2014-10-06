@@ -23,14 +23,14 @@ public class MenuScript : MonoBehaviour {
 	void OnGUI()
 	{
 		int buttonWidth = (int)(Screen.width * 0.3);
-		int buttonHeight = (int)(Screen.height * 0.18);
+		int buttonHeight = (int)(Screen.height * 0.1);
 		
 		GUI.skin.button.fontSize = Screen.width / 25;
 		
 		
 		Rect buttonRect = new Rect(
 			Screen.width / 2 - (buttonWidth / 2),
-			Screen.height/4-buttonHeight,
+			Screen.height/6-buttonHeight,
 			buttonWidth,
 			buttonHeight
 			);
@@ -44,7 +44,7 @@ public class MenuScript : MonoBehaviour {
 		
 		Rect button2Rect = new Rect (
 			Screen.width / 2 - (buttonWidth / 2),
-			Screen.height/2-buttonHeight,
+			2*Screen.height/6-buttonHeight,
 			buttonWidth,
 			buttonHeight
 			);
@@ -58,7 +58,7 @@ public class MenuScript : MonoBehaviour {
 		
 		Rect button3Rect = new Rect (
 			Screen.width / 2 - (buttonWidth / 2),
-			3*Screen.height/4-buttonHeight,
+			3*Screen.height/6-buttonHeight,
 			buttonWidth,
 			buttonHeight
 			);
@@ -72,7 +72,7 @@ public class MenuScript : MonoBehaviour {
 
 		Rect button4Rect = new Rect (
 			Screen.width / 2 - (buttonWidth / 2),
-			4*Screen.height/4 - buttonHeight,
+			4*Screen.height/6 - buttonHeight,
 			buttonWidth,
 			buttonHeight
 			);
@@ -82,6 +82,34 @@ public class MenuScript : MonoBehaviour {
 			// On Click, load the first level.
 			// "Stage1" is the name of the first scene we created.
 			Application.LoadLevel("PrototypeScene4");
+		}
+
+		Rect button5Rect = new Rect (
+			Screen.width / 2 - (buttonWidth / 2),
+			5*Screen.height/6 - buttonHeight,
+			buttonWidth,
+			buttonHeight
+			);
+		
+		if(GUI.Button(button5Rect,"Prototype 5"))
+		{
+			// On Click, load the first level.
+			// "Stage1" is the name of the first scene we created.
+			Application.LoadLevel("PrototypeScene5");
+		}
+
+		Rect button6Rect = new Rect (
+			Screen.width / 2 - (buttonWidth / 2),
+			6*Screen.height/6 - buttonHeight,
+			buttonWidth,
+			buttonHeight
+			);
+		
+		if(GUI.Button(button6Rect,"Prototype 6"))
+		{
+			// On Click, load the first level.
+			// "Stage1" is the name of the first scene we created.
+			Application.LoadLevel("PrototypeScene6");
 		}
 	}
 }
