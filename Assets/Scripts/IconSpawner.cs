@@ -8,7 +8,7 @@ public class IconSpawner : MonoBehaviour
 	public GameObject fireBallPrefab;
 	public GameObject arrowPrefab;
 
-	private float spawnTime = 1.0f;
+	private float spawnTime = 0.5f;
 	private Transform center;
 	private float timeElapsed = 0.0f;
 	private int iconChooser;

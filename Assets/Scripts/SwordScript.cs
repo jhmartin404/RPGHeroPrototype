@@ -4,7 +4,7 @@ using System.Collections;
 public class SwordScript : MonoBehaviour 
 {
 	public Transform center;
-	public float degreesPerSecond = 65.0f;
+	public float degreesPerSecond = 85.0f;
 	private bool isTouched = false;
 	private bool isThrown = false;
 	//private float speed = 5.0f;
@@ -13,7 +13,7 @@ public class SwordScript : MonoBehaviour
 	private float lifeTime = 10;
 	private float timeElapsed;
 	private bool halfLife = false;
-	private float fingerRadius = 0.3f;
+	private float fingerRadius = 0.5f;
 	
 	private Vector3 v;
 	
@@ -31,8 +31,7 @@ public class SwordScript : MonoBehaviour
 		{
 			if(Input.GetTouch(0).phase == TouchPhase.Began || (Input.GetTouch(0).phase == TouchPhase.Moved && !isTouched && !Layout.getIconSelected()))
 			{
-				Vector3 wp = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-				Vector2 touchPos = new Vector2(wp.x, wp.y);
+				Vector2 touchPos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 				if (collider2D == Physics2D.OverlapCircle(touchPos, fingerRadius))
 				{
 					isTouched = true;

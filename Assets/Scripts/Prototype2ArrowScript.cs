@@ -5,12 +5,12 @@ public class Prototype2ArrowScript : MonoBehaviour
 {
 	private bool isTouched = false;
 	private bool isThrown = false;
-	private float speed = 3.0f;
+	private float speed = 5.0f;
 	private float arrowSpeed = 10.0f;
 	private float xDirection = 1.0f;
 	private Vector2 startPosition;
 	private Vector2 endPosition;
-	private float fingerRadius = 0.3f;
+	private float fingerRadius = 0.5f;
 	
 	private Vector2 movement;
 	
@@ -29,8 +29,7 @@ public class Prototype2ArrowScript : MonoBehaviour
 		{
 			if(Input.GetTouch(0).phase == TouchPhase.Began || (Input.GetTouch(0).phase == TouchPhase.Moved && !isTouched && !Layout.getIconSelected()))
 			{
-				Vector3 wp = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-				Vector2 touchPos = new Vector2(wp.x, wp.y);
+				Vector2 touchPos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 				if (collider2D == Physics2D.OverlapCircle(touchPos, fingerRadius))
 				{
 					isTouched = true;
