@@ -63,11 +63,11 @@ public class MenuScript : MonoBehaviour {
 			buttonHeight
 			);
 		
-		if(GUI.Button(button3Rect,"Prototype 3"))
+		if(GUI.Button(button3Rect,"Prototype 7"))
 		{
 			// On Click, load the first level.
 			// "Stage1" is the name of the first scene we created.
-			Application.LoadLevel("PrototypeScene3");
+			Application.LoadLevel("PrototypeScene7");
 		}
 
 		Rect button4Rect = new Rect (

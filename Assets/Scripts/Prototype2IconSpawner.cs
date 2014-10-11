@@ -14,14 +14,12 @@ public class Prototype2IconSpawner : MonoBehaviour {
 	private int rowChooser;
 	private Vector3 firstRow;
 	private Vector3 secondRow;
-	private Vector3 thirdRow;
 	
 	// Use this for initialization
 	void Start () 
 	{
-		firstRow = new Vector3 (-8.0f, -0.8f, 0);
-		secondRow = new Vector3 (-8, -2.2f, 0);
-		thirdRow = new Vector3 (-8, -3.4f, 0);
+		firstRow = new Vector3 (-8, -3.0f, 0);
+		secondRow = new Vector3 (-8, -4.0f, 0);
 	}
 	
 	// Update is called once per frame
@@ -31,8 +29,8 @@ public class Prototype2IconSpawner : MonoBehaviour {
 		if(timeElapsed >= spawnTime)
 		{
 			iconChooser = Random.Range(0,4);
-			rowChooser = Random.Range(0,3);
-			Vector3 position = (rowChooser==0) ? firstRow : (rowChooser==1) ? secondRow : thirdRow;
+			rowChooser = Random.Range(0,2);
+			Vector3 position = (rowChooser==0) ? firstRow : secondRow;
 			switch(iconChooser)
 			{
 			case 0:

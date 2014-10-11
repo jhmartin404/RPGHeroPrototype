@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Prototype3EnemyScript : MonoBehaviour {
-
+public class Prototype3EnemyScript : MonoBehaviour 
+{
+	public GameObject attackScreen;
 	private float speed = 5.0f;
 	private float xDirection = 1.0f;
 	private float yDirection = 0.0f;
@@ -53,6 +54,7 @@ public class Prototype3EnemyScript : MonoBehaviour {
 			{
 				yDirection = 1.0f;
 				sizeChangeSpeed = -1.0f;
+				StartCoroutine(AttackedPlayer());
 				Prototype3Layout.AttackPlayer(10);//remove 10 health from player
 			}
 			
@@ -98,9 +100,27 @@ public class Prototype3EnemyScript : MonoBehaviour {
 		
 		transform.Translate (movement);
 	}
+
+	IEnumerator Flash(Color collideColor, Color normalColor)
+	{
+		renderer.material.color = collideColor;
+		yield return new WaitForSeconds(0.1f);
+		renderer.material.color = normalColor;
+	}
+	
+	IEnumerator AttackedPlayer()
+	{
+		Vector3 tempvect = new Vector3(transform.position.x, transform.position.y, 0);
+		attackScreen.transform.position = tempvect;
+		yield return new WaitForSeconds(0.1f);
+		tempvect.Set(transform.position.x, transform.position.y, 10);
+		attackScreen.transform.position = tempvect;
+	}
 	
 	void OnTriggerEnter2D(Collider2D other)
 	{
+		Color normalColor = renderer.material.color;
+		Color collideColor = new Color (255, 0, 0, 255);
 		if (other.gameObject.tag == "FireBall")
 		{
 			Prototype3FireBallScript script = other.gameObject.GetComponent<Prototype3FireBallScript>();
@@ -108,6 +128,7 @@ public class Prototype3EnemyScript : MonoBehaviour {
 			{
 				onFire = true;
 				fireDamage++;
+				StartCoroutine(Flash(collideColor,normalColor));
 				Destroy(other.gameObject);
 				if(health<=0)
 				{
@@ -122,6 +143,7 @@ public class Prototype3EnemyScript : MonoBehaviour {
 			if(script.getIsThrown())
 			{
 				health -= 30;
+				StartCoroutine(Flash(collideColor,normalColor));
 				Destroy(other.gameObject);
 				if(health<=0)
 				{
@@ -135,6 +157,7 @@ public class Prototype3EnemyScript : MonoBehaviour {
 			if(script.getIsThrown() || script.getIsTouched())
 			{
 				health -= 20;
+				StartCoroutine(Flash(collideColor,normalColor));
 				Destroy(other.gameObject);
 				if(health<=0)
 				{

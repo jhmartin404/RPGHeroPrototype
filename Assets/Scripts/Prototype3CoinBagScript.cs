@@ -1,17 +1,37 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Prototype3CoinBagScript : MonoBehaviour {
-
+public class Prototype3CoinBagScript : MonoBehaviour 
+{
+	private bool coinCollected;
+	private Vector3 size = new Vector3(1,1,0);
+	private Vector3 maxSize = new Vector3(1.05f,1.05f,0);
+	private Vector3 minSize;
+	private float sizeChangeSpeed = 0.2f;
 	// Use this for initialization
 	void Start () 
 	{
-		
+		coinCollected = false;
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		
+	void Update () 
+	{
+		if(coinCollected)
+		{
+			transform.localScale += size*sizeChangeSpeed*Time.deltaTime;
+			if(transform.localScale.sqrMagnitude >= maxSize.sqrMagnitude && sizeChangeSpeed >0)
+			{
+				sizeChangeSpeed = -0.2f;
+			}
+			
+			if(sizeChangeSpeed <0 && transform.localScale.sqrMagnitude <= size.sqrMagnitude)
+			{
+				sizeChangeSpeed = 0.2f;
+				coinCollected = false;
+				//transform.localScale = size;
+			}
+		}	
 	}
 	
 	void OnTriggerEnter2D(Collider2D other)
@@ -19,6 +39,7 @@ public class Prototype3CoinBagScript : MonoBehaviour {
 		if (other.gameObject.tag == "Coin")
 		{
 			Prototype3Layout.addCoin();
+			coinCollected = true;
 			Destroy(other.gameObject);
 		}
 	}

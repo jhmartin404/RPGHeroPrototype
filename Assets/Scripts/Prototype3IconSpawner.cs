@@ -16,7 +16,7 @@ public class Prototype3IconSpawner : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		position = new Vector3 (0, -2, 0);
+		position = new Vector3 (0, -2.5f, 0);
 	}
 	
 	// Update is called once per frame

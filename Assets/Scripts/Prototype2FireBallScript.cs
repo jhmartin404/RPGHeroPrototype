@@ -59,7 +59,8 @@ public class Prototype2FireBallScript : MonoBehaviour
 			transform.Translate(movement);
 		}
 		
-		if(Camera.main.WorldToViewportPoint (transform.position).x > 1.5)
+		if(Camera.main.WorldToViewportPoint (transform.position).x > 2.0 || 
+		   Camera.main.WorldToViewportPoint (transform.position).x < -1.5)
 		{
 			Destroy(gameObject);
 		}
