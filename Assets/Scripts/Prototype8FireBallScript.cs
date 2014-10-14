@@ -26,7 +26,7 @@ public class Prototype8FireBallScript : MonoBehaviour
 		
 		if (Input.touchCount > 0 && !isThrown)
 		{
-			if(Input.GetTouch(0).phase == TouchPhase.Began || (Input.GetTouch(0).phase == TouchPhase.Moved && !isTouched && !Layout.getIconSelected()))
+			if(Input.GetTouch(0).phase == TouchPhase.Began || (Input.GetTouch(0).phase == TouchPhase.Moved && !isTouched && !Prototype8Layout.getIconSelected()))
 			{
 				Vector2 touchPos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 				if (collider2D == Physics2D.OverlapCircle(touchPos, fingerRadius))
@@ -34,7 +34,7 @@ public class Prototype8FireBallScript : MonoBehaviour
 					isGrabbed = true;		
 					startPosition = transform.position;
 					rigidbody2D.isKinematic = true;
-					Layout.setIconSelected(true);
+					Prototype8Layout.setIconSelected(true);
 				}
 				
 				
@@ -55,7 +55,7 @@ public class Prototype8FireBallScript : MonoBehaviour
 				}
 				endPosition = transform.position;
 				rigidbody2D.isKinematic = false;
-				Layout.setIconSelected(false);
+				Prototype8Layout.setIconSelected(false);
 			}
 		}
 		

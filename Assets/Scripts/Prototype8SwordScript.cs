@@ -34,14 +34,14 @@ public class Prototype8SwordScript : MonoBehaviour
 		
 		if (Input.touchCount > 0 && !isUsed)
 		{
-			if(Input.GetTouch(0).phase == TouchPhase.Began || (Input.GetTouch(0).phase == TouchPhase.Moved && !Layout.getIconSelected()))
+			if(Input.GetTouch(0).phase == TouchPhase.Began || (Input.GetTouch(0).phase == TouchPhase.Moved && !Prototype8Layout.getIconSelected()))
 			{
 				Vector2 touchPos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 				if (collider2D == Physics2D.OverlapCircle(touchPos, fingerRadius))
 				{
 					isGrabbed = true;		
 					rigidbody2D.isKinematic = true;
-					Layout.setIconSelected(true);
+					Prototype8Layout.setIconSelected(true);
 				}
 				
 				
@@ -89,7 +89,7 @@ public class Prototype8SwordScript : MonoBehaviour
 				}
 				sword.transform.rotation = Quaternion.Euler(0,0,30);
 				rigidbody2D.isKinematic = false;
-				Layout.setIconSelected(false);
+				Prototype8Layout.setIconSelected(false);
 				if(successfulAttack)
 				{
 					Prototype8EnemyScript.TakeDamage(15);

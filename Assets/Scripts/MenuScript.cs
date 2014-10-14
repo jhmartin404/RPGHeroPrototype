@@ -30,7 +30,7 @@ public class MenuScript : MonoBehaviour {
 		
 		Rect buttonRect = new Rect(
 			Screen.width / 2 - (buttonWidth / 2),
-			Screen.height/6-buttonHeight,
+			Screen.height/5-buttonHeight,
 			buttonWidth,
 			buttonHeight
 			);
@@ -44,7 +44,7 @@ public class MenuScript : MonoBehaviour {
 		
 		Rect button2Rect = new Rect (
 			Screen.width / 2 - (buttonWidth / 2),
-			2*Screen.height/6-buttonHeight,
+			2*Screen.height/5-buttonHeight,
 			buttonWidth,
 			buttonHeight
 			);
@@ -58,7 +58,7 @@ public class MenuScript : MonoBehaviour {
 		
 		Rect button3Rect = new Rect (
 			Screen.width / 2 - (buttonWidth / 2),
-			3*Screen.height/6-buttonHeight,
+			3*Screen.height/5-buttonHeight,
 			buttonWidth,
 			buttonHeight
 			);
@@ -72,7 +72,7 @@ public class MenuScript : MonoBehaviour {
 
 		Rect button4Rect = new Rect (
 			Screen.width / 2 - (buttonWidth / 2),
-			4*Screen.height/6 - buttonHeight,
+			4*Screen.height/5 - buttonHeight,
 			buttonWidth,
 			buttonHeight
 			);
@@ -86,30 +86,30 @@ public class MenuScript : MonoBehaviour {
 
 		Rect button5Rect = new Rect (
 			Screen.width / 2 - (buttonWidth / 2),
-			5*Screen.height/6 - buttonHeight,
+			5*Screen.height/5 - buttonHeight,
 			buttonWidth,
 			buttonHeight
 			);
 		
-		if(GUI.Button(button5Rect,"Prototype 5"))
+		if(GUI.Button(button5Rect,"Prototype 9"))
 		{
 			// On Click, load the first level.
 			// "Stage1" is the name of the first scene we created.
-			Application.LoadLevel("PrototypeScene5");
+			Application.LoadLevel("PrototypeScene9");
 		}
 
-		Rect button6Rect = new Rect (
-			Screen.width / 2 - (buttonWidth / 2),
-			6*Screen.height/6 - buttonHeight,
-			buttonWidth,
-			buttonHeight
-			);
-		
-		if(GUI.Button(button6Rect,"Prototype 6"))
-		{
-			// On Click, load the first level.
-			// "Stage1" is the name of the first scene we created.
-			Application.LoadLevel("PrototypeScene6");
-		}
+//		Rect button6Rect = new Rect (
+//			Screen.width / 2 - (buttonWidth / 2),
+//			6*Screen.height/6 - buttonHeight,
+//			buttonWidth,
+//			buttonHeight
+//			);
+//		
+//		if(GUI.Button(button6Rect,"Prototype 6"))
+//		{
+//			// On Click, load the first level.
+//			// "Stage1" is the name of the first scene we created.
+//			Application.LoadLevel("PrototypeScene6");
+//		}
 	}
 }
