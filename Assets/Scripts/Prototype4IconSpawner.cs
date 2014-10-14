@@ -7,7 +7,8 @@ public class Prototype4IconSpawner : MonoBehaviour
 	public GameObject coinPrefab;
 	public GameObject fireBallPrefab;
 	public GameObject arrowPrefab;
-	
+
+	private GameObject actionArea;
 	private float spawnTime = 1.0f;
 	private float timeElapsed = 0.0f;
 	private int iconChooser;
@@ -30,6 +31,8 @@ public class Prototype4IconSpawner : MonoBehaviour
 			{
 			case 0:
 				GameObject icon = Instantiate(swordPrefab, position, Quaternion.identity) as GameObject;
+				//SwordScript script = icon.GetComponent<SwordScript>();
+				//script.actionArea = actionArea;
 				break;
 			case 1:
 				GameObject icon2 = Instantiate(coinPrefab, position, Quaternion.identity) as GameObject;
