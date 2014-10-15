@@ -48,7 +48,7 @@ public class Prototype8ArrowScript : MonoBehaviour
 				
 				
 			}
-			else if(Input.GetTouch(0).phase == TouchPhase.Stationary && isActive)
+			else if(Input.GetTouch(0).phase == TouchPhase.Stationary && isActive && !startThrow)
 			{
 				startThrow = true;
 				startPosition = transform.position;
@@ -70,7 +70,7 @@ public class Prototype8ArrowScript : MonoBehaviour
 				//UnityEditor.Handles.DrawLine(leftSide,transform.position);
 				//UnityEditor.Handles.DrawLine(rightSide,transform.position);
 			}
-			else if(Input.GetTouch(0).phase == TouchPhase.Moved && isGrabbed) 
+			else if(Input.GetTouch(0).phase == TouchPhase.Moved && isGrabbed && !startThrow) 
 			{
 				Vector2 pos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 				transform.position = pos;

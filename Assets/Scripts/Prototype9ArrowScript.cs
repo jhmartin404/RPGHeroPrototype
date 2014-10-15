@@ -49,7 +49,7 @@ public class Prototype9ArrowScript : MonoBehaviour {
 				
 				
 			}
-			else if(Input.GetTouch(0).phase == TouchPhase.Stationary && isActive)
+			else if(Input.GetTouch(0).phase == TouchPhase.Stationary && isActive && !startThrow)
 			{
 				startThrow = true;
 				startPosition = transform.position;
@@ -67,7 +67,7 @@ public class Prototype9ArrowScript : MonoBehaviour {
 				render.SetPosition(2,rightSide);
 				render.SetPosition(3,transform.position);
 			}
-			else if(Input.GetTouch(0).phase == TouchPhase.Moved && isGrabbed) 
+			else if(Input.GetTouch(0).phase == TouchPhase.Moved && isGrabbed && !startThrow) 
 			{
 				Vector2 pos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 				transform.position = pos;

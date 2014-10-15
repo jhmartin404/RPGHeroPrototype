@@ -37,7 +37,7 @@ public class Prototype9FireBallScript : MonoBehaviour
 				if (collider2D == Physics2D.OverlapCircle(touchPos, fingerRadius))
 				{
 					isGrabbed = true;		
-					startPosition = transform.position;
+					//startPosition = transform.position;
 					rigidbody2D.isKinematic = true;
 					Prototype9Layout.setIconSelected(true);
 				}
@@ -46,6 +46,7 @@ public class Prototype9FireBallScript : MonoBehaviour
 			}
 			else if(Input.GetTouch(0).phase == TouchPhase.Moved && isGrabbed) 
 			{
+				startPosition = transform.position;
 				Vector2 pos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 				transform.position = pos;
 			}
