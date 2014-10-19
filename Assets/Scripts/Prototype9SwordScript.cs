@@ -3,25 +3,24 @@ using System.Collections;
 
 public class Prototype9SwordScript : MonoBehaviour 
 {
-	public Transform center;
-	public float degreesPerSecond = 85.0f;
-	public GameObject sword;
-	private bool isStationary = false;
-	private bool isActive = false;
-	private bool isGrabbed = false;
-	private bool leftSwipped = false;
-	private bool rightSwipped = false;
-	private bool successfulAttack = false;
-	private bool isUsed = false;
-	//private float speed = 5.0f;
-	//private Vector2 startPosition;
-	//private Vector2 endPosition;
-	private float lifeTime = 4;
-	private float timeElapsed;
-	private bool halfLife = false;
+	public Transform center;//transform icon rotates around
+	public float degreesPerSecond = 85.0f;//speed of rotation
+	public GameObject sword;//reference to the sword, used for rendering the sword and rotating it
+	private GameObject enemy;//reference to the enemy, used for determining the distance the enemy is at
+	private bool isStationary = false;//has the user held the icon in spot, to initiate attack
+	private bool isActive = false;//is the icon in the action area
+	private bool isGrabbed = false;//is the icon grabbed by the user
+	private bool leftSwipped = false;//did the user swipe left
+	private bool rightSwipped = false;//did the user swipe right
+	private bool successfulAttack = false;//was the attack successful
+	private bool isUsed = false;//was the icon used
+	private float minSwipeDistance = 0.5f;//minimum distance the user must swipe from the starting position to be considered a swipe
 	private float fingerRadius = 0.5f;
-	private Vector3 startPostion;
-	private float barDisplay = 0.0f;
+	private Vector3 startPostion;//position the icon is held at
+	private float enemyStartPosition;//the enemy's starting position
+	//private float barDisplay = 0.0f;
+	private float maxAttackDamage = 15;//maximum damage the player can cause
+	private Vector2 newSize = new Vector2 (1.2f, 1.2f);
 	
 	private Vector3 v;
 	
@@ -29,6 +28,9 @@ public class Prototype9SwordScript : MonoBehaviour
 	void Start () 
 	{
 		sword = GameObject.Find ("Sword");
+		enemy = GameObject.Find ("Prototype9Orc");
+		if(enemy != null)
+			enemyStartPosition = enemy.transform.position.y; 
 		v = transform.position - center.position;
 	}
 	
@@ -46,6 +48,8 @@ public class Prototype9SwordScript : MonoBehaviour
 					isGrabbed = true;		
 					rigidbody2D.isKinematic = true;
 					Prototype9Layout.setIconSelected(true);
+					transform.localScale = newSize;
+					sword.renderer.enabled = true;//render the sword
 				}
 				
 				
@@ -55,50 +59,56 @@ public class Prototype9SwordScript : MonoBehaviour
 				Vector2 pos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 				transform.position = pos;
 			}
-			else if((Input.GetTouch(0).phase == TouchPhase.Moved && isStationary) || (Input.GetTouch(0).phase == TouchPhase.Stationary && isStationary))
+			else if(((Input.GetTouch(0).phase == TouchPhase.Moved && isStationary) || (Input.GetTouch(0).phase == TouchPhase.Stationary && isStationary)) && !successfulAttack)
 			{
 				Vector3 touchPos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-				if(touchPos.x < startPostion.x)
+				if(touchPos.x < startPostion.x - minSwipeDistance)
 				{
-					sword.transform.rotation = Quaternion.Euler(0,0,90);
+					sword.transform.rotation = Quaternion.Euler(0,0,90);//rotate the sword
 					leftSwipped = true;
-					if(rightSwipped)
-						barDisplay = 1.0f;
-					else
-						barDisplay = 0.5f;
+//					if(rightSwipped)
+//						barDisplay = 1.0f;
+//					else
+//						barDisplay = 0.5f;
 				}
-				else if(touchPos.x > startPostion.x)
+				else if(touchPos.x > startPostion.x + minSwipeDistance)
 				{
-					sword.transform.rotation = Quaternion.Euler(0,0,-30);
+					sword.transform.rotation = Quaternion.Euler(0,0,-30);//rotate the sword
 					rightSwipped = true;
-					if(leftSwipped)
-						barDisplay = 1.0f;
-					else
-						barDisplay = 0.5f;
+//					if(leftSwipped)
+//						barDisplay = 1.0f;
+//					else
+//						barDisplay = 0.5f;
 				}
+
+				if(leftSwipped && rightSwipped)
+					successfulAttack = true;
 			}
-			else if(Input.GetTouch(0).phase == TouchPhase.Stationary && isActive && isGrabbed)
+			else if(Input.GetTouch(0).phase == TouchPhase.Stationary && isActive && isGrabbed && !isStationary && !successfulAttack)
 			{
 				isStationary = true;
 				startPostion = transform.position;
 				
 			}
-			else if(Input.GetTouch(0).phase == TouchPhase.Ended && isGrabbed)
+			else if((Input.GetTouch(0).phase == TouchPhase.Ended && isGrabbed) || successfulAttack)
 			{
 				if(isActive)
 				{
 					isUsed = true;
-					if(leftSwipped && rightSwipped)
-						successfulAttack = true;
+
 				}
-				sword.transform.rotation = Quaternion.Euler(0,0,30);
+				sword.transform.rotation = Quaternion.Euler(0,0,30);//rotate sword back to initial angle
 				rigidbody2D.isKinematic = false;
-				Prototype8Layout.setIconSelected(false);
-				if(successfulAttack)
+				Prototype9Layout.setIconSelected(false);
+				//if attack was successful then calculate the damage
+				if(successfulAttack && enemy!=null)
 				{
-					Prototype9EnemyScript.TakeDamage(15);
+					//determine how close the enemy is
+					float damage = maxAttackDamage*Mathf.Abs(enemy.transform.position.y-enemyStartPosition)/4.5f;
+					Prototype9EnemyScript.TakeDamage(damage);
 				}
-				Destroy(gameObject);
+				sword.renderer.enabled = false;//disable the renderer for the sword
+				Destroy(gameObject);//destroy the sword icon
 			}
 		}
 		
@@ -106,61 +116,34 @@ public class Prototype9SwordScript : MonoBehaviour
 		{
 			v = Quaternion.AngleAxis (degreesPerSecond * Time.deltaTime, Vector3.forward) * v;
 			transform.position = center.position + v;
-
-			timeElapsed += Time.deltaTime;
-			if(timeElapsed >= lifeTime/2 && !halfLife)
-			{
-				Color originalColor = renderer.material.color;
-				renderer.material.color = new Color (originalColor.r, originalColor.g, originalColor.b, 0.5f);
-				halfLife = true;
-			}
-			
-			if(timeElapsed >= lifeTime && (!isGrabbed || !isUsed))
-			{
-				Destroy(gameObject);
-			}
-		}
-
-//		timeElapsed += Time.deltaTime;
-//		if(timeElapsed >= lifeTime/2 && !halfLife)
-//		{
-//			Color originalColor = renderer.material.color;
-//			renderer.material.color = new Color (originalColor.r, originalColor.g, originalColor.b, 0.5f);
-//			halfLife = true;
-//		}
-//		
-//		if(timeElapsed >= lifeTime && (!isTouched || !isThrown))
-//		{
-//			Destroy(gameObject);
-//		}
-	}
-
-	void OnGUI()
-	{
-		Vector3 pos = new Vector3(350,850,0);
-		Vector3 size = new Vector3 (350, 100, 0);
-		if(isStationary)
-		{
-			// draw the background:
-			GUI.BeginGroup (new Rect (pos.x, Screen.height - pos.y, size.x, size.y));
-			GUI.Box (new Rect (0,0, size.x, size.y),"EMPTY");
-			
-			// draw the filled-in part:
-			GUI.BeginGroup (new Rect (0, 0, size.x * barDisplay, size.y));
-			GUI.Box (new Rect (0,0, size.x, size.y),"FULL");
-			GUI.EndGroup ();
-			
-			GUI.EndGroup ();
 		}
 	}
+
+//	void OnGUI()
+//	{
+//		Vector3 pos = new Vector3(350,850,0);
+//		Vector3 size = new Vector3 (350, 100, 0);
+//		if(isStationary)
+//		{
+//			// draw the background:
+//			GUI.BeginGroup (new Rect (pos.x, Screen.height - pos.y, size.x, size.y));
+//			GUI.Box (new Rect (0,0, size.x, size.y),"EMPTY");
+//			
+//			// draw the filled-in part:
+//			GUI.BeginGroup (new Rect (0, 0, size.x * barDisplay, size.y));
+//			GUI.Box (new Rect (0,0, size.x, size.y),"FULL");
+//			GUI.EndGroup ();
+//			
+//			GUI.EndGroup ();
+//		}
+//	}
 
 	void OnTriggerEnter2D(Collider2D other)
 	{
-		Color collisionColor = new Color (0, 0, 0, 255);
+		//Color collisionColor = new Color (0, 0, 0, 255);
 		if(other.gameObject.tag == "ActionArea")
 		{
 			isActive = true;
-			other.renderer.material.color = collisionColor;
 		}
 	}
 

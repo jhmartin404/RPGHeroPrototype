@@ -3,22 +3,24 @@ using System.Collections;
 
 public class Prototype9ArrowScript : MonoBehaviour {
 
-	public Transform center;
-	public float degreesPerSecond = 85.0f;
-	private LineRenderer render;
-	private bool isGrabbed = false;
-	private bool startThrow = false;
-	private bool isActive = false;
-	private bool isThrown = false;
-	private float speed = 10.0f;
-	private Vector3 leftSide = new Vector3(-1.0f,-2.0f,0);
-	private Vector3 rightSide = new Vector3 (0.4f,-2.0f,0);
-	private Vector2 startPosition;
-	private Vector2 endPosition;
-	private float lifeTime = 4;
-	private float timeElapsed;
-	private bool halfLife = false;
-	private float fingerRadius = 0.5f;
+	public Transform center; //icon rotates around this
+	public float degreesPerSecond = 85.0f; //how fast icon rotates
+	private LineRenderer render;//Renderer used to render the bow strings
+	private bool isGrabbed = false;//has the user selected the icon
+	private bool startThrow = false;//has the user started to pull back the arrow
+	private bool isActive = false;//is the icon in the action area
+	private bool isThrown = false;//did the user let go of the arrow
+	private float speed = 10.0f;//speed of the arrow
+	//Used by LineRenderer to render the bow strings
+	private Vector3 leftSide = new Vector3(-0.9f,-2.5f,0);
+	private Vector3 rightSide = new Vector3 (0.9f,-2.5f,0);
+	private Vector2 startPosition;//start position of the arrow pull
+	private Vector2 endPosition;//ending position
+//	private float lifeTime = 5;
+//	private float timeElapsed;
+//	private bool halfLife = false;
+	private float fingerRadius = 0.5f;//fingerRadius to determine a touch
+	private Vector2 newSize = new Vector2 (1.2f, 1.2f);//new size to expand icon to when user selects the icon
 	
 	private Vector3 v;
 	
@@ -45,6 +47,7 @@ public class Prototype9ArrowScript : MonoBehaviour {
 					isGrabbed=true;
 					rigidbody2D.isKinematic = true;
 					Prototype9Layout.setIconSelected(true);
+					transform.localScale = newSize;
 				}
 				
 				
@@ -95,44 +98,28 @@ public class Prototype9ArrowScript : MonoBehaviour {
 			v = Quaternion.AngleAxis (degreesPerSecond * Time.deltaTime, Vector3.forward) * v;
 			transform.position = center.position + v;
 
-			timeElapsed += Time.deltaTime;
-			if(timeElapsed >= lifeTime/2 && !halfLife)
-			{
-				Color originalColor = renderer.material.color;
-				renderer.material.color = new Color (originalColor.r, originalColor.g, originalColor.b, 0.5f);
-				halfLife = true;
-			}
-			
-			if(timeElapsed >= lifeTime)
-			{
-				Destroy(gameObject);
-			}
+//			timeElapsed += Time.deltaTime;
+//			if(timeElapsed >= lifeTime/2 && !halfLife)
+//			{
+//				Color originalColor = renderer.material.color;
+//				renderer.material.color = new Color (originalColor.r, originalColor.g, originalColor.b, 0.5f);
+//				halfLife = true;
+//			}
+//			
+//			if(timeElapsed >= lifeTime)
+//			{
+//				Destroy(gameObject);
+//			}
 		}
-//		timeElapsed += Time.deltaTime;
-//		if(timeElapsed >= lifeTime/2 && !halfLife)
-//		{
-//			Color originalColor = renderer.material.color;
-//			renderer.material.color = new Color (originalColor.r, originalColor.g, originalColor.b, 0.5f);
-//			halfLife = true;
-//		}
-//
-//		if(timeElapsed >= lifeTime)
-//		{
-//			Destroy(gameObject);
-//		}
-
 	}
 
 	void OnTriggerEnter2D(Collider2D other)
 	{
-		Color collisionColor = new Color (0, 0, 0, 255);
+		//Color collisionColor = new Color (0, 0, 0, 255);
 		if(other.gameObject.tag == "ActionArea" && !isActive && isGrabbed)
 		{
-			//Debug.Log("HERE");
 			isActive = true;
-			//isGrabbed = false;
-			//startPosition = transform.position;
-			other.renderer.material.color = collisionColor;
+			//other.renderer.material.color = collisionColor;
 		}
 	}
 	

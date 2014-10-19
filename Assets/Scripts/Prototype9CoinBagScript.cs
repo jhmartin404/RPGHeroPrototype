@@ -19,6 +19,7 @@ public class Prototype9CoinBagScript : MonoBehaviour
 	{
 		if(coinCollected)
 		{
+			//Grow then shrink coinbag when a coin is collected
 			transform.localScale += size*sizeChangeSpeed*Time.deltaTime;
 			if(transform.localScale.sqrMagnitude >= maxSize.sqrMagnitude && sizeChangeSpeed >0)
 			{
@@ -38,6 +39,7 @@ public class Prototype9CoinBagScript : MonoBehaviour
 	{
 		if (other.gameObject.tag == "Coin")
 		{
+			//Add to coin count, set coinCollected to true and destroy the coin
 			Prototype9Layout.addCoin();
 			coinCollected = true;
 			Destroy(other.gameObject);

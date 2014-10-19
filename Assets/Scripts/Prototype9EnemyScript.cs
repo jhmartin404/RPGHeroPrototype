@@ -3,20 +3,20 @@ using System.Collections;
 
 public class Prototype9EnemyScript : MonoBehaviour 
 {
-	public GameObject attackScreen;
-	private float speed = 5.0f;
-	private float xDirection = 1.0f;
-	private float yDirection = 0.0f;
-	private float enemyYPostion;
-	private float attackDistance = 4.5f;
+	public GameObject attackScreen;//Screen to display when the enemy attacks the player (flashes a red screen)
+	private float speed = 5.0f;//Speed enemy moves at
+	private float xDirection = 1.0f;//Determines whether to move right or left
+	private float yDirection = 0.0f;//Determines whether to move up or down
+	private float enemyYPostion;//Enemy's initial position on y axis
+	private float attackDistance = 4.5f;//Distance enemy will move to attack
 	private float sizeChangeSpeed = 1.0f;
 
-	private Vector2 movement;
+	private Vector2 movement;//Enemy's movement
 
-	private static float health = 100;
+	private static float health = 100;//Enemy's health
 
-	private bool onFire = false;
-	private bool isAttacking = false;
+	private bool onFire = false;//determine if enemy is on fire
+	private bool isAttacking = false;//determine if the enemy is attacking the player
 	private int fireDamage = 0;
 	private float fireTime = 0.0f;
 	private float attackTimer = 0.0f;
@@ -54,7 +54,7 @@ public class Prototype9EnemyScript : MonoBehaviour
 			{
 				yDirection = 1.0f;
 				sizeChangeSpeed = -1.0f;
-				StartCoroutine(AttackedPlayer());
+				StartCoroutine(AttackedPlayer());//Flash red screen
 				Prototype9Layout.AttackPlayer(10);//remove 10 health from player
 			}
 
@@ -101,6 +101,7 @@ public class Prototype9EnemyScript : MonoBehaviour
 		transform.Translate (movement);
 	}
 
+	//Flash enemy's color, used to show when enemy is hit
 	IEnumerator Flash(Color collideColor, Color normalColor)
 	{
 		renderer.material.color = collideColor;
@@ -108,6 +109,7 @@ public class Prototype9EnemyScript : MonoBehaviour
 		renderer.material.color = normalColor;
 	}
 
+	//Flash red screen, used to show that the player has been hit by the enemy
 	IEnumerator AttackedPlayer()
 	{
 		Vector3 tempvect = new Vector3(transform.position.x, transform.position.y, 0);
@@ -117,7 +119,8 @@ public class Prototype9EnemyScript : MonoBehaviour
 		attackScreen.transform.position = tempvect;
 	}
 
-	public static void TakeDamage(int damage)
+	//used for the swords to attack the enemy
+	public static void TakeDamage(float damage)
 	{
 		//Color normalColor = renderer.material.color;
 		//Color collideColor = new Color (255, 0, 0, 255);
@@ -128,15 +131,15 @@ public class Prototype9EnemyScript : MonoBehaviour
 		//}
 	}
 
-
 	void OnTriggerEnter2D(Collider2D other)
 	{
 		Color normalColor = renderer.material.color;
 		Color collideColor = new Color (255, 0, 0, 255);
+		//if hit with fireball
 		if (other.gameObject.tag == "FireBall")
 		{
 			Prototype9FireBallScript script = other.gameObject.GetComponent<Prototype9FireBallScript>();
-			if(script.getIsThrown() || script.getIsTouched())
+			if(script.getIsThrown() || script.getIsActive())
 			{
 				onFire = true;
 				fireDamage++;
@@ -148,7 +151,7 @@ public class Prototype9EnemyScript : MonoBehaviour
 				}
 			}
 		}
-
+		//if hit with an arrow
 		else if(other.gameObject.tag == "Arrow")
 		{
 			Prototype9ArrowScript script = other.gameObject.GetComponent<Prototype9ArrowScript>();
