@@ -42,19 +42,19 @@ public class MenuScript : MonoBehaviour {
 			Application.LoadLevel("PrototypeScene9");
 		}
 		
-//		Rect button2Rect = new Rect (
-//			Screen.width / 2 - (buttonWidth / 2),
-//			2*Screen.height/5-buttonHeight,
-//			buttonWidth,
-//			buttonHeight
-//			);
-//		
-//		if(GUI.Button(button2Rect,"Prototype 2"))
-//		{
-//			// On Click, load the first level.
-//			// "Stage1" is the name of the first scene we created.
-//			Application.LoadLevel("PrototypeScene2");
-//		}
+		Rect button2Rect = new Rect (
+			Screen.width / 2 - (buttonWidth / 2),
+			2*Screen.height/5-buttonHeight,
+			buttonWidth,
+			buttonHeight
+			);
+		
+		if(GUI.Button(button2Rect,"Prototype 10"))
+		{
+			// On Click, load the first level.
+			// "Stage1" is the name of the first scene we created.
+			Application.LoadLevel("PrototypeScene10");
+		}
 //		
 //		Rect button3Rect = new Rect (
 //			Screen.width / 2 - (buttonWidth / 2),
