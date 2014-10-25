@@ -133,16 +133,15 @@ public class Prototype10EnemyScript : MonoBehaviour
 
 	void OnGUI()
 	{
-		int buttonWidth = (int)(Screen.width * 0.3);
-		int buttonHeight = (int)(Screen.height * 0.18);
+		Vector2 enemyScreenLocation = Camera.main.WorldToScreenPoint (transform.position);
 		int healthWidth = (int)(Screen.width * 0.3);
 		int healthHeight = (int)(Screen.height * 0.08);
 		
-		GUI.skin.label.fontSize = Screen.width / 20;
+		GUI.skin.label.fontSize = Screen.width / 15;
 		
 		Rect healthRect = new Rect (
-			transform.position.x,
-			transform.position.y,
+			enemyScreenLocation.x,
+			Screen.height - (enemyScreenLocation.y + (renderer.bounds.extents.y*250)),
 			healthWidth,
 			healthHeight);
 		

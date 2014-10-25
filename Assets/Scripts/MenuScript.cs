@@ -55,20 +55,20 @@ public class MenuScript : MonoBehaviour {
 			// "Stage1" is the name of the first scene we created.
 			Application.LoadLevel("PrototypeScene10");
 		}
-//		
-//		Rect button3Rect = new Rect (
-//			Screen.width / 2 - (buttonWidth / 2),
-//			3*Screen.height/5-buttonHeight,
-//			buttonWidth,
-//			buttonHeight
-//			);
-//		
-//		if(GUI.Button(button3Rect,"Prototype 7"))
-//		{
-//			// On Click, load the first level.
-//			// "Stage1" is the name of the first scene we created.
-//			Application.LoadLevel("PrototypeScene7");
-//		}
+		
+		Rect button3Rect = new Rect (
+			Screen.width / 2 - (buttonWidth / 2),
+			3*Screen.height/5-buttonHeight,
+			buttonWidth,
+			buttonHeight
+			);
+		
+		if(GUI.Button(button3Rect,"Prototype 11"))
+		{
+			// On Click, load the first level.
+			// "Stage1" is the name of the first scene we created.
+			Application.LoadLevel("PrototypeScene11");
+		}
 //
 //		Rect button4Rect = new Rect (
 //			Screen.width / 2 - (buttonWidth / 2),
