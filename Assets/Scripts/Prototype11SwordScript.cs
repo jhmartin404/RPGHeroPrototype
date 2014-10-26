@@ -109,7 +109,7 @@ public class Prototype11SwordScript : MonoBehaviour
 				{
 					//determine how close the enemy is
 					float damage = maxAttackDamage*Mathf.Abs(enemy.transform.position.y-enemyStartPosition)/4.5f;
-					Prototype11EnemyScript.TakeDamage(damage);
+					enemy.GetComponent<Prototype11EnemyScript>().TakeDamage(damage);
 				}
 				sword.renderer.enabled = false;//disable the renderer for the sword
 				Destroy(gameObject);//destroy the sword icon

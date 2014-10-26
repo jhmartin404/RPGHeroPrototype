@@ -4,7 +4,9 @@ using System.Collections;
 public class Prototype10EnemyScript : MonoBehaviour 
 {
 	public GameObject attackScreen;//Screen to display when the enemy attacks the player (flashes a red screen)
-	private float speed = 5.0f;//Speed enemy moves at
+	public float speed = 5.0f;//Speed enemy moves at
+	public float attackTime = 5.0f;
+	public int damage = 10;
 	private float xDirection = 1.0f;//Determines whether to move right or left
 	private float yDirection = 0.0f;//Determines whether to move up or down
 	private float enemyYPostion;//Enemy's initial position on y axis
@@ -13,7 +15,7 @@ public class Prototype10EnemyScript : MonoBehaviour
 
 	private Vector2 movement;//Enemy's movement
 
-	private static float health = 100;//Enemy's health
+	private float health = 100;//Enemy's health
 
 	private bool onFire = false;//determine if enemy is on fire
 	private bool isAttacking = false;//determine if the enemy is attacking the player
@@ -29,7 +31,7 @@ public class Prototype10EnemyScript : MonoBehaviour
 		enemyYPostion = transform.position.y;
 	}
 
-	public static int getHealth()
+	public int getHealth()
 	{
 		return (int)(health<0 ? 0:health);
 	}
@@ -55,7 +57,7 @@ public class Prototype10EnemyScript : MonoBehaviour
 				yDirection = 1.0f;
 				sizeChangeSpeed = -1.0f;
 				StartCoroutine(AttackedPlayer());//Flash red screen
-				Prototype10Layout.AttackPlayer(10);//remove 10 health from player
+				Prototype10Layout.AttackPlayer(damage);//remove "damage" health from player
 			}
 
 			if(yDirection>= 0.0f && transform.position.y >= enemyYPostion && sizeChangeSpeed <0)
@@ -92,7 +94,7 @@ public class Prototype10EnemyScript : MonoBehaviour
 			Destroy(gameObject);
 		}
 
-		if(attackTimer > 5.0 && health>0 && !isAttacking)
+		if(attackTimer > attackTime && health>0 && !isAttacking)
 		{
 			isAttacking = true;
 			yDirection = -1.0f;
@@ -120,15 +122,16 @@ public class Prototype10EnemyScript : MonoBehaviour
 	}
 
 	//used for the swords to attack the enemy
-	public static void TakeDamage(float damage)
+	public void TakeDamage(float damage)
 	{
-		//Color normalColor = renderer.material.color;
-		//Color collideColor = new Color (255, 0, 0, 255);
+		Color normalColor = renderer.material.color;
+		Color collideColor = new Color (255, 0, 0, 255);
+		StartCoroutine(Flash(collideColor,normalColor));
 		health -= damage;
-		//if(health<=0)
-		//{
-		//	Destroy(this.gameObject);
-		//}
+		if(health<=0)
+		{
+			Destroy(this.gameObject);
+		}
 	}
 
 	void OnGUI()
