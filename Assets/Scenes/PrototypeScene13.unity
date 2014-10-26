@@ -392,7 +392,7 @@ GameObject:
   - 61: {fileID: 714230076}
   m_Layer: 0
   m_Name: Prototype10Orc
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -770,7 +770,7 @@ GameObject:
   - 61: {fileID: 1326314395}
   m_Layer: 0
   m_Name: Prototype10Rat
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1226,6 +1226,10 @@ Prefab:
       propertyPath: attackScreen
       value: 
       objectReference: {fileID: 1514447327}
+    - target: {fileID: 100000, guid: 1205eec73c7c94e46853627888cc21de, type: 2}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1205eec73c7c94e46853627888cc21de, type: 2}
   m_RootGameObject: {fileID: 714230071}
@@ -1421,6 +1425,10 @@ Prefab:
       propertyPath: attackScreen
       value: 
       objectReference: {fileID: 1514447327}
+    - target: {fileID: 100000, guid: cb46c13fc4a6ba54983e4ae4efc59619, type: 2}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cb46c13fc4a6ba54983e4ae4efc59619, type: 2}
   m_RootGameObject: {fileID: 1326314394}

@@ -392,7 +392,7 @@ GameObject:
   - 61: {fileID: 714230076}
   m_Layer: 0
   m_Name: Prototype10Orc
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -445,6 +445,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackScreen: {fileID: 1514447327}
+  speed: 5
+  attackTime: 5
+  damage: 10
 --- !u!50 &714230075
 Rigidbody2D:
   m_ObjectHideFlags: 0
@@ -1125,6 +1128,10 @@ Prefab:
       propertyPath: attackScreen
       value: 
       objectReference: {fileID: 1514447327}
+    - target: {fileID: 100000, guid: 1205eec73c7c94e46853627888cc21de, type: 2}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1205eec73c7c94e46853627888cc21de, type: 2}
   m_RootGameObject: {fileID: 714230071}

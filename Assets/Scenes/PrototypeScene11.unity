@@ -556,7 +556,7 @@ GameObject:
   - 61: {fileID: 1256587552}
   m_Layer: 0
   m_Name: Prototype11Orc
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -602,6 +602,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackScreen: {fileID: 1020357802}
+  speed: 5
+  attackTime: 5
+  damage: 10
 --- !u!212 &1256587555
 SpriteRenderer:
   m_ObjectHideFlags: 0
