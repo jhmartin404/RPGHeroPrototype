@@ -8,6 +8,8 @@ public class Prototype10SwordScript : MonoBehaviour
 	public GameObject sword;//reference to the sword, used for rendering the sword and rotating it
 	private GameObject[] enemies;//reference to the enemy, used for determining the distance the enemy is at
 	private bool isStationary = false;//has the user held the icon in spot, to initiate attack
+	private Vector3 actionAreaCenter;
+	private float actionAreaRadius;
 	private bool isActive = false;//is the icon in the action area
 	private bool isGrabbed = false;//is the icon grabbed by the user
 	private bool leftSwipped = false;//did the user swipe left
@@ -16,7 +18,7 @@ public class Prototype10SwordScript : MonoBehaviour
 	private bool isUsed = false;//was the icon used
 	private float minSwipeDistance = 0.5f;//minimum distance the user must swipe from the starting position to be considered a swipe
 	private float fingerRadius = 0.5f;
-	private Vector3 startPostion;//position the icon is held at
+	private Vector3 startPosition;//position the icon is held at
 	private float[] enemyStartPosition;//the enemy's starting position
 	//private float barDisplay = 0.0f;
 	private float maxAttackDamage = 15;//maximum damage the player can cause
@@ -38,6 +40,10 @@ public class Prototype10SwordScript : MonoBehaviour
 			//enemyCount++;
 		}
 		v = transform.position - center.position;
+
+		actionAreaCenter = GameObject.Find ("ActionArea").renderer.bounds.center;
+		actionAreaCenter.y = actionAreaCenter.y + 1;//Move center up a bit
+		actionAreaRadius = GameObject.Find ("ActionArea").GetComponent<CircleCollider2D>().radius;
 	}
 	
 	// Update is called once per frame
@@ -60,42 +66,51 @@ public class Prototype10SwordScript : MonoBehaviour
 				
 				
 			}
-			else if(Input.GetTouch(0).phase == TouchPhase.Moved && isGrabbed && !isStationary) 
+			else if(Input.GetTouch(0).phase == TouchPhase.Moved && isGrabbed && !isActive) 
 			{
 				Vector2 pos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 				transform.position = pos;
 			}
-			else if(((Input.GetTouch(0).phase == TouchPhase.Moved && isStationary) || (Input.GetTouch(0).phase == TouchPhase.Stationary && isStationary)) && !successfulAttack)
+			else if(Input.GetTouch(0).phase == TouchPhase.Moved && isGrabbed && isActive)
 			{
-				Vector3 touchPos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-				if(touchPos.x < startPostion.x - minSwipeDistance)
-				{
-					sword.transform.rotation = Quaternion.Euler(0,0,90);//rotate the sword
-					leftSwipped = true;
-//					if(rightSwipped)
-//						barDisplay = 1.0f;
-//					else
-//						barDisplay = 0.5f;
-				}
-				else if(touchPos.x > startPostion.x + minSwipeDistance)
-				{
-					sword.transform.rotation = Quaternion.Euler(0,0,-30);//rotate the sword
-					rightSwipped = true;
-//					if(leftSwipped)
-//						barDisplay = 1.0f;
-//					else
-//						barDisplay = 0.5f;
-				}
-
-				if(leftSwipped && rightSwipped)
-					successfulAttack = true;
-			}
-			else if(Input.GetTouch(0).phase == TouchPhase.Stationary && isActive && isGrabbed && !isStationary && !successfulAttack)
-			{
-				isStationary = true;
-				startPostion = transform.position;
-				
-			}
+				Vector2 pos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
+				transform.position = pos;
+				float angle = (Mathf.Atan2(transform.position.y, transform.position.x) - Mathf.Atan2(actionAreaCenter.y, actionAreaCenter.x)) * Mathf.Rad2Deg;
+//				float angle = Vector2.Angle(actionAreaCenter,transform.position);
+				Debug.Log("ANGLE: "+angle);
+				sword.transform.rotation = Quaternion.Euler(0,0,Mathf.Clamp(angle,0.0f,90.0f));
+			}			
+//			else if(((Input.GetTouch(0).phase == TouchPhase.Moved && isStationary) || (Input.GetTouch(0).phase == TouchPhase.Stationary && isStationary)) && !successfulAttack)
+//			{
+//				Vector3 touchPos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
+//				if(touchPos.x < startPosition.x - minSwipeDistance)
+//				{
+//					sword.transform.rotation = Quaternion.Euler(0,0,90);//rotate the sword
+//					leftSwipped = true;
+////					if(rightSwipped)
+////						barDisplay = 1.0f;
+////					else
+////						barDisplay = 0.5f;
+//				}
+//				else if(touchPos.x > startPosition.x + minSwipeDistance)
+//				{
+//					sword.transform.rotation = Quaternion.Euler(0,0,-30);//rotate the sword
+//					rightSwipped = true;
+////					if(leftSwipped)
+////						barDisplay = 1.0f;
+////					else
+////						barDisplay = 0.5f;
+//				}
+//
+//				if(leftSwipped && rightSwipped)
+//					successfulAttack = true;
+//			}
+//			else if(Input.GetTouch(0).phase == TouchPhase.Stationary && isActive && isGrabbed && !isStationary && !successfulAttack)
+//			{
+//				isStationary = true;
+//				startPosition = transform.position;
+//				
+//			}
 			else if((Input.GetTouch(0).phase == TouchPhase.Ended && isGrabbed) || successfulAttack)
 			{
 				if(isActive)
@@ -104,6 +119,7 @@ public class Prototype10SwordScript : MonoBehaviour
 
 				}
 				sword.transform.rotation = Quaternion.Euler(0,0,30);//rotate sword back to initial angle
+				sword.renderer.enabled = false;//disable the renderer for the sword
 				rigidbody2D.isKinematic = false;
 				Prototype10Layout.setIconSelected(false);
 				//if attack was successful then calculate the damage
@@ -119,7 +135,6 @@ public class Prototype10SwordScript : MonoBehaviour
 						}
 					}
 				}
-				sword.renderer.enabled = false;//disable the renderer for the sword
 				Destroy(gameObject);//destroy the sword icon
 			}
 		}
@@ -128,6 +143,13 @@ public class Prototype10SwordScript : MonoBehaviour
 		{
 			v = Quaternion.AngleAxis (degreesPerSecond * Time.deltaTime, Vector3.forward) * v;
 			transform.position = center.position + v;
+		}
+
+		if(Vector3.Distance(actionAreaCenter,transform.position) > actionAreaRadius && isGrabbed && !isActive)
+		{
+			isActive = true;
+			sword.transform.position = actionAreaCenter;
+			startPosition = actionAreaCenter;	
 		}
 	}
 
@@ -150,14 +172,14 @@ public class Prototype10SwordScript : MonoBehaviour
 //		}
 //	}
 
-	void OnTriggerStay2D(Collider2D other)
-	{
-		//Color collisionColor = new Color (0, 0, 0, 255);
-		if(other.gameObject.tag == "ActionArea" && isGrabbed && !isActive)
-		{
-			isActive = true;
-		}
-	}
+//	void OnTriggerStay2D(Collider2D other)
+//	{
+//		//Color collisionColor = new Color (0, 0, 0, 255);
+//		if(other.gameObject.tag == "ActionArea" && isGrabbed && !isActive)
+//		{
+//			isActive = true;
+//		}
+//	}
 
 	public bool SuccessfulAttack()
 	{
