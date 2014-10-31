@@ -5,6 +5,8 @@ public class Prototype10ArrowScript : MonoBehaviour {
 
 	public Transform center; //icon rotates around this
 	public float degreesPerSecond = 85.0f; //how fast icon rotates
+	private Vector3 actionAreaCenter;
+	private float actionAreaRadius;
 	private LineRenderer render;//Renderer used to render the bow strings
 	private bool isGrabbed = false;//has the user selected the icon
 	private bool startThrow = false;//has the user started to pull back the arrow
@@ -29,6 +31,9 @@ public class Prototype10ArrowScript : MonoBehaviour {
 	{
 		render = GameObject.Find ("LineRender").GetComponent<LineRenderer> ();
 		v = transform.position - center.position;
+		actionAreaCenter = GameObject.Find ("ActionArea").renderer.bounds.center;
+		actionAreaCenter.y = actionAreaCenter.y + 1;//Move center up a bit
+		actionAreaRadius = GameObject.Find ("ActionArea").GetComponent<CircleCollider2D>().radius;
 	}
 	
 	// Update is called once per frame
@@ -52,16 +57,16 @@ public class Prototype10ArrowScript : MonoBehaviour {
 				
 				
 			}
-			else if(Input.GetTouch(0).phase == TouchPhase.Stationary && isActive && !startThrow)
-			{
-				startThrow = true;
-				startPosition = transform.position;
-			}
+//			else if(Input.GetTouch(0).phase == TouchPhase.Stationary && isActive && !startThrow)
+//			{
+//				startThrow = true;
+//				startPosition = transform.position;
+//			}
 			else if(Input.GetTouch(0).phase == TouchPhase.Moved && isActive && startThrow) 
 			{
 				//isGrabbed=false;
 				Vector2 pos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-				if(Vector2.Distance(startPosition,pos)<1)
+				if(Vector2.Distance(startPosition,pos)<2)
 					transform.position = pos;
 				if(!render.enabled)
 					render.enabled = true;
@@ -111,18 +116,26 @@ public class Prototype10ArrowScript : MonoBehaviour {
 //				Destroy(gameObject);
 //			}
 		}
-	}
 
-	void OnTriggerStay2D(Collider2D other)
-	{
 		//Color collisionColor = new Color (0, 0, 0, 255);
-		if(other.gameObject.tag == "ActionArea" && !isActive && isGrabbed)
+		if( Vector3.Distance(actionAreaCenter,transform.position) > actionAreaRadius && !isActive && isGrabbed)
 		{
 			isActive = true;
-			//Debug.Log("HERE NOW!!!!");
-			//other.renderer.material.color = collisionColor;
+			startThrow = true;
+			startPosition = actionAreaCenter;
 		}
 	}
+
+//	void OnTriggerStay2D(Collider2D other)
+//	{
+//		//Color collisionColor = new Color (0, 0, 0, 255);
+//		if(other.gameObject.tag == "ActionArea" && !isActive && isGrabbed)
+//		{
+//			isActive = true;
+//			//Debug.Log("HERE NOW!!!!");
+//			//other.renderer.material.color = collisionColor;
+//		}
+//	}
 	
 	void LateUpdate()
 	{
