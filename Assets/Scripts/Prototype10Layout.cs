@@ -7,7 +7,7 @@ public class Prototype10Layout : MonoBehaviour
 	private static bool iconSelected = false;//detect if an icon has been selected
 	private static bool defending = false;//detect if we are using a shield
 	private static int playerHealth = 100;//player's health
-	private static int defences = 0;
+	//private static int defences = 0;
 
 	// Use this for initialization
 	void Start () 
@@ -17,15 +17,15 @@ public class Prototype10Layout : MonoBehaviour
 		GameObject.Find ("Shield").renderer.enabled = false;
 	}
 
-	public static void setDefences(int defs)
-	{
-		defences = defs;
-	}
-	
-	public static int getDefences()
-	{
-		return defences;
-	}
+//	public static void setDefences(int defs)
+//	{
+//		defences = defs;
+//	}
+//	
+//	public static int getDefences()
+//	{
+//		return defences;
+//	}
 
 	public static void setDefending(bool def)
 	{
@@ -45,6 +45,16 @@ public class Prototype10Layout : MonoBehaviour
 	public static bool getIconSelected()
 	{
 		return iconSelected;
+	}
+
+	public static int getCoins()
+	{
+		return coins;
+	}
+
+	public static void setCoins(int amount)
+	{
+		coins = amount;
 	}
 	
 	// Update is called once per frame
@@ -71,6 +81,11 @@ public class Prototype10Layout : MonoBehaviour
 		coins++;
 	}
 
+	public static void increaseHealth(int amount)
+	{
+		playerHealth += amount;
+	}
+
 	//Attack player
 	public static void AttackPlayer(int damage)
 	{
@@ -78,7 +93,7 @@ public class Prototype10Layout : MonoBehaviour
 			playerHealth -= damage;
 		else if(defending)
 		{
-			defences++;
+//			defences++;
 			playerHealth -= damage/2;
 		}
 	}

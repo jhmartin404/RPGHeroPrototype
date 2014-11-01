@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Prototype10IconSpawner : MonoBehaviour 
 {
-	public GameObject swordPrefab;
+	public GameObject healthPrefab;
 	public GameObject coinPrefab;
 	public GameObject fireBallPrefab;
 	public GameObject arrowPrefab;
@@ -49,8 +49,8 @@ public class Prototype10IconSpawner : MonoBehaviour
 			switch(leftIconChooser)
 			{
 			case 0:
-				GameObject icon = Instantiate(swordPrefab, leftPosition, Quaternion.identity) as GameObject;
-				Prototype10SwordScript script = icon.GetComponent<Prototype10SwordScript>();
+				GameObject icon = Instantiate(healthPrefab, leftPosition, Quaternion.identity) as GameObject;
+				Prototype10HealthScript script = icon.GetComponent<Prototype10HealthScript>();
 				script.center = leftPivot;
 				script.degreesPerSecond *= -1;
 				leftArea.GetComponent<Prototype10SlotScript>().objectInSlot = icon;
@@ -94,8 +94,8 @@ public class Prototype10IconSpawner : MonoBehaviour
 			switch(rightIconChooser)
 			{
 				case 0:
-					GameObject icon = Instantiate(swordPrefab, rightPosition, Quaternion.identity) as GameObject;
-					Prototype10SwordScript script = icon.GetComponent<Prototype10SwordScript>();
+					GameObject icon = Instantiate(healthPrefab, rightPosition, Quaternion.identity) as GameObject;
+					Prototype10HealthScript script = icon.GetComponent<Prototype10HealthScript>();
 					script.center = rightPivot;
 					rightArea.GetComponent<Prototype10SlotScript>().objectInSlot = icon;
 					break;

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Prototype10SlotScript : MonoBehaviour 
 {
-	public GameObject swordPrefab;
+	public GameObject healthPrefab;
 	public GameObject coinPrefab;
 	public GameObject fireBallPrefab;
 	public GameObject arrowPrefab;
@@ -45,8 +45,8 @@ public class Prototype10SlotScript : MonoBehaviour
 		switch(iconChooser)
 		{
 		case 0:
-			GameObject icon = Instantiate(swordPrefab, iconTransform, Quaternion.identity) as GameObject;
-			Prototype10SwordScript script = icon.GetComponent<Prototype10SwordScript>();
+			GameObject icon = Instantiate(healthPrefab, iconTransform, Quaternion.identity) as GameObject;
+			Prototype10HealthScript script = icon.GetComponent<Prototype10HealthScript>();
 			script.center = center;
 			script.degreesPerSecond = degreesPerSecond;
 			objectInSlot = icon;

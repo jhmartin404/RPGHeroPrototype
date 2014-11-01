@@ -40,11 +40,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a45097d9e141b2498fb162152bb828b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swordPrefab: {fileID: 100000, guid: f9e03bb16cf1dfd41a76e847605cf643, type: 2}
+  healthPrefab: {fileID: 100000, guid: 585be421c6be3504183adf9d97ade613, type: 2}
   coinPrefab: {fileID: 100000, guid: 5fb1c15405170ed49959e6e6a26ea9ed, type: 2}
   fireBallPrefab: {fileID: 100000, guid: 5b714c1b965ee6a4588314b79eccd6bc, type: 2}
   arrowPrefab: {fileID: 100000, guid: 712fc74ccd265484da51d01fd79ebeff, type: 2}
-  shieldPrefab: {fileID: 100000, guid: f3e9d12b8a940c646b5a6bbbe0c2dd5e, type: 2}
   objectInSlot: {fileID: 0}
   center: {fileID: 0}
   degreesPerSecond: 65
