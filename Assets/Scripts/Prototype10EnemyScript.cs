@@ -15,7 +15,7 @@ public class Prototype10EnemyScript : MonoBehaviour
 
 	private Vector2 movement;//Enemy's movement
 
-	private float health = 100;//Enemy's health
+	public float health = 100;//Enemy's health
 
 	private bool onFire = false;//determine if enemy is on fire
 	private bool isAttacking = false;//determine if the enemy is attacking the player
@@ -186,19 +186,15 @@ public class Prototype10EnemyScript : MonoBehaviour
 				}
 			}
 		}
-//		else if(other.gameObject.tag == "Sword")
-//		{
-//			Prototype9SwordScript script = other.gameObject.GetComponent<Prototype9SwordScript>();
-//			if(script.getIsThrown() || script.getIsTouched())
-//			{
-//				health -= 20;
-//				StartCoroutine(Flash(collideColor,normalColor));
-//				Destroy(other.gameObject);
-//				if(health<=0)
-//				{
-//					Destroy(gameObject);
-//				}
-//			}
-//		}
+		else if(other.gameObject.tag == "Weapon")
+		{
+
+			health -= 10;
+			StartCoroutine(Flash(collideColor,normalColor));
+			if(health<=0)
+			{
+				Destroy(gameObject);
+			}
+		}
 	}
 }

@@ -14,8 +14,8 @@ public class Prototype10ArrowScript : MonoBehaviour {
 	private bool isThrown = false;//did the user let go of the arrow
 	private float speed = 10.0f;//speed of the arrow
 	//Used by LineRenderer to render the bow strings
-	private Vector3 leftSide = new Vector3(-0.9f,-1.2f,0);
-	private Vector3 rightSide = new Vector3 (0.9f,-1.2f,0);
+	private Vector3 leftSide = new Vector3(-0.9f,-1.8f,0);
+	private Vector3 rightSide = new Vector3 (0.9f,-1.8f,0);
 	private Vector2 startPosition;//start position of the arrow pull
 	private Vector2 endPosition;//ending position
 //	private float lifeTime = 5;

@@ -6,17 +6,18 @@ public class Prototype10SwordScript : MonoBehaviour
 	public Transform center;//transform icon rotates around
 	public float degreesPerSecond = 85.0f;//speed of rotation
 	public GameObject sword;//reference to the sword, used for rendering the sword and rotating it
+	private float attackTime = 2.0f;
 	private GameObject[] enemies;//reference to the enemy, used for determining the distance the enemy is at
 	private bool isStationary = false;//has the user held the icon in spot, to initiate attack
 	private Vector3 actionAreaCenter;
 	private float actionAreaRadius;
 	private bool isActive = false;//is the icon in the action area
 	private bool isGrabbed = false;//is the icon grabbed by the user
-	private bool leftSwipped = false;//did the user swipe left
-	private bool rightSwipped = false;//did the user swipe right
-	private bool successfulAttack = false;//was the attack successful
+	//private bool leftSwipped = false;//did the user swipe left
+	//private bool rightSwipped = false;//did the user swipe right
+	//private bool successfulAttack = false;//was the attack successful
 	private bool isUsed = false;//was the icon used
-	private float minSwipeDistance = 0.5f;//minimum distance the user must swipe from the starting position to be considered a swipe
+	//private float minSwipeDistance = 0.5f;//minimum distance the user must swipe from the starting position to be considered a swipe
 	private float fingerRadius = 0.5f;
 	private Vector3 startPosition;//position the icon is held at
 	private float[] enemyStartPosition;//the enemy's starting position
@@ -73,12 +74,20 @@ public class Prototype10SwordScript : MonoBehaviour
 			}
 			else if(Input.GetTouch(0).phase == TouchPhase.Moved && isGrabbed && isActive)
 			{
+				float degrees = 10;
 				Vector2 pos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 				transform.position = pos;
 				float angle = (Mathf.Atan2(transform.position.y, transform.position.x) - Mathf.Atan2(actionAreaCenter.y, actionAreaCenter.x)) * Mathf.Rad2Deg;
-//				float angle = Vector2.Angle(actionAreaCenter,transform.position);
-				Debug.Log("ANGLE: "+angle);
-				sword.transform.rotation = Quaternion.Euler(0,0,Mathf.Clamp(angle,0.0f,90.0f));
+				Vector2 delta = Input.GetTouch(0).deltaPosition;
+				if(delta.x >0)
+				{
+					//Quaternion rotate = Quaternion.AngleAxis(delta.x*degrees,Vector3.forward);
+					sword.transform.rotation = Quaternion.Euler(0,0,Mathf.Clamp(degrees+sword.transform.eulerAngles.z,0,90));
+				}
+				else if(delta.x<0)
+				{
+					sword.transform.rotation = Quaternion.Euler(0,0,Mathf.Clamp(sword.transform.eulerAngles.z - degrees,0,90));
+				}
 			}			
 //			else if(((Input.GetTouch(0).phase == TouchPhase.Moved && isStationary) || (Input.GetTouch(0).phase == TouchPhase.Stationary && isStationary)) && !successfulAttack)
 //			{
@@ -111,7 +120,7 @@ public class Prototype10SwordScript : MonoBehaviour
 //				startPosition = transform.position;
 //				
 //			}
-			else if((Input.GetTouch(0).phase == TouchPhase.Ended && isGrabbed) || successfulAttack)
+			else if((Input.GetTouch(0).phase == TouchPhase.Ended && isGrabbed) || attackTime<=0)
 			{
 				if(isActive)
 				{
@@ -123,18 +132,18 @@ public class Prototype10SwordScript : MonoBehaviour
 				rigidbody2D.isKinematic = false;
 				Prototype10Layout.setIconSelected(false);
 				//if attack was successful then calculate the damage
-				if(successfulAttack && enemies.Length>0)
-				{
-					for(int i = 0;i<enemies.Length;i++)
-					{
-						if(enemies[i] != null)
-						{
-							//determine how close the enemy is
-							float damage = maxAttackDamage*Mathf.Abs(enemies[i].transform.position.y-enemyStartPosition[i])/4.5f;
-							enemies[i].GetComponent<Prototype10EnemyScript>().TakeDamage(damage);
-						}
-					}
-				}
+//				if(enemies.Length>0)
+//				{
+//					for(int i = 0;i<enemies.Length;i++)
+//					{
+//						if(enemies[i] != null)
+//						{
+//							//determine how close the enemy is
+//							float damage = maxAttackDamage*Mathf.Abs(enemies[i].transform.position.y-enemyStartPosition[i])/4.5f;
+//							enemies[i].GetComponent<Prototype10EnemyScript>().TakeDamage(damage);
+//						}
+//					}
+//				}
 				Destroy(gameObject);//destroy the sword icon
 			}
 		}
@@ -144,12 +153,17 @@ public class Prototype10SwordScript : MonoBehaviour
 			v = Quaternion.AngleAxis (degreesPerSecond * Time.deltaTime, Vector3.forward) * v;
 			transform.position = center.position + v;
 		}
+		if(isActive)
+		{
+			attackTime-=Time.deltaTime;
+		}
 
 		if(Vector3.Distance(actionAreaCenter,transform.position) > actionAreaRadius && isGrabbed && !isActive)
 		{
 			isActive = true;
 			sword.transform.position = actionAreaCenter;
 			startPosition = actionAreaCenter;	
+			attackTime = 2.0f;
 		}
 	}
 
@@ -181,11 +195,6 @@ public class Prototype10SwordScript : MonoBehaviour
 //		}
 //	}
 
-	public bool SuccessfulAttack()
-	{
-		return successfulAttack;
-	}
-	
 	public bool getIsUsed()
 	{
 		return isUsed;
