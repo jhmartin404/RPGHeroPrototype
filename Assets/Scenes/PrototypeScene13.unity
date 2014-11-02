@@ -519,6 +519,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackScreen: {fileID: 1514447327}
+  healthBarFull: {fileID: 2800000, guid: 2758ece44c4f4f14785b45a83c1e1a7a, type: 3}
+  healthBarEmpty: {fileID: 2800000, guid: c97c96f7672855148b423efed722eac0, type: 3}
   speed: 5
   attackTime: 5
   damage: 10
@@ -985,6 +987,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackScreen: {fileID: 1514447327}
+  healthBarFull: {fileID: 2800000, guid: 2758ece44c4f4f14785b45a83c1e1a7a, type: 3}
+  healthBarEmpty: {fileID: 2800000, guid: c97c96f7672855148b423efed722eac0, type: 3}
   speed: 6
   attackTime: 10
   damage: 5
@@ -1020,7 +1024,7 @@ Transform:
   m_GameObject: {fileID: 1326314394}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.07767177, y: .832098305, z: 3}
-  m_LocalScale: {x: .946665049, y: .946662843, z: 1}
+  m_LocalScale: {x: .5, y: .5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 15
@@ -1529,6 +1533,14 @@ Prefab:
       propertyPath: m_TagString
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 1205eec73c7c94e46853627888cc21de, type: 2}
+      propertyPath: healthBarEmpty
+      value: 
+      objectReference: {fileID: 2800000, guid: c97c96f7672855148b423efed722eac0, type: 3}
+    - target: {fileID: 11400000, guid: 1205eec73c7c94e46853627888cc21de, type: 2}
+      propertyPath: healthBarFull
+      value: 
+      objectReference: {fileID: 2800000, guid: 2758ece44c4f4f14785b45a83c1e1a7a, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1205eec73c7c94e46853627888cc21de, type: 2}
   m_RootGameObject: {fileID: 714230071}
@@ -1734,6 +1746,22 @@ Prefab:
     - target: {fileID: 11400000, guid: cb46c13fc4a6ba54983e4ae4efc59619, type: 2}
       propertyPath: health
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: cb46c13fc4a6ba54983e4ae4efc59619, type: 2}
+      propertyPath: healthBarEmpty
+      value: 
+      objectReference: {fileID: 2800000, guid: c97c96f7672855148b423efed722eac0, type: 3}
+    - target: {fileID: 11400000, guid: cb46c13fc4a6ba54983e4ae4efc59619, type: 2}
+      propertyPath: healthBarFull
+      value: 
+      objectReference: {fileID: 2800000, guid: 2758ece44c4f4f14785b45a83c1e1a7a, type: 3}
+    - target: {fileID: 400000, guid: cb46c13fc4a6ba54983e4ae4efc59619, type: 2}
+      propertyPath: m_LocalScale.x
+      value: .5
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: cb46c13fc4a6ba54983e4ae4efc59619, type: 2}
+      propertyPath: m_LocalScale.y
+      value: .5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cb46c13fc4a6ba54983e4ae4efc59619, type: 2}
