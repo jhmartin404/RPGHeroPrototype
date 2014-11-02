@@ -9,6 +9,7 @@ public class Prototype10EnemyScript : MonoBehaviour
 	public float speed = 5.0f;//Speed enemy moves at
 	public float attackTime = 5.0f;
 	public int damage = 10;
+	private Color normalColor;
 	private float xDirection = 1.0f;//Determines whether to move right or left
 	private float yDirection = 0.0f;//Determines whether to move up or down
 	private float enemyYPostion;//Enemy's initial position on y axis
@@ -33,6 +34,7 @@ public class Prototype10EnemyScript : MonoBehaviour
 		rigidbody2D.isKinematic = true;
 		enemyYPostion = transform.position.y;
 		fullHealth = health;
+		normalColor = renderer.material.color;
 	}
 
 	public int getHealth()
@@ -108,7 +110,7 @@ public class Prototype10EnemyScript : MonoBehaviour
 	}
 
 	//Flash enemy's color, used to show when enemy is hit
-	IEnumerator Flash(Color collideColor, Color normalColor)
+	IEnumerator Flash(Color collideColor)
 	{
 		renderer.material.color = collideColor;
 		yield return new WaitForSeconds(0.1f);
@@ -128,9 +130,9 @@ public class Prototype10EnemyScript : MonoBehaviour
 	//used for the swords to attack the enemy
 	public void TakeDamage(float damage)
 	{
-		Color normalColor = renderer.material.color;
+		//Color normalColor = renderer.material.color;
 		Color collideColor = new Color (255, 0, 0, 255);
-		StartCoroutine(Flash(collideColor,normalColor));
+		StartCoroutine(Flash(collideColor));
 		health -= damage;
 		if(health<=0)
 		{
@@ -170,7 +172,7 @@ public class Prototype10EnemyScript : MonoBehaviour
 
 	void OnTriggerEnter2D(Collider2D other)
 	{
-		Color normalColor = renderer.material.color;
+		//Color normalColor = renderer.material.color;
 		Color collideColor = new Color (255, 0, 0, 255);
 		//if hit with fireball
 		if (other.gameObject.tag == "FireBall")
@@ -180,7 +182,7 @@ public class Prototype10EnemyScript : MonoBehaviour
 			{
 				onFire = true;
 				fireDamage++;
-				StartCoroutine(Flash(collideColor,normalColor));
+				StartCoroutine(Flash(collideColor));
 				Destroy(other.gameObject);
 				if(health<=0)
 				{
@@ -195,7 +197,7 @@ public class Prototype10EnemyScript : MonoBehaviour
 			if(script.getIsThrown())
 			{
 				health -= 30;
-				StartCoroutine(Flash(collideColor,normalColor));
+				StartCoroutine(Flash(collideColor));
 				Destroy(other.gameObject);
 				if(health<=0)
 				{
@@ -207,7 +209,7 @@ public class Prototype10EnemyScript : MonoBehaviour
 		{
 
 			health -= 10;
-			StartCoroutine(Flash(collideColor,normalColor));
+			StartCoroutine(Flash(collideColor));
 			if(health<=0)
 			{
 				Destroy(gameObject);
