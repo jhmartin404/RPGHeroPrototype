@@ -58,7 +58,7 @@ public class Prototype10EnemyScript : MonoBehaviour
 			movement.x = 0;
 			movement.y = yDirection * speed * Time.deltaTime;
 			transform.localScale += size*sizeChangeSpeed*Time.deltaTime;
-			if(transform.position.y <= enemyYPostion-attackDistance && sizeChangeSpeed >0)
+			if(transform.position.y <= -3/*enemyYPostion-attackDistance*/ && sizeChangeSpeed >0)
 			{
 				yDirection = 1.0f;
 				sizeChangeSpeed = -1.0f;

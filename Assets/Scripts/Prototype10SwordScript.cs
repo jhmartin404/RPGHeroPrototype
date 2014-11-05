@@ -141,6 +141,7 @@ public class Prototype10SwordScript : MonoBehaviour
 				attacksAvailable--;
 				sword.transform.rotation = Quaternion.Euler(0,0,30);//rotate sword back to initial angle
 				transform.position = position;
+				transform.localScale = new Vector2(1.0f,1.0f);//set sword icon back to normal size
 				sword.renderer.enabled = false;//disable the renderer for the sword
 				rigidbody2D.isKinematic = false;
 				Prototype10Layout.setIconSelected(false);
@@ -159,7 +160,7 @@ public class Prototype10SwordScript : MonoBehaviour
 //						}
 //					}
 //				}
-				sword.GetComponent<PolygonCollider2D>().isTrigger = false;
+				sword.GetComponent<PolygonCollider2D>().isTrigger = false;//Remove trigger to disable collisions
 				//Destroy(gameObject);//destroy the sword icon
 			}
 		}

@@ -17,7 +17,8 @@ public class Prototype10ActionArea : MonoBehaviour
 		//Render the action area when an icon is selected and disable it when an icon is not selected
 		if(Prototype10Layout.getIconSelected())
 		{
-			actionArea.renderer.enabled = true;
+			if(!actionArea.renderer.enabled && !Prototype10ShieldScript.getUsingShield())//Render the action area when the shield is not being used
+				actionArea.renderer.enabled = true;
 		}
 		else if (!Prototype10Layout.getIconSelected() && actionArea.renderer.enabled)
 		{

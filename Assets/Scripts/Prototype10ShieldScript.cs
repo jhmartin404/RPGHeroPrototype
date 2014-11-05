@@ -11,9 +11,11 @@ public class Prototype10ShieldScript : MonoBehaviour
 	public Sprite shieldOneDef;
 	public Sprite shieldNoDefs;
 	public GameObject shield;//reference to the shield, used for rendering the sword to indicate defending
+	private GameObject actionArea;
 	private bool isStationary = false;//has the user held the icon in spot
 	private bool isActive = false;//is the icon in the action area
 	private bool isGrabbed = false;//is the icon grabbed by the user
+	private static bool usingShield = false;//boolean to determine if the shield is in use
 	//private bool isUsed = false;//was the icon used
 	//private Vector3 startPostion;
 	private float fingerRadius = 0.5f;
@@ -27,7 +29,8 @@ public class Prototype10ShieldScript : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		shield = GameObject.Find ("Shield"); 
+		shield = GameObject.Find ("Shield");
+		actionArea = GameObject.Find ("ActionArea");
 		position = transform.position;
 		defsAvailable = 4;
 		cooldownTime = 5.0f;
@@ -50,22 +53,26 @@ public class Prototype10ShieldScript : MonoBehaviour
 					Prototype10Layout.setIconSelected(true);
 					transform.localScale = newSize;
 					shield.renderer.enabled = true;//render the shield
+					actionArea.renderer.enabled = false;
+					usingShield = true;
+					//Prototype10Layout.setDefending(true);
 				}
 				
 				
 			}
-			else if(Input.GetTouch(0).phase == TouchPhase.Moved && isGrabbed && !isStationary) 
+			else if(Input.GetTouch(0).phase == TouchPhase.Moved && isGrabbed) 
 			{
 				Vector2 pos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 				transform.position = pos;
+				actionArea.renderer.enabled = false;
 			}
-			else if(Input.GetTouch(0).phase == TouchPhase.Stationary && isActive && isGrabbed && !isStationary)
-			{
-				isStationary = true;
-				Prototype10Layout.setDefending(true);
-				//startPostion = transform.position;
-				
-			}
+//			else if(Input.GetTouch(0).phase == TouchPhase.Stationary && isActive && isGrabbed && !isStationary)
+//			{
+//				isStationary = true;
+//				Prototype10Layout.setDefending(true);
+//				//startPostion = transform.position;
+//				
+//			}
 			else if((Input.GetTouch(0).phase == TouchPhase.Ended && isGrabbed))
 			{
 				rigidbody2D.isKinematic = false;
@@ -75,9 +82,11 @@ public class Prototype10ShieldScript : MonoBehaviour
 				cooldownTime = 5.0f;
 				shield.renderer.enabled = false;//disable the renderer for the shield
 				transform.position = position;
+				transform.localScale = new Vector2(1.0f,1.0f);
 				isActive = false;
 				isStationary = false;
 				isGrabbed = false;
+				usingShield = false;
 			}
 		}
 		
@@ -115,6 +124,15 @@ public class Prototype10ShieldScript : MonoBehaviour
 			GetComponent<SpriteRenderer>().sprite = shieldNoDefs;
 			break;
 		}
+
+		Vector3 newPosition = shield.transform.position;
+		newPosition.x = transform.position.x;
+		shield.transform.position = newPosition;
+	}
+
+	public static bool getUsingShield()
+	{
+		return usingShield;
 	}
 	
 	void OnTriggerEnter2D(Collider2D other)

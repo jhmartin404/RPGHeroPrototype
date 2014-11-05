@@ -113,6 +113,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 2e521e24bddbdc2498a8a48708236378, type: 2}
+      propertyPath: m_TagString
+      value: EquippedShield
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2e521e24bddbdc2498a8a48708236378, type: 2}
   m_RootGameObject: {fileID: 538290124}
@@ -326,9 +330,11 @@ GameObject:
   m_Component:
   - 4: {fileID: 538290126}
   - 212: {fileID: 538290125}
+  - 61: {fileID: 538290127}
+  - 114: {fileID: 538290128}
   m_Layer: 0
   m_Name: Shield
-  m_TagString: Untagged
+  m_TagString: EquippedShield
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -368,6 +374,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
+--- !u!61 &538290127
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 538290124}
+  m_Enabled: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Size: {x: 1, y: 1}
+  m_Center: {x: 0, y: 0}
+--- !u!114 &538290128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 538290124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29e3ea036bd196a4e8d7afba55532536, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &680763873
 GameObject:
   m_ObjectHideFlags: 0
@@ -991,7 +1019,7 @@ MonoBehaviour:
   healthBarEmpty: {fileID: 2800000, guid: c97c96f7672855148b423efed722eac0, type: 3}
   speed: 6
   attackTime: 10
-  damage: 5
+  damage: 4
   health: 20
 --- !u!212 &1326314398
 SpriteRenderer:
@@ -1762,6 +1790,10 @@ Prefab:
     - target: {fileID: 400000, guid: cb46c13fc4a6ba54983e4ae4efc59619, type: 2}
       propertyPath: m_LocalScale.y
       value: .5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: cb46c13fc4a6ba54983e4ae4efc59619, type: 2}
+      propertyPath: damage
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cb46c13fc4a6ba54983e4ae4efc59619, type: 2}
