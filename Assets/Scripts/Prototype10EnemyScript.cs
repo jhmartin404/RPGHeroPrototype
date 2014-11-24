@@ -6,15 +6,19 @@ public class Prototype10EnemyScript : MonoBehaviour
 	public GameObject attackScreen;//Screen to display when the enemy attacks the player (flashes a red screen)
 	public Texture2D healthBarFull;
 	public Texture2D healthBarEmpty;
+	public int movementMode;
 	public float speed = 5.0f;//Speed enemy moves at
 	public float attackTime = 5.0f;
 	public int damage = 10;
+	private Vector3 actionAreaCenter;
 	private Color normalColor;
 	private float xDirection = 1.0f;//Determines whether to move right or left
 	private float yDirection = 0.0f;//Determines whether to move up or down
 	private float enemyYPostion;//Enemy's initial position on y axis
 	private float attackDistance = 4.5f;//Distance enemy will move to attack
 	private float sizeChangeSpeed = 1.0f;
+	private Color attackColor = new Color (0, 0, 255, 255);
+	private int moveCounter = 0; //Used for movementmode 2 to alternate moving the enemy in the x and y
 
 	private Vector2 movement;//Enemy's movement
 
@@ -35,6 +39,7 @@ public class Prototype10EnemyScript : MonoBehaviour
 		enemyYPostion = transform.position.y;
 		fullHealth = health;
 		normalColor = renderer.material.color;
+		actionAreaCenter = GameObject.Find ("ActionArea").transform.renderer.bounds.center;
 	}
 
 	public int getHealth()
@@ -50,15 +55,27 @@ public class Prototype10EnemyScript : MonoBehaviour
 		if(!isAttacking)
 		{
 			movement.y = 0;
-			movement.x = xDirection * speed * Time.deltaTime;
+			if(movementMode==1)
+			{
+				movement.x = xDirection * speed * Time.deltaTime;
+			}
+			else if(movementMode==2)
+			{
+				if(moveCounter%2==0)
+					movement.x = xDirection * speed * Time.deltaTime;
+				else
+					movement.y = -xDirection * speed * Time.deltaTime;
+				moveCounter++;
+			}
 		}
 		//Move up down
 		else if(isAttacking)
 		{
+			//renderer.material.color = attackColor;
 			movement.x = 0;
 			movement.y = yDirection * speed * Time.deltaTime;
 			transform.localScale += size*sizeChangeSpeed*Time.deltaTime;
-			if(transform.position.y <= -3/*enemyYPostion-attackDistance*/ && sizeChangeSpeed >0)
+			if(transform.position.y <= actionAreaCenter.y/*enemyYPostion-attackDistance*/ && sizeChangeSpeed >0)
 			{
 				yDirection = 1.0f;
 				sizeChangeSpeed = -1.0f;
@@ -71,6 +88,7 @@ public class Prototype10EnemyScript : MonoBehaviour
 				isAttacking = false;
 				sizeChangeSpeed = 1.0f;
 				attackTimer = 0;
+				renderer.material.color = normalColor;
 			}
 		}
 		if (Camera.main.WorldToViewportPoint (this.transform.position).x < 0.15) 
@@ -98,6 +116,11 @@ public class Prototype10EnemyScript : MonoBehaviour
 		if(health<=0)
 		{
 			Destroy(gameObject);
+		}
+
+		if(attackTimer > attackTime-0.5f)
+		{
+			renderer.material.color = attackColor; //Warn the player that the enemy is about to attack
 		}
 
 		if(attackTimer > attackTime && health>0 && !isAttacking)
@@ -143,20 +166,6 @@ public class Prototype10EnemyScript : MonoBehaviour
 	void OnGUI()
 	{
 		Vector2 enemyScreenLocation = Camera.main.WorldToScreenPoint (transform.position);
-//		int healthWidth = (int)(Screen.width * 0.3);
-//		int healthHeight = (int)(Screen.height * 0.08);
-//		
-//		GUI.skin.label.fontSize = Screen.width / 15;
-//		
-//		Rect healthRect = new Rect (
-//			enemyScreenLocation.x,
-//			Screen.height - (enemyScreenLocation.y + (renderer.bounds.extents.y*250)),
-//			healthWidth,
-//			healthHeight);
-//		
-//		GUI.Label (healthRect, ""+getHealth());
-//
-//		Vector3 pos = Camera.main.WorldToScreenPoint (transform.position);
 		Vector3 size = new Vector3 (300, 50, 0);
 		// draw the background:
 		GUI.BeginGroup (new Rect (enemyScreenLocation.x, Screen.height - (enemyScreenLocation.y + (renderer.bounds.extents.y*250)), size.x, size.y));
@@ -172,7 +181,6 @@ public class Prototype10EnemyScript : MonoBehaviour
 
 	void OnTriggerEnter2D(Collider2D other)
 	{
-		//Color normalColor = renderer.material.color;
 		Color collideColor = new Color (255, 0, 0, 255);
 		//if hit with fireball
 		if (other.gameObject.tag == "FireBall")
@@ -205,6 +213,7 @@ public class Prototype10EnemyScript : MonoBehaviour
 				}
 			}
 		}
+		//if hit with weapon
 		else if(other.gameObject.tag == "Weapon")
 		{
 
