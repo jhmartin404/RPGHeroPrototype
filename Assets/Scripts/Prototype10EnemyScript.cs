@@ -3,16 +3,17 @@ using System.Collections;
 
 public class Prototype10EnemyScript : MonoBehaviour 
 {
-	public GameObject attackScreen;//Screen to display when the enemy attacks the player (flashes a red screen)
+	private GameObject attackScreen;//Screen to display when the enemy attacks the player (flashes a red screen)
 	public Texture2D healthBarFull;
 	public Texture2D healthBarEmpty;
 	public int movementMode;
 	public float speed = 5.0f;//Speed enemy moves at
 	public float attackTime = 5.0f;
 	public int damage = 10;
+	public float xDirection;
 	private Vector3 actionAreaCenter;
 	private Color normalColor;
-	private float xDirection = 1.0f;//Determines whether to move right or left
+	//private float xDirection = 1.0f;//Determines whether to move right or left
 	private float yDirection = 0.0f;//Determines whether to move up or down
 	private float enemyYPostion;//Enemy's initial position on y axis
 	private float attackDistance = 4.5f;//Distance enemy will move to attack
@@ -30,7 +31,7 @@ public class Prototype10EnemyScript : MonoBehaviour
 	private int fireDamage = 0;
 	private float fireTime = 0.0f;
 	private float attackTimer = 0.0f;
-	private Vector3 size = new Vector3(1,1,0);
+	private Vector3 size;
 
 	// Use this for initialization
 	void Start () 
@@ -40,6 +41,8 @@ public class Prototype10EnemyScript : MonoBehaviour
 		fullHealth = health;
 		normalColor = renderer.material.color;
 		actionAreaCenter = GameObject.Find ("ActionArea").transform.renderer.bounds.center;
+		size = transform.localScale;
+		attackScreen = GameObject.Find ("AttackedScreen");
 	}
 
 	public int getHealth()
@@ -61,15 +64,17 @@ public class Prototype10EnemyScript : MonoBehaviour
 			}
 			else if(movementMode==2)
 			{
-				if(moveCounter%2==0)
-					movement.x = xDirection * speed * Time.deltaTime;
-				else
-					movement.y = -xDirection * speed * Time.deltaTime;
-				moveCounter++;
+//				if(moveCounter%2==0)
+//					movement.x = xDirection * speed * Time.deltaTime;
+//				else
+//					movement.y = -xDirection * speed * Time.deltaTime;
+//				moveCounter++;
+				isAttacking = true;
+				//yDirection = -1.0f;
 			}
 		}
 		//Move up down
-		else if(isAttacking)
+		else if(isAttacking && movementMode != 2)
 		{
 			//renderer.material.color = attackColor;
 			movement.x = 0;
@@ -91,13 +96,42 @@ public class Prototype10EnemyScript : MonoBehaviour
 				renderer.material.color = normalColor;
 			}
 		}
-		if (Camera.main.WorldToViewportPoint (this.transform.position).x < 0.15) 
+		else if(isAttacking && movementMode == 2)
 		{
-			xDirection = 1;
+			if(moveCounter%2==0)
+				movement.x = xDirection * speed * Time.deltaTime;
+			else
+				movement.y = -1.0f * speed * Time.deltaTime;
+			moveCounter++;
+			transform.localScale += size*sizeChangeSpeed*Time.deltaTime;
+			if(transform.position.y <= actionAreaCenter.y/*enemyYPostion-attackDistance*/ && sizeChangeSpeed >0)
+			{
+				//yDirection = 1.0f;
+				sizeChangeSpeed = 0;
+				StartCoroutine(AttackedPlayer());//Flash red screen
+				Prototype10Layout.AttackPlayer(damage);//remove "damage" health from player
+			}
+
+			if (Camera.main.WorldToViewportPoint (this.transform.position).x < 0.15 && xDirection < 0) 
+			{
+				Destroy(gameObject);
+			}
+			if(Camera.main.WorldToViewportPoint (this.transform.position).x > 0.85 && xDirection > 0)
+			{
+				Destroy(gameObject);
+			}
 		}
-		else if(Camera.main.WorldToViewportPoint (this.transform.position).x > 0.85)
+
+		if(movementMode == 1)
 		{
-			xDirection = -1;
+			if (Camera.main.WorldToViewportPoint (this.transform.position).x < 0.15) 
+			{
+				xDirection = 1;
+			}
+			else if(Camera.main.WorldToViewportPoint (this.transform.position).x > 0.85)
+			{
+				xDirection = -1;
+			}
 		}
 
 		//if on fire cause damage over time
@@ -159,24 +193,27 @@ public class Prototype10EnemyScript : MonoBehaviour
 		health -= damage;
 		if(health<=0)
 		{
-			Destroy(this.gameObject);
+			Destroy(gameObject);
 		}
 	}
 
 	void OnGUI()
 	{
-		Vector2 enemyScreenLocation = Camera.main.WorldToScreenPoint (transform.position);
-		Vector3 size = new Vector3 (300, 50, 0);
-		// draw the background:
-		GUI.BeginGroup (new Rect (enemyScreenLocation.x, Screen.height - (enemyScreenLocation.y + (renderer.bounds.extents.y*250)), size.x, size.y));
-		GUI.DrawTexture (new Rect (0,0, size.x, size.y),healthBarEmpty);
+		if(movementMode != 2)
+		{
+			Vector2 enemyScreenLocation = Camera.main.WorldToScreenPoint (transform.position);
+			Vector3 size = new Vector3 (300, 50, 0);
+			// draw the background:
+			GUI.BeginGroup (new Rect (enemyScreenLocation.x, Screen.height - (enemyScreenLocation.y + (renderer.bounds.extents.y*250)), size.x, size.y));
+			GUI.DrawTexture (new Rect (0,0, size.x, size.y),healthBarEmpty);
 
-			// draw the filled-in part:
-			GUI.BeginGroup (new Rect (0, 0, size.x * health/fullHealth, size.y));
-				GUI.DrawTexture (new Rect (0,0, size.x, size.y),healthBarFull);
-			GUI.EndGroup ();
+				// draw the filled-in part:
+				GUI.BeginGroup (new Rect (0, 0, size.x * health/fullHealth, size.y));
+					GUI.DrawTexture (new Rect (0,0, size.x, size.y),healthBarFull);
+				GUI.EndGroup ();
 					
-		GUI.EndGroup ();
+			GUI.EndGroup ();
+		}
 	}
 
 	void OnTriggerEnter2D(Collider2D other)
