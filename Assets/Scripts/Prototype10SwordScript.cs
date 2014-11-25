@@ -10,7 +10,7 @@ public class Prototype10SwordScript : MonoBehaviour
 	public Sprite swordTwoAttacks;
 	public Sprite swordOneAttack;
 	public Sprite swordNoAttacks;
-	public GameObject sword;//reference to the sword, used for rendering the sword and rotating it
+	private GameObject sword;//reference to the sword, used for rendering the sword and rotating it
 	private float attackTime = 2.0f;
 	//private GameObject[] enemies;//reference to the enemy, used for determining the distance the enemy is at
 	//private bool isStationary = false;//has the user held the icon in spot, to initiate attack
@@ -239,7 +239,8 @@ public class Prototype10SwordScript : MonoBehaviour
 		{
 			attacksAvailable = 4;
 			cooldownTime = 5.0f;
-			Destroy(other.gameObject);
+			other.GetComponent<Prototype10RepairSlotScript>().setRepairUsed(true);
+			//Destroy(other.gameObject);
 		}
 	}
 }

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Prototype10IconSpawner : MonoBehaviour 
 {
-	public GameObject healthPrefab;
+	//public GameObject healthPrefab;
 	public GameObject coinPrefab;
 	public GameObject fireBallPrefab;
 	public GameObject arrowPrefab;
@@ -32,8 +32,8 @@ public class Prototype10IconSpawner : MonoBehaviour
 		//Repeat till 7 icons are on each side
 		if(timeElapsed >= spawnTime && slots < 7)
 		{
-			leftIconChooser = Random.Range(0,4);//Choose a random icon type for left side
-			rightIconChooser = Random.Range(0,4);//choose a random icon type for right side
+			leftIconChooser = Random.Range(1,4);//Choose a random icon type for left side
+			rightIconChooser = Random.Range(1,4);//choose a random icon type for right side
 			Vector3 rightPosition = new Vector3(3.5f,-3,0.1f);//where to spawn the right icon
 			Vector3 leftPosition = new Vector3(-3.5f,-3,0.1f);//where to spawn the left icon
 			Vector3 rightSlotPosition = new Vector3(3.5f,-3,0.2f);//where to spawn the right slot
@@ -48,13 +48,13 @@ public class Prototype10IconSpawner : MonoBehaviour
 			//left icon
 			switch(leftIconChooser)
 			{
-			case 0:
-				GameObject icon = Instantiate(healthPrefab, leftPosition, Quaternion.identity) as GameObject;
-				Prototype10HealthScript script = icon.GetComponent<Prototype10HealthScript>();
-				script.center = leftPivot;
-				script.degreesPerSecond *= -1;
-				leftArea.GetComponent<Prototype10SlotScript>().objectInSlot = icon;
-				break;
+//			case 0:
+//				GameObject icon = Instantiate(healthPrefab, leftPosition, Quaternion.identity) as GameObject;
+//				Prototype10HealthScript script = icon.GetComponent<Prototype10HealthScript>();
+//				script.center = leftPivot;
+//				script.degreesPerSecond *= -1;
+//				leftArea.GetComponent<Prototype10SlotScript>().objectInSlot = icon;
+//				break;
 			case 1:
 				GameObject icon2 = Instantiate(coinPrefab, leftPosition, Quaternion.identity) as GameObject;
 				Prototype10FireBallScript script2 = icon2.GetComponent<Prototype10FireBallScript>();
@@ -93,12 +93,12 @@ public class Prototype10IconSpawner : MonoBehaviour
 			//right icon
 			switch(rightIconChooser)
 			{
-				case 0:
-					GameObject icon = Instantiate(healthPrefab, rightPosition, Quaternion.identity) as GameObject;
-					Prototype10HealthScript script = icon.GetComponent<Prototype10HealthScript>();
-					script.center = rightPivot;
-					rightArea.GetComponent<Prototype10SlotScript>().objectInSlot = icon;
-					break;
+//				case 0:
+//					GameObject icon = Instantiate(healthPrefab, rightPosition, Quaternion.identity) as GameObject;
+//					Prototype10HealthScript script = icon.GetComponent<Prototype10HealthScript>();
+//					script.center = rightPivot;
+//					rightArea.GetComponent<Prototype10SlotScript>().objectInSlot = icon;
+//					break;
 				case 1:
 					GameObject icon2 = Instantiate(coinPrefab, rightPosition, Quaternion.identity) as GameObject;
 					Prototype10FireBallScript script2 = icon2.GetComponent<Prototype10FireBallScript>();

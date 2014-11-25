@@ -10,7 +10,7 @@ public class Prototype10ShieldScript : MonoBehaviour
 	public Sprite shieldTwoDefs;
 	public Sprite shieldOneDef;
 	public Sprite shieldNoDefs;
-	public GameObject shield;//reference to the shield, used for rendering the sword to indicate defending
+	private GameObject shield;//reference to the shield, used for rendering the sword to indicate defending
 	private GameObject actionArea;
 	private bool isStationary = false;//has the user held the icon in spot
 	private bool isActive = false;//is the icon in the action area
@@ -147,7 +147,8 @@ public class Prototype10ShieldScript : MonoBehaviour
 		{
 			defsAvailable = 4;
 			cooldownTime = 5.0f;
-			Destroy(other.gameObject);
+			other.GetComponent<Prototype10RepairSlotScript>().setRepairUsed(true);
+			//Destroy(other.gameObject);
 		}
 	}
 }

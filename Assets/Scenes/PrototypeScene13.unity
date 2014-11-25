@@ -547,7 +547,7 @@ SpriteRenderer:
   m_ScaleInLightmap: 1
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 8747f0910d129474e843cdae477bbe35, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ab58682dda37f2c44ba2e9a19851696a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!4 &252049018
 Transform:
@@ -894,6 +894,80 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_Size: {x: .600000024, y: 1.24000001}
   m_Center: {x: 0, y: 0}
+--- !u!1 &849936125
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 849936129}
+  - 212: {fileID: 849936128}
+  - 114: {fileID: 849936127}
+  - 58: {fileID: 849936126}
+  m_Layer: 0
+  m_Name: RepairSlot
+  m_TagString: Repair
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!58 &849936126
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 849936125}
+  m_Enabled: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Radius: .479999989
+  m_Center: {x: 0, y: 0}
+--- !u!114 &849936127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 849936125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5be4783eebd217a4d89be1538d1a1f98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!212 &849936128
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 849936125}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_LightmapIndex: 255
+  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000e000000000000000, type: 0}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 0
+  m_LightProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300000, guid: 8ceeabca8ab789b44a82c39fda181e16, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+--- !u!4 &849936129
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 849936125}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.5, y: -4.4000001, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 30
 --- !u!1 &916955954
 GameObject:
   m_ObjectHideFlags: 0
@@ -1117,7 +1191,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e3759e86afd9a042a5df60b83302cbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  repairPrefab: {fileID: 100000, guid: ad23dbc0fdbfba84cbf3e12b9dfeca7a, type: 2}
 --- !u!61 &978784770
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2143,7 +2216,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9efcb626ec59d00409662469ca263886, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthPrefab: {fileID: 100000, guid: 585be421c6be3504183adf9d97ade613, type: 2}
   coinPrefab: {fileID: 100000, guid: 5fb1c15405170ed49959e6e6a26ea9ed, type: 2}
   fireBallPrefab: {fileID: 100000, guid: 5b714c1b965ee6a4588314b79eccd6bc, type: 2}
   arrowPrefab: {fileID: 100000, guid: 712fc74ccd265484da51d01fd79ebeff, type: 2}
@@ -2244,7 +2316,6 @@ MonoBehaviour:
   swordTwoAttacks: {fileID: 21300000, guid: 7054567e3e450414684ed08b4abca841, type: 3}
   swordOneAttack: {fileID: 21300000, guid: 776478ae99ae71d46a61b7a687d0fca8, type: 3}
   swordNoAttacks: {fileID: 21300000, guid: 0e646db9a59a1974f8a2ba3a05f4f902, type: 3}
-  sword: {fileID: 0}
 --- !u!58 &1693388182
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -2552,7 +2623,6 @@ MonoBehaviour:
   shieldTwoDefs: {fileID: 21300000, guid: 07afc524aee01f447b2397924c803eb2, type: 3}
   shieldOneDef: {fileID: 21300000, guid: 55db8ac3f9e05e04aaaf15b05db07c27, type: 3}
   shieldNoDefs: {fileID: 21300000, guid: dc0815440cdb03c47812d7403cb0fb72, type: 3}
-  shield: {fileID: 0}
 --- !u!58 &2049320721
 CircleCollider2D:
   m_ObjectHideFlags: 0

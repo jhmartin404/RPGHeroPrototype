@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Prototype10SlotScript : MonoBehaviour 
 {
-	public GameObject healthPrefab;
+	//public GameObject healthPrefab;
 	public GameObject coinPrefab;
 	public GameObject fireBallPrefab;
 	public GameObject arrowPrefab;
@@ -41,16 +41,16 @@ public class Prototype10SlotScript : MonoBehaviour
 	{
 		Vector3 iconTransform = transform.position;
 		iconTransform.z = 0.1f;//set to zero to ensure the icon will appear on top of the slot
-		iconChooser = Random.Range (0, 4);
+		iconChooser = Random.Range (1, 4);
 		switch(iconChooser)
 		{
-		case 0:
-			GameObject icon = Instantiate(healthPrefab, iconTransform, Quaternion.identity) as GameObject;
-			Prototype10HealthScript script = icon.GetComponent<Prototype10HealthScript>();
-			script.center = center;
-			script.degreesPerSecond = degreesPerSecond;
-			objectInSlot = icon;
-			break;
+//		case 0:
+//			GameObject icon = Instantiate(healthPrefab, iconTransform, Quaternion.identity) as GameObject;
+//			Prototype10HealthScript script = icon.GetComponent<Prototype10HealthScript>();
+//			script.center = center;
+//			script.degreesPerSecond = degreesPerSecond;
+//			objectInSlot = icon;
+//			break;
 		case 1:
 			GameObject icon2 = Instantiate(coinPrefab, iconTransform, Quaternion.identity) as GameObject;
 			Prototype10FireBallScript script2 = icon2.GetComponent<Prototype10FireBallScript>();

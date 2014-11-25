@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Prototype10CoinBagScript : MonoBehaviour 
 {
-	public GameObject repairPrefab;
+	//public GameObject repairPrefab;
 	private bool coinCollected;
 	private Vector3 size = new Vector3(1,1,0);
 	private Vector3 maxSize = new Vector3(1.05f,1.05f,0);
@@ -31,15 +31,14 @@ public class Prototype10CoinBagScript : MonoBehaviour
 			{
 				sizeChangeSpeed = 0.2f;
 				coinCollected = false;
-				//transform.localScale = size;
 			}
 		}
 
-		if(Prototype10Layout.getCoins() >=5)
-		{
-			GameObject repair = Instantiate(repairPrefab,transform.position,Quaternion.identity) as GameObject;
-			Prototype10Layout.setCoins(0);
-		}
+//		if(Prototype10Layout.getCoins() >=5)
+//		{
+//			GameObject repair = Instantiate(repairPrefab,transform.position,Quaternion.identity) as GameObject;
+//			Prototype10Layout.setCoins(0);
+//		}
 	}
 
 	void OnTriggerEnter2D(Collider2D other)
