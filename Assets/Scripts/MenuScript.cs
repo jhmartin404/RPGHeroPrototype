@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MenuScript : MonoBehaviour {
-
+public class MenuScript : MonoBehaviour 
+{
+	private float fingerRadius = 0.5f;
 	// Use this for initialization
 	void Start () {
 	
@@ -15,17 +16,26 @@ public class MenuScript : MonoBehaviour {
 		{
 			if(Input.GetKey(KeyCode.Escape))
 			{
-				Application.Quit();
+				Application.LoadLevel("StartScreenScene");
 			}
+		}
+
+		if(Input.GetTouch(0).phase == TouchPhase.Began || Input.GetTouch(0).phase == TouchPhase.Moved)
+		{
+			Vector2 touchPos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
+			if (collider2D == Physics2D.OverlapCircle(touchPos, fingerRadius))
+			{
+				Application.LoadLevel("PrototypeScene13");
+			}			
 		}
 	}
 
-	void OnGUI()
-	{
-		int buttonWidth = (int)(Screen.width * 0.3);
-		int buttonHeight = (int)(Screen.height * 0.1);
-		
-		GUI.skin.button.fontSize = Screen.width / 25;
+//	void OnGUI()
+//	{
+//		int buttonWidth = (int)(Screen.width * 0.3);
+//		int buttonHeight = (int)(Screen.height * 0.1);
+//		
+//		GUI.skin.button.fontSize = Screen.width / 25;
 		
 		
 //		Rect buttonRect = new Rect(
@@ -84,19 +94,19 @@ public class MenuScript : MonoBehaviour {
 //			Application.LoadLevel("PrototypeScene12");
 //		}
 
-		Rect button5Rect = new Rect (
-			Screen.width / 2 - (buttonWidth / 2),
-			5*Screen.height/6 - buttonHeight,
-			buttonWidth,
-			buttonHeight
-			);
-		
-		if(GUI.Button(button5Rect,"Prototype 13"))
-		{
-			// On Click, load the first level.
-			// "Stage1" is the name of the first scene we created.
-			Application.LoadLevel("PrototypeScene13");
-		}
+//		Rect button5Rect = new Rect (
+//			Screen.width / 2 - (buttonWidth / 2),
+//			5*Screen.height/6 - buttonHeight,
+//			buttonWidth,
+//			buttonHeight
+//			);
+//		
+//		if(GUI.Button(button5Rect,"Prototype 13"))
+//		{
+//			// On Click, load the first level.
+//			// "Stage1" is the name of the first scene we created.
+//			Application.LoadLevel("PrototypeScene13");
+//		}
 
 //		Rect button6Rect = new Rect (
 //			Screen.width / 2 - (buttonWidth / 2),
@@ -111,5 +121,5 @@ public class MenuScript : MonoBehaviour {
 //			// "Stage1" is the name of the first scene we created.
 //			Application.LoadLevel("PrototypeScene14");
 //		}
-	}
+//	}
 }

@@ -26,8 +26,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.16072893, y: 1.1786983, z: 3}
-  m_LocalScale: {x: .5, y: .5, z: 1}
+  m_LocalPosition: {x: 3, y: 2, z: 4.0999999}
+  m_LocalScale: {x: .100000001, y: .100000001, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -68,14 +68,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72872773dae698342a954445c5d926f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackScreen: {fileID: 0}
   healthBarFull: {fileID: 2800000, guid: 2758ece44c4f4f14785b45a83c1e1a7a, type: 3}
   healthBarEmpty: {fileID: 2800000, guid: c97c96f7672855148b423efed722eac0, type: 3}
   movementMode: 2
   speed: 1
   attackTime: 7
   damage: 4
-  health: 10
+  xDirection: -1
+  health: 3
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1
