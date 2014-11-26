@@ -93,7 +93,6 @@ public class Prototype10Layout : MonoBehaviour
 			playerHealth -= damage;
 		else if(defending)
 		{
-//			defences++;
 			playerHealth -= damage/2;
 		}
 	}

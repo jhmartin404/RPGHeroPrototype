@@ -80,7 +80,7 @@ public class Prototype10EnemyScript : MonoBehaviour
 			movement.x = 0;
 			movement.y = yDirection * speed * Time.deltaTime;
 			transform.localScale += size*sizeChangeSpeed*Time.deltaTime;
-			if(transform.position.y <= actionAreaCenter.y/*enemyYPostion-attackDistance*/ && sizeChangeSpeed >0)
+			if(transform.position.y <= actionAreaCenter.y && sizeChangeSpeed >0)
 			{
 				yDirection = 1.0f;
 				sizeChangeSpeed = -1.0f;
@@ -104,7 +104,7 @@ public class Prototype10EnemyScript : MonoBehaviour
 				movement.y = -1.0f * speed * Time.deltaTime;
 			moveCounter++;
 			transform.localScale += size*sizeChangeSpeed*Time.deltaTime;
-			if(transform.position.y <= actionAreaCenter.y/*enemyYPostion-attackDistance*/ && sizeChangeSpeed >0)
+			if(transform.position.y <= actionAreaCenter.y && sizeChangeSpeed >0)
 			{
 				//yDirection = 1.0f;
 				sizeChangeSpeed = 0;
@@ -178,10 +178,13 @@ public class Prototype10EnemyScript : MonoBehaviour
 	IEnumerator AttackedPlayer()
 	{
 		Vector3 tempvect = new Vector3(transform.position.x, transform.position.y, 0);
-		attackScreen.transform.position = tempvect;
-		yield return new WaitForSeconds(0.1f);
-		tempvect.Set(transform.position.x, transform.position.y, 10);
-		attackScreen.transform.position = tempvect;
+		if(attackScreen.transform.position != tempvect)
+		{
+			attackScreen.transform.position = tempvect;
+			yield return new WaitForSeconds(0.01f);
+			tempvect.Set(transform.position.x, transform.position.y, 10);
+			attackScreen.transform.position = tempvect;
+		}
 	}
 
 	//used for the swords to attack the enemy
