@@ -73,7 +73,7 @@ MonoBehaviour:
   movementMode: 2
   speed: 1
   attackTime: 7
-  damage: 4
+  damage: 1
   xDirection: -1
   health: 3
 --- !u!212 &21200000

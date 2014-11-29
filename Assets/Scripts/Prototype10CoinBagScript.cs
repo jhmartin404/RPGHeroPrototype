@@ -6,13 +6,14 @@ public class Prototype10CoinBagScript : MonoBehaviour
 	//public GameObject repairPrefab;
 	private bool coinCollected;
 	private Vector3 size = new Vector3(1,1,0);
-	private Vector3 maxSize = new Vector3(1.05f,1.05f,0);
+	private Vector3 maxSize = new Vector3(0.8f,0.8f,0);
 	private Vector3 minSize;
 	private float sizeChangeSpeed = 0.2f;
 	// Use this for initialization
 	void Start () 
 	{
 		coinCollected = false;
+		minSize = transform.localScale;
 	}
 	
 	// Update is called once per frame
@@ -27,7 +28,7 @@ public class Prototype10CoinBagScript : MonoBehaviour
 				sizeChangeSpeed = -0.2f;
 			}
 			
-			if(sizeChangeSpeed <0 && transform.localScale.sqrMagnitude <= size.sqrMagnitude)
+			if(sizeChangeSpeed <0 && transform.localScale.sqrMagnitude <= minSize.sqrMagnitude)
 			{
 				sizeChangeSpeed = 0.2f;
 				coinCollected = false;
