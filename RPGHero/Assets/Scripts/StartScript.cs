@@ -3,7 +3,6 @@ using System.Collections;
 
 public class StartScript : MonoBehaviour 
 {
-	private float fingerRadius = 0.5f;
 	// Use this for initialization
 	void Start () 
 	{

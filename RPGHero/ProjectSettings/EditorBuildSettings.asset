@@ -9,3 +9,11 @@ EditorBuildSettings:
     path: Assets/Scenes/StartScene.unity
   - enabled: 1
     path: Assets/Scenes/LevelSelectScene.unity
+  - enabled: 1
+    path: Assets/Scenes/StoreScene.unity
+  - enabled: 1
+    path: Assets/Scenes/CharacterScene.unity
+  - enabled: 1
+    path: Assets/Scenes/InventoryScene.unity
+  - enabled: 1
+    path: Assets/Scenes/LevelScene.unity
