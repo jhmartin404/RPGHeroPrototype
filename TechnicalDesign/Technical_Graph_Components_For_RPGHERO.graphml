@@ -18,7 +18,7 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="94.0" width="189.0" x="176.192" y="266.472"/>
+          <y:Geometry height="125.0" width="189.0" x="176.192" y="266.472"/>
           <y:Fill color="#FFFFFF" color2="#000000" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" modelName="custom" textColor="#000000" visible="true" width="43.03173828125" x="72.984130859375" y="3.0">Player<y:LabelModel>
@@ -32,6 +32,8 @@
             <y:AttributeLabel>playerInventory: Inventory
 playerStats: PlayerStats
 health: float
+stamina: float
+mana: float
 coins: int</y:AttributeLabel>
             <y:MethodLabel/>
           </y:UML>
@@ -42,7 +44,7 @@ coins: int</y:AttributeLabel>
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="125.0" width="244.0" x="463.192" y="250.97199999999998"/>
+          <y:Geometry height="125.0" width="244.0" x="463.192" y="266.472"/>
           <y:Fill color="#FFFFFF" color2="#000000" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" modelName="custom" textColor="#000000" visible="true" width="62.5126953125" x="90.74365234375" y="3.0">Inventory<y:LabelModel>
@@ -68,7 +70,7 @@ unequippedItems: InventoryItem[]</y:AttributeLabel>
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="153.87519999999995" width="194.32479999999998" x="176.192" y="482.472"/>
+          <y:Geometry height="197.90257050592027" width="194.32479999999998" x="173.52960000000002" y="445.05595267168997"/>
           <y:Fill color="#FFFFFF" color2="#000000" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" modelName="custom" textColor="#000000" visible="true" width="74.82080078125" x="59.75199960937499" y="3.0">PlayerStats<y:LabelModel>
@@ -79,9 +81,12 @@ unequippedItems: InventoryItem[]</y:AttributeLabel>
             </y:ModelParameter>
           </y:NodeLabel>
           <y:UML clipContent="false" constraint="" omitDetails="false" stereotype="" use3DEffect="false">
-            <y:AttributeLabel>level: int
+            <y:AttributeLabel>gameLevel: int
+expLevel: int
 currentExp: int
 neededExp: int
+maxStamina: int
+maxMana: int
 healthStat: int
 luckStat: int
 meleeStat: int
@@ -122,7 +127,7 @@ unequippedItems: InventoryItem[]</y:AttributeLabel>
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="108.13745551128818" width="189.0" x="1158.4999999999998" y="847.5"/>
+          <y:Geometry height="125.0" width="189.0" x="1158.4999999999998" y="847.5"/>
           <y:Fill color="#FFFFFF" color2="#000000" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" modelName="custom" textColor="#000000" visible="true" width="89.24267578125" x="49.878662109375" y="3.0">InventoryItem<y:LabelModel>
@@ -137,7 +142,8 @@ unequippedItems: InventoryItem[]</y:AttributeLabel>
 itemID: int
 itemName: String
 itemImage: Sprite
-itemCost: int</y:AttributeLabel>
+itemCost: int
+purchasable: bool</y:AttributeLabel>
             <y:MethodLabel/>
           </y:UML>
         </y:UMLClassNode>
@@ -697,6 +703,27 @@ healthControlImage: Sprite</y:AttributeLabel>
         </y:UMLClassNode>
       </data>
     </node>
+    <node id="n30">
+      <data key="d4"/>
+      <data key="d6">
+        <y:UMLClassNode>
+          <y:Geometry height="94.0" width="189.0" x="943.2924293649075" y="856.611995005382"/>
+          <y:Fill color="#FFFFFF" color2="#000000" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" modelName="custom" textColor="#000000" visible="true" width="77.66455078125" x="55.667724609375" y="3.0">ManaPotion<y:LabelModel>
+              <y:SmartNodeLabelModel distance="4.0"/>
+            </y:LabelModel>
+            <y:ModelParameter>
+              <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="-0.03703090122767855" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/>
+            </y:ModelParameter>
+          </y:NodeLabel>
+          <y:UML clipContent="false" constraint="" omitDetails="false" stereotype="" use3DEffect="false">
+            <y:AttributeLabel/>
+            <y:MethodLabel/>
+          </y:UML>
+        </y:UMLClassNode>
+      </data>
+    </node>
     <edge id="e0" source="n0" target="n1">
       <data key="d10">
         <y:PolyLineEdge>
@@ -888,6 +915,17 @@ healthControlImage: Sprite</y:AttributeLabel>
       </data>
     </edge>
     <edge id="e19" source="n11" target="n24">
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e20" source="n4" target="n30">
+      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
