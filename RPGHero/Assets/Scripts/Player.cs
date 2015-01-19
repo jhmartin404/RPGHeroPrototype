@@ -7,7 +7,10 @@ public class Player
 
 	private float health;
 	private float coins;
+	private float stamina;
+	private float mana;
 	private PlayerStats playerStats;
+	private Inventory playerInventory;
 
 	private Player() {}
 
