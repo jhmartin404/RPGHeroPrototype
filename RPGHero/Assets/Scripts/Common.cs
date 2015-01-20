@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Common
 {
-	public float fingerRadius = 0.5;
+	public float fingerRadius = 0.5f;
 
 	public enum ItemType
 	{

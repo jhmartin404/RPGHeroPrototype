@@ -195,9 +195,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.8"
-     inkscape:cx="313.27247"
-     inkscape:cy="619.33401"
+     inkscape:zoom="1.3642092"
+     inkscape:cx="499.63099"
+     inkscape:cy="636.08916"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -214,7 +214,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -718,5 +718,29 @@
          x="372.49493"
          y="497.71933"
          style="font-size:16px">Skill Points Remaining: 5</tspan></text>
+    <rect
+       style="fill:#666666;fill-opacity:1;fill-rule:evenodd;stroke:none"
+       id="rect3247-1"
+       width="800"
+       height="1024"
+       x="758.16528"
+       y="-468.82281"
+       rx="4.6352129"
+       ry="3.0648615"
+       inkscape:export-filename="C:\Users\James\SkyDrive\CS483\GameArtResources\SceneBackground.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:#e9c6af;fill-opacity:1;stroke:none"
+       id="rect5926-7"
+       width="764.50507"
+       height="992.79779"
+       x="775.9126"
+       y="-453.22177"
+       rx="4.6352129"
+       ry="3.0648615"
+       inkscape:export-filename="C:\Users\James\SkyDrive\CS483\GameArtResources\SceneBackground.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
   </g>
 </svg>

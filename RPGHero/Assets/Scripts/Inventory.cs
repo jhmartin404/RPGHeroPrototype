@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Inventory : MonoBehaviour 
+public class Inventory
 {
 	private InventoryItem equippedMeleeWeapon;
 	private InventoryItem equippedRangedWeapon;

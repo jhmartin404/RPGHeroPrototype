@@ -12,7 +12,11 @@ public class Player
 	private PlayerStats playerStats;
 	private Inventory playerInventory;
 
-	private Player() {}
+	private Player() 
+	{
+		playerStats = new PlayerStats ();
+		playerInventory = new Inventory ();
+	}
 
 	public static Player Instance
 	{
@@ -29,6 +33,16 @@ public class Player
 	public float getHealth()
 	{
 		return health;
+	}
+
+	public PlayerStats getPlayerStats()
+	{
+		return playerStats;
+	}
+
+	public Inventory getPlayerInventory()
+	{
+		return playerInventory;
 	}
 
 	// Use this for initialization
