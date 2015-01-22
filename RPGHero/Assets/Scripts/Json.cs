@@ -31,6 +31,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using UnityEngine;
 
 namespace MiniJSON {
 	// Example usage:
@@ -520,25 +521,41 @@ namespace MiniJSON {
 				builder.Append('\"');
 			}
 			
-			void SerializeOther(object value) {
+			void SerializeOther(object value) 
+			{
 				// NOTE: decimals lose precision during serialization.
 				// They always have, I'm just letting you know.
 				// Previously floats and doubles lost precision too.
-				if (value is float) {
-					builder.Append(((float) value).ToString("R"));
-				} else if (value is int
+				if (value is float) 
+				{
+					//Debug.Log ("Float: "+(float)value);
+					if(((float)value % 1) == 0)
+					{
+						builder.Append(string.Format("{0:F}",value));
+					}
+					else
+					{
+						builder.Append(((float) value).ToString("R"));
+					}
+				} 
+				else if (value is int
 				           || value is uint
 				           || value is long
 				           || value is sbyte
 				           || value is byte
 				           || value is short
 				           || value is ushort
-				           || value is ulong) {
+				           || value is ulong) 
+				{
 					builder.Append(value);
-				} else if (value is double
-				           || value is decimal) {
+				} 
+				else if (value is double
+				           || value is decimal) 
+				{
 					builder.Append(Convert.ToDouble(value).ToString("R"));
-				} else {
+				} 
+				else 
+				{
 					SerializeString(value.ToString());
 				}
 			}

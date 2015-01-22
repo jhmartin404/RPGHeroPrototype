@@ -7,10 +7,10 @@ public class Player
 {
 	private static Player instance;
 
-	private float health;
-	private int coins;
-	private float stamina;
-	private float mana;
+	public float health;
+	public int coins;
+	public float stamina;
+	public float mana;
 	private PlayerStats playerStats;
 	private Inventory playerInventory;
 
@@ -52,7 +52,7 @@ public class Player
 		//PlayerPrefs.DeleteAll ();
 		if(PlayerPrefs.HasKey("Player"))
 		{
-			Debug.Log("Player Here");
+			Debug.Log("Loading Player");
 
 			string player = PlayerPrefs.GetString("Player");
 			Debug.Log("Load: " + player);
@@ -60,26 +60,36 @@ public class Player
 			Dictionary<string, object> dict = new Dictionary<string, object>();
 			dict = Json.Deserialize(player) as Dictionary<string, object>;
 
-			object obj = dict["health"];
-			health = (float)(double)obj;
+			//object obj = dict["health"];
+			//health = (float)(double)obj;
 
-			obj = dict["coins"];
-			coins = (int)(double)obj;
+			object obj = dict["coins"];
+			coins = (int)(long)obj;
 
-			obj = dict["stamina"];
-			stamina = (float)(double)obj;
+			//obj = dict["stamina"];
+			//stamina = (float)(double)obj;
 
-			obj = dict["mana"];
-			mana = (float)(double)obj;
+			//obj = dict["mana"];
+			//mana = (float)(double)obj;
+
 
 			playerStats = new PlayerStats ();
 			playerInventory = new Inventory ();
+
+			health = playerStats.GetHealthStat();
+			stamina = playerStats.GetMaxStamina();
+			mana = playerStats.GetMaxMana();
 		}
 		else
 		{
 			Debug.Log("Player not there");
 			playerStats = new PlayerStats ();
 			playerInventory = new Inventory ();
+
+			health = playerStats.GetHealthStat();
+			stamina = playerStats.GetMaxStamina();
+			mana = playerStats.GetMaxMana();
+			coins = 0;
 		}
 	}
 
@@ -87,14 +97,16 @@ public class Player
 	{
 		Dictionary<string, object> dictionary = new Dictionary<string, object>();
 
-		dictionary.Add ("health", health+2.01);
-		dictionary.Add ("coins", coins+2.01);
-		dictionary.Add ("stamina", stamina+2.01);
-		dictionary.Add ("mana", mana+2.01);
+		//dictionary.Add ("health", health);
+		dictionary.Add ("coins", coins);
+		//dictionary.Add ("stamina", stamina);
+		//dictionary.Add ("mana", mana);
 
 		string saveJSON = Json.Serialize (dictionary);
 		Debug.Log ("Save: " + saveJSON);
 		PlayerPrefs.SetString ("Player", saveJSON);
+
+		playerStats.Save ();
 	}
 
 	// Use this for initialization
