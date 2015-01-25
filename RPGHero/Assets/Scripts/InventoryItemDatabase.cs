@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class InventoryItemDatabase : MonoBehaviour 
+public class InventoryItemDatabase 
 {
 	private InventoryItem[] items;
 

@@ -11,6 +11,7 @@ public class Player
 	public int coins;
 	public float stamina;
 	public float mana;
+	public int currentLevel;
 	private PlayerStats playerStats;
 	private Inventory playerInventory;
 
@@ -38,7 +39,7 @@ public class Player
 
 	public PlayerStats getPlayerStats()
 	{
-		Save ();
+		Save ();//Line for testing save function
 		return playerStats;
 	}
 
@@ -49,7 +50,7 @@ public class Player
 
 	void Load()
 	{
-		//PlayerPrefs.DeleteAll ();
+		//PlayerPrefs.DeleteAll ();//For testing purposes
 		if(PlayerPrefs.HasKey("Player"))
 		{
 			Debug.Log("Loading Player");
@@ -82,7 +83,7 @@ public class Player
 		}
 		else
 		{
-			Debug.Log("Player not there");
+			Debug.Log("Creating Player");
 			playerStats = new PlayerStats ();
 			playerInventory = new Inventory ();
 
@@ -90,6 +91,7 @@ public class Player
 			stamina = playerStats.GetMaxStamina();
 			mana = playerStats.GetMaxMana();
 			coins = 0;
+			currentLevel = 0;
 		}
 	}
 
@@ -107,17 +109,5 @@ public class Player
 		PlayerPrefs.SetString ("Player", saveJSON);
 
 		playerStats.Save ();
-	}
-
-	// Use this for initialization
-	void Start () 
-	{
-	
-	}
-	
-	// Update is called once per frame
-	void Update () 
-	{
-	
 	}
 }

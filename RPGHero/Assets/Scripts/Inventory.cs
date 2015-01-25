@@ -9,14 +9,11 @@ public class Inventory
 	private InventoryItem equippedMagic1;
 	private InventoryItem equippedMagic2;
 	private InventoryItem[] unequippeditems;
+	private int healthPotions;
+	private int manaPotions;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+	public Inventory()
+	{
+
 	}
 }

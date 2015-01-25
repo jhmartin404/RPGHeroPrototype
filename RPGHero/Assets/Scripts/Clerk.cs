@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Clerk : MonoBehaviour 
+public class Clerk 
 {
 	private List<List<InventoryItem>> itemsForSale;
 
