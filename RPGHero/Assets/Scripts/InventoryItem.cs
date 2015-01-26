@@ -10,6 +10,11 @@ public class InventoryItem : MonoBehaviour
 	private int itemCost;
 	private bool purchasable;
 
+	public InventoryItem()
+	{
+
+	}
+
 	public InventoryItem(Common.ItemType item, int id, string name, int cost, bool purchase)
 	{
 		itemType = item;
@@ -17,6 +22,16 @@ public class InventoryItem : MonoBehaviour
 		itemName = name;
 		itemCost = cost;
 		purchasable = purchase;
+	}
+
+	public string GetItemName()
+	{
+		return itemName;
+	}
+
+	public int GetItemID()
+	{
+		return itemID;
 	}
 
 	// Use this for initialization

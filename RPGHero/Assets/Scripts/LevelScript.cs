@@ -20,13 +20,18 @@ public class LevelScript : MonoBehaviour
 		staminaBar = GameObject.Find ("RemainingStaminaBar").GetComponent<Image> ();
 		staminaBar.fillAmount = (float)(Player.Instance.stamina/ (float)playerStats.GetMaxStamina());
 
-		healthBar = GameObject.Find ("RemainingManaBar").GetComponent<Image> ();
-		healthBar.fillAmount = (float)(Player.Instance.mana/ (float)playerStats.GetMaxMana());
+		manaBar = GameObject.Find ("RemainingManaBar").GetComponent<Image> ();
+		manaBar.fillAmount = (float)(Player.Instance.mana/ (float)playerStats.GetMaxMana());
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
+
+		healthBar.fillAmount = (float)(Player.Instance.health/ (float)playerStats.GetHealthStat());
+		staminaBar.fillAmount = (float)(Player.Instance.stamina/ (float)playerStats.GetMaxStamina());
+		manaBar.fillAmount = (float)(Player.Instance.mana/ (float)playerStats.GetMaxMana());
+
 		if(Application.platform == RuntimePlatform.Android)
 		{
 			if(Input.GetKey(KeyCode.Escape))

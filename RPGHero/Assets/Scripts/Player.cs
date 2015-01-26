@@ -77,9 +77,9 @@ public class Player
 			playerStats = new PlayerStats ();
 			playerInventory = new Inventory ();
 
-			health = playerStats.GetHealthStat();
+			health = 50;//playerStats.GetHealthStat();
 			stamina = playerStats.GetMaxStamina();
-			mana = playerStats.GetMaxMana();
+			mana = 50;//playerStats.GetMaxMana();
 		}
 		else
 		{
