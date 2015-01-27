@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Xml;
 
 public class InventoryItemDatabase 
 {
@@ -8,7 +9,9 @@ public class InventoryItemDatabase
 
 	void LoadDatabase()
 	{
-
+		TextAsset asset = (TextAsset)Resources.Load ("ItemDatabase.xml");
+		XmlDocument database = new XmlDocument ();
+		database.LoadXml (asset.text);
 	}
 
 	public InventoryItem GetItemByID(int id)

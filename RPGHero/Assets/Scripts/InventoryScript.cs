@@ -6,12 +6,13 @@ public class InventoryScript : MonoBehaviour
 {
 	private InventoryItem selectedItem;
 	private InventoryItem comparedItem;
+	private Common.ItemType filter;
 	private Text coinsText;
 	// Use this for initialization
 	void Start () 
 	{
 		coinsText = GameObject.Find ("CoinCount").GetComponent<Text>();
-		coinsText.text = "Coins: " + Player.Instance.coins;
+		coinsText.text = "" + Player.Instance.coins;
 	}
 	
 	// Update is called once per frame

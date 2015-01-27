@@ -359,6 +359,14 @@
          id="path4047-7"
          d="M 0,200 200,200 200,0 0,0 0,200 z" />
     </clipPath>
+    <clipPath
+       id="clipPath3270-1"
+       clipPathUnits="userSpaceOnUse">
+      <path
+         inkscape:connector-curvature="0"
+         id="path3272-74"
+         d="M 0,200 200,200 200,0 0,0 0,200 z" />
+    </clipPath>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -367,9 +375,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.58105469"
-     inkscape:cx="1899.4717"
-     inkscape:cy="1376.0087"
+     inkscape:zoom="0.48232079"
+     inkscape:cx="1088.6851"
+     inkscape:cy="556.70844"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -4646,5 +4654,70 @@
          x="3310.1218"
          y="-555.60541"
          style="font-size:98.49019623px;fill:#ff0000;stroke:#000000;stroke-width:4.10375834;stroke-opacity:1">Start Game</tspan></text>
+    <g
+       id="g3266-4"
+       transform="matrix(4.089033,0,0,-4.958663,1482.2335,1178.1224)"
+       inkscape:export-filename="C:\Users\James\SkyDrive\CS483\GameArtResources\coinUI.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <g
+         id="g3268-8"
+         clip-path="url(#clipPath3270-1)">
+        <g
+           id="g3274-8"
+           transform="translate(92.353,125.1362)">
+          <path
+             inkscape:connector-curvature="0"
+             d="m 0,0 c 0,-3.193 -2.588,-5.782 -5.782,-5.782 -3.193,0 -5.782,2.589 -5.782,5.782 0,3.193 2.589,5.782 5.782,5.782 C -2.588,5.782 0,3.193 0,0"
+             style="fill:#f8ee41;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             id="path3276-2" />
+        </g>
+        <g
+           id="g3278-4"
+           transform="translate(92.353,125.1362)">
+          <path
+             inkscape:connector-curvature="0"
+             d="m 0,0 c 0,-3.193 -2.588,-5.782 -5.782,-5.782 -3.193,0 -5.782,2.589 -5.782,5.782 0,3.193 2.589,5.782 5.782,5.782 C -2.588,5.782 0,3.193 0,0 z"
+             style="fill:none;stroke:#373535;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;stroke-dasharray:none"
+             id="path3280-5" />
+        </g>
+        <g
+           id="g3282-5"
+           transform="translate(90.6802,123.7754)">
+          <path
+             inkscape:connector-curvature="0"
+             d="m 0,0 c 0,-3.193 -2.589,-5.782 -5.782,-5.782 -3.194,0 -5.782,2.589 -5.782,5.782 0,3.193 2.588,5.782 5.782,5.782 C -2.589,5.782 0,3.193 0,0"
+             style="fill:#f8ee41;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             id="path3284-1" />
+        </g>
+        <g
+           id="g3286-7"
+           transform="translate(90.6802,123.7754)">
+          <path
+             inkscape:connector-curvature="0"
+             d="m 0,0 c 0,-3.193 -2.589,-5.782 -5.782,-5.782 -3.194,0 -5.782,2.589 -5.782,5.782 0,3.193 2.588,5.782 5.782,5.782 C -2.589,5.782 0,3.193 0,0 z"
+             style="fill:none;stroke:#373535;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;stroke-dasharray:none"
+             id="path3288-1" />
+        </g>
+        <g
+           id="g3290-1"
+           transform="translate(88.9795,123.7754)">
+          <path
+             inkscape:connector-curvature="0"
+             d="m 0,0 c 0,-2.254 -1.827,-4.082 -4.082,-4.082 -2.254,0 -4.081,1.828 -4.081,4.082 0,2.254 1.827,4.082 4.081,4.082 C -1.827,4.082 0,2.254 0,0"
+             style="fill:#f8ee41;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             id="path3292-5" />
+        </g>
+        <g
+           id="g3294-2"
+           transform="translate(88.9795,123.7754)">
+          <path
+             inkscape:connector-curvature="0"
+             d="m 0,0 c 0,-2.254 -1.827,-4.082 -4.082,-4.082 -2.254,0 -4.081,1.828 -4.081,4.082 0,2.254 1.827,4.082 4.081,4.082 C -1.827,4.082 0,2.254 0,0 z"
+             style="fill:none;stroke:#373535;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;stroke-dasharray:none"
+             id="path3296-7" />
+        </g>
+      </g>
+    </g>
   </g>
 </svg>
