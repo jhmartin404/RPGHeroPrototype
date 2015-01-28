@@ -13,6 +13,7 @@ public class InventoryScript : MonoBehaviour
 	{
 		coinsText = GameObject.Find ("CoinCount").GetComponent<Text>();
 		coinsText.text = "" + Player.Instance.coins;
+		InventoryItemDatabase.Instance.GetItemByID (5);//Testing InventoryItemDatabase
 	}
 	
 	// Update is called once per frame

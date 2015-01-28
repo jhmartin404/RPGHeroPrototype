@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Database>
+	<InventoryItem>
+		<itemID value=""/>
+		<itemType value=""/>
+		<itemName value=""/>
+		<itemImage value=""/>
+		<itemCost value=""/>
+		<purchasable value=""/>
+		<Weapon>
+			<weaponType value=""/>
+		</Weapon>
+		<Shield>
+			<defence value=""/>
+		</Shield>
+		<Magic>
+			<magicCost value=""/>
+			<magicType value=""/>
+		</Magic>
+	</InventoryItem>
+</Database>
