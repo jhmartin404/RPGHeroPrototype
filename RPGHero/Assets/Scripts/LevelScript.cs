@@ -15,22 +15,22 @@ public class LevelScript : MonoBehaviour
 		playerStats = Player.Instance.getPlayerStats ();
 
 		healthBar = GameObject.Find ("RemainingHealthBar").GetComponent<Image> ();
-		healthBar.fillAmount = (float)(Player.Instance.health/ (float)playerStats.GetHealthStat());
+		healthBar.fillAmount = (float)(Player.Instance.Health/ (float)playerStats.HealthStat);
 
 		staminaBar = GameObject.Find ("RemainingStaminaBar").GetComponent<Image> ();
-		staminaBar.fillAmount = (float)(Player.Instance.stamina/ (float)playerStats.GetMaxStamina());
+		staminaBar.fillAmount = (float)(Player.Instance.Stamina/ (float)playerStats.MaxStamina);
 
 		manaBar = GameObject.Find ("RemainingManaBar").GetComponent<Image> ();
-		manaBar.fillAmount = (float)(Player.Instance.mana/ (float)playerStats.GetMaxMana());
+		manaBar.fillAmount = (float)(Player.Instance.Mana/ (float)playerStats.MaxMana);
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
 
-		healthBar.fillAmount = (float)(Player.Instance.health/ (float)playerStats.GetHealthStat());
-		staminaBar.fillAmount = (float)(Player.Instance.stamina/ (float)playerStats.GetMaxStamina());
-		manaBar.fillAmount = (float)(Player.Instance.mana/ (float)playerStats.GetMaxMana());
+		healthBar.fillAmount = (float)(Player.Instance.Health/ (float)playerStats.HealthStat);
+		staminaBar.fillAmount = (float)(Player.Instance.Stamina/ (float)playerStats.MaxStamina);
+		manaBar.fillAmount = (float)(Player.Instance.Mana/ (float)playerStats.MaxMana);
 
 		if(Application.platform == RuntimePlatform.Android)
 		{
@@ -43,6 +43,6 @@ public class LevelScript : MonoBehaviour
 
 	public void addCoin()
 	{
-		Player.Instance.coins++;
+		Player.Instance.getPlayerInventory().Coins++;
 	}
 }

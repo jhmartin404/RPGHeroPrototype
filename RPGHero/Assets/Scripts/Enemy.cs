@@ -1,9 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public enum EnemyType
+{
+	Bandit,
+	Bear,
+	MountainLion,
+	Eagle,
+	Wolf,
+	Skeleton,
+	Orc,
+	Boss
+};
+
 public class Enemy 
 {
-	private Common.EnemyType enemyType;
+	private EnemyType enemyType;
 	private float enemyHealth;
 	private Sprite enemySprite;
 	private int expGiven;

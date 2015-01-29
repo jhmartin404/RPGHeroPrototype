@@ -16,15 +16,15 @@ public class ManaControl : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		manaPotions.text ="" + Player.Instance.getPlayerInventory ().manaPotions;
+		manaPotions.text ="" + Player.Instance.getPlayerInventory ().ManaPotions;
 	}
 
 	public void UseManaPotion()
 	{
-		if(Player.Instance.getPlayerInventory ().manaPotions > 0)
+		if(Player.Instance.getPlayerInventory ().ManaPotions > 0)
 		{
-			Player.Instance.mana += 20;
-			Player.Instance.getPlayerInventory().manaPotions -= 1;
+			Player.Instance.Mana += 20;
+			Player.Instance.getPlayerInventory().ManaPotions -= 1;
 			gameObject.GetComponent<Button>().interactable = false;
 			Invoke("ReactivateControl",disableTime);
 		}

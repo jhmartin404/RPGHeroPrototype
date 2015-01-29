@@ -18,25 +18,25 @@ public class CharacterScene : MonoBehaviour
 	{
 		playerStats = Player.Instance.getPlayerStats ();
 		levelText = GameObject.Find ("LevelText").GetComponent<Text>();
-		levelText.text = "Level " + playerStats.GetExpLevel();
+		levelText.text = "Level " + playerStats.ExpLevel;
 
 		healthText = GameObject.Find ("HealthText").GetComponent<Text>();
-		healthText.text = "Health: " + playerStats.GetHealthStat();
+		healthText.text = "Health: " + playerStats.HealthStat;
 
 		luckText = GameObject.Find ("LuckText").GetComponent<Text>();
-		luckText.text = "Luck: " + playerStats.GetLuckStat();
+		luckText.text = "Luck: " + playerStats.LuckStat;
 
 		meleeText = GameObject.Find ("MeleeText").GetComponent<Text>();
-		meleeText.text = "Melee: " + playerStats.GetMeleeStat();
+		meleeText.text = "Melee: " + playerStats.MeleeStat;
 
 		rangedText = GameObject.Find ("RangedText").GetComponent<Text>();
-		rangedText.text = "Ranged: " + playerStats.GetRangedStat();
+		rangedText.text = "Ranged: " + playerStats.RangedStat;
 
 		magicText = GameObject.Find ("MagicText").GetComponent<Text>();
-		magicText.text = "Magic: " + playerStats.GetMagicStat();
+		magicText.text = "Magic: " + playerStats.MagicStat;
 
 		expBar = GameObject.Find ("Exp").GetComponent<Image> ();
-		expBar.fillAmount = (float)((float)playerStats.GetCurrentExp () / (float)playerStats.GetNeededExp ());
+		expBar.fillAmount = (float)((float)playerStats.CurrentExp / (float)playerStats.NeededExp);
 	}
 	
 	// Update is called once per frame

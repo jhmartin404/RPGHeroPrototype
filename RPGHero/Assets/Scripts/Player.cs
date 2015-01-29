@@ -7,13 +7,61 @@ public class Player
 {
 	private static Player instance;
 
-	public float health;
-	public int coins;
-	public float stamina;
-	public float mana;
-	public int currentLevel;
+	private float health;
+	//private int coins;
+	private float stamina;
+	private float mana;
+	private int currentLevel;
 	private PlayerStats playerStats;
 	private Inventory playerInventory;
+
+	public float Health
+	{
+		get
+		{
+			return health;
+		}
+		set
+		{
+			health = value;
+		}
+	}
+
+	public float Stamina
+	{
+		get
+		{
+			return stamina;
+		}
+		set
+		{
+			stamina = value;
+		}
+	}
+
+	public float Mana
+	{
+		get
+		{
+			return mana;
+		}
+		set
+		{
+			mana = value;
+		}
+	}
+
+	public int CurrentLevel
+	{
+		get
+		{
+			return currentLevel;
+		}
+		set
+		{
+			currentLevel = value;
+		}
+	}
 
 	private Player() 
 	{
@@ -32,14 +80,8 @@ public class Player
 		}
 	}
 
-	public float getHealth()
-	{
-		return health;
-	}
-
 	public PlayerStats getPlayerStats()
 	{
-		Save ();//Line for testing save function
 		return playerStats;
 	}
 
@@ -48,7 +90,7 @@ public class Player
 		return playerInventory;
 	}
 
-	void Load()
+	private void Load()
 	{
 		//PlayerPrefs.DeleteAll ();//For testing purposes
 		if(PlayerPrefs.HasKey("Player"))
@@ -58,14 +100,14 @@ public class Player
 			string player = PlayerPrefs.GetString("Player");
 			Debug.Log("Load: " + player);
 
-			Dictionary<string, object> dict = new Dictionary<string, object>();
-			dict = Json.Deserialize(player) as Dictionary<string, object>;
+			//Dictionary<string, object> dict = new Dictionary<string, object>();
+			//dict = Json.Deserialize(player) as Dictionary<string, object>;
 
 			//object obj = dict["health"];
 			//health = (float)(double)obj;
 
-			object obj = dict["coins"];
-			coins = (int)(long)obj;
+			//object obj = dict["coins"];
+			//coins = (int)(long)obj;
 
 			//obj = dict["stamina"];
 			//stamina = (float)(double)obj;
@@ -74,12 +116,12 @@ public class Player
 			//mana = (float)(double)obj;
 
 
-			playerStats = new PlayerStats ();
-			playerInventory = new Inventory ();
+			//playerStats = new PlayerStats ();
+			//playerInventory = new Inventory ();
 
-			health = 50;//playerStats.GetHealthStat();
-			stamina = playerStats.GetMaxStamina();
-			mana = 50;//playerStats.GetMaxMana();
+			//health = 50;//playerStats.GetHealthStat();
+			//stamina = playerStats.GetMaxStamina();
+			//mana = 50;//playerStats.GetMaxMana();
 		}
 		else
 		{
@@ -87,27 +129,27 @@ public class Player
 			playerStats = new PlayerStats ();
 			playerInventory = new Inventory ();
 
-			health = playerStats.GetHealthStat();
-			stamina = playerStats.GetMaxStamina();
-			mana = playerStats.GetMaxMana();
-			coins = 0;
+			health = playerStats.HealthStat;
+			stamina = playerStats.MaxStamina;
+			mana = playerStats.MaxMana;
+			//playerInventory.Coins = 0;
 			currentLevel = 0;
 		}
 	}
 
-	public void Save()
-	{
-		Dictionary<string, object> dictionary = new Dictionary<string, object>();
-
-		//dictionary.Add ("health", health);
-		dictionary.Add ("coins", coins);
+	//public void Save()
+	//{
+	//	Dictionary<string, object> dictionary = new Dictionary<string, object>();
+	//
+	//	//dictionary.Add ("health", health);
+	//	dictionary.Add ("coins", coins);
 		//dictionary.Add ("stamina", stamina);
 		//dictionary.Add ("mana", mana);
 
-		string saveJSON = Json.Serialize (dictionary);
-		Debug.Log ("Save: " + saveJSON);
-		PlayerPrefs.SetString ("Player", saveJSON);
+	//	string saveJSON = Json.Serialize (dictionary);
+	//	Debug.Log ("Save: " + saveJSON);
+	//	PlayerPrefs.SetString ("Player", saveJSON);
 
-		playerStats.Save ();
-	}
+	//	playerStats.Save ();
+	//}
 }

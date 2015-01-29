@@ -1,9 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class InventoryItem : MonoBehaviour 
+public enum ItemType
 {
-	private Common.ItemType itemType;
+	Weapon,
+	Shield,
+	Magic,
+	Misc
+};
+
+public class InventoryItem 
+{
+	private ItemType itemType;
 	private int itemID;
 	private string itemName;
 	private Sprite itemImage;
@@ -15,7 +23,7 @@ public class InventoryItem : MonoBehaviour
 
 	}
 
-	public InventoryItem(Common.ItemType item, int id, string name, int cost, bool purchase)
+	public InventoryItem(ItemType item, int id, string name, int cost, bool purchase)
 	{
 		itemType = item;
 		itemID = id;
