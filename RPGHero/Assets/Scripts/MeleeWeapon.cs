@@ -3,14 +3,22 @@ using System.Collections;
 
 public class MeleeWeapon : Weapon
 {
+	private int meleeCost;
 
-	// Use this for initialization
-	void Start () {
-	
+	public int MeleeCost
+	{
+		get
+		{
+			return meleeCost;
+		}
+		set
+		{
+			meleeCost = value;
+		}
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+	public MeleeWeapon(int stamCost, int damage, ItemType item, int id, string name, Sprite image, int cost, bool purchase) : base(damage, item, id, name, image, cost, purchase)
+	{
+		meleeCost = stamCost;
 	}
 }

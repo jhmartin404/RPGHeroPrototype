@@ -52,8 +52,35 @@ public class Inventory
 		}
 	}
 
+	public MeleeWeapon EquippedMeleeWeapon
+	{
+		get
+		{
+			return equippedMeleeWeapon;
+		}
+		set
+		{
+			equippedMeleeWeapon = value;
+		}
+	}
+
+	public Shield EquippedShield
+	{
+		get
+		{
+			return equippedShield;
+		}
+		set
+		{
+			equippedShield = value;
+		}
+	}
+
 	public Inventory()
 	{
+		Sprite melee = Resources.Load<Sprite> ("BigSword");
+		Sprite ranged = Resources.Load<Sprite> ("bow");
+		Sprite shield = Resources.Load<Sprite> ("BigShield");
 		healthPotions = 2;
 		manaPotions = 2;
 		coins = 0;
@@ -64,9 +91,9 @@ public class Inventory
 		unequippedItemsCount = 2;
 		equippedMagic1 = new Magic ();
 		equippedMagic2 = new Magic ();
-		equippedMeleeWeapon = new MeleeWeapon ();
-		equippedRangedWeapon = new RangedWeapon ();
-		equippedShield = new Shield ();
+		equippedMeleeWeapon = new MeleeWeapon(10,5,ItemType.Weapon,1,"Steel Sword",melee,10,true);
+		equippedRangedWeapon = new RangedWeapon(5,3,ItemType.Weapon,2,"Wooden Bow",ranged,7,true);
+		equippedShield = new Shield(50,ItemType.Shield,3,"Metal Shield",shield,9,true);
 		//Save();
 	}
 

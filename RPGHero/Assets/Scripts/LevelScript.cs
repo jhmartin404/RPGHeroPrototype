@@ -27,7 +27,6 @@ public class LevelScript : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-
 		healthBar.fillAmount = (float)(Player.Instance.Health/ (float)playerStats.HealthStat);
 		staminaBar.fillAmount = (float)(Player.Instance.Stamina/ (float)playerStats.MaxStamina);
 		manaBar.fillAmount = (float)(Player.Instance.Mana/ (float)playerStats.MaxMana);

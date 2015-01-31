@@ -3,14 +3,22 @@ using System.Collections;
 
 public class Weapon : InventoryItem 
 {
+	private int damage;
 
-	// Use this for initialization
-	void Start () {
-	
+	public int Damage
+	{
+		get
+		{
+			return damage;
+		}
+		set
+		{
+			damage = value;
+		}
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+	public Weapon(int dam,ItemType item, int id, string name, Sprite image, int cost, bool purchase) : base(item, id, name, image, cost, purchase)
+	{
+		damage = dam;
 	}
 }

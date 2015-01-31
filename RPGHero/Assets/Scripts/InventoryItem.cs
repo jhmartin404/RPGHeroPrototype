@@ -23,11 +23,12 @@ public class InventoryItem
 
 	}
 
-	public InventoryItem(ItemType item, int id, string name, int cost, bool purchase)
+	public InventoryItem(ItemType item, int id, string name, Sprite image, int cost, bool purchase)
 	{
 		itemType = item;
 		itemID = id;
 		itemName = name;
+		itemImage = image;
 		itemCost = cost;
 		purchasable = purchase;
 	}
@@ -40,6 +41,11 @@ public class InventoryItem
 	public int GetItemID()
 	{
 		return itemID;
+	}
+
+	public Sprite GetItemImage()
+	{
+		return itemImage;
 	}
 
 	// Use this for initialization
