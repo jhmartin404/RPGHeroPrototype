@@ -38,7 +38,7 @@ public class WeaponControl : MonoBehaviour
 		controlState = ControlState.Stationary;
 		actionArea = GameObject.Find ("ActionArea");
 		weapon = GameObject.Find ("Weapon");
-		meleeWeapon = Player.Instance.getPlayerInventory ().EquippedMeleeWeapon;
+		meleeWeapon = Player.Instance.GetPlayerInventory ().EquippedMeleeWeapon;
 		weapon.GetComponent<SpriteRenderer> ().sprite = meleeWeapon.GetItemImage ();
 		controlPosition = transform.position;
 		actionAreaCenter = actionArea.renderer.bounds.center;
@@ -107,7 +107,7 @@ public class WeaponControl : MonoBehaviour
 			Player.Instance.Stamina -= meleeWeapon.MeleeCost*Time.deltaTime;
 		}
 
-		if(controlState == ControlState.Stationary && Player.Instance.Stamina<Player.Instance.getPlayerStats().MaxStamina)
+		if(controlState == ControlState.Stationary && Player.Instance.Stamina<Player.Instance.GetPlayerStats().MaxStamina)
 		{
 			Player.Instance.Stamina += staminaRegen*Time.deltaTime;
 		}

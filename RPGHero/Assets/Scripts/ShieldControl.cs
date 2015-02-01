@@ -5,13 +5,11 @@ public class ShieldControl : MonoBehaviour
 {
 	private GameObject shield;
 	private Shield equippedShield;
-	private GameObject actionArea;
 	private ControlState controlState;
 	private Vector2 controlPosition;//Original position of the control
 	private Vector3 actionAreaCenter;
 	private float actionAreaRadius;
 	private float fingerRadius = 0.5f;
-	private float staminaRegen = 2.0f;
 
 	public ControlState CntrlState
 	{
@@ -30,8 +28,7 @@ public class ShieldControl : MonoBehaviour
 	{
 		controlState = ControlState.Stationary;
 		shield = GameObject.Find ("Shield");
-		actionArea = GameObject.Find ("ActionArea");
-		equippedShield = Player.Instance.getPlayerInventory ().EquippedShield;
+		equippedShield = Player.Instance.GetPlayerInventory ().EquippedShield;
 		shield.GetComponent<SpriteRenderer> ().sprite = equippedShield.GetItemImage ();
 		controlPosition = transform.position;
 	}

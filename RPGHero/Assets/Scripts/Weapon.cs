@@ -21,4 +21,11 @@ public class Weapon : InventoryItem
 	{
 		damage = dam;
 	}
+
+	public override string ToString()
+	{
+		string result = base.ToString ();
+		result += "Damage: " +damage + "\n";
+		return result;
+	}
 }

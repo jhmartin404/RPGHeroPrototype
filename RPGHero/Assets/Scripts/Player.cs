@@ -80,12 +80,12 @@ public class Player
 		}
 	}
 
-	public PlayerStats getPlayerStats()
+	public PlayerStats GetPlayerStats()
 	{
 		return playerStats;
 	}
 
-	public Inventory getPlayerInventory()
+	public Inventory GetPlayerInventory()
 	{
 		return playerInventory;
 	}

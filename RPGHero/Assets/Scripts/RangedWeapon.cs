@@ -21,4 +21,11 @@ public class RangedWeapon : Weapon
 	{
 		rangedCost = stamCost;
 	}
+
+	public override string ToString()
+	{
+		string result = base.ToString ();
+		result += "Stamina Cost: " +rangedCost + "\n";
+		return result;
+	}
 }

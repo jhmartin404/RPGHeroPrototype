@@ -48,6 +48,20 @@ public class InventoryItem
 		return itemImage;
 	}
 
+	public ItemType GetItemType()
+	{
+		return itemType;
+	}
+
+	public override string ToString()
+	{
+		string result;
+		result = itemName + "\n";
+		if(purchasable)
+			result += "Cost: " +itemCost + "\n";
+		return result;
+	}
+
 	// Use this for initialization
 	void Start () {
 	

@@ -16,7 +16,7 @@ public class CharacterScene : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		playerStats = Player.Instance.getPlayerStats ();
+		playerStats = Player.Instance.GetPlayerStats ();
 		levelText = GameObject.Find ("LevelText").GetComponent<Text>();
 		levelText.text = "Level " + playerStats.ExpLevel;
 

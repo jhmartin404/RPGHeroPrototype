@@ -12,7 +12,7 @@ public class LevelScript : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		playerStats = Player.Instance.getPlayerStats ();
+		playerStats = Player.Instance.GetPlayerStats ();
 
 		healthBar = GameObject.Find ("RemainingHealthBar").GetComponent<Image> ();
 		healthBar.fillAmount = (float)(Player.Instance.Health/ (float)playerStats.HealthStat);
@@ -42,6 +42,6 @@ public class LevelScript : MonoBehaviour
 
 	public void addCoin()
 	{
-		Player.Instance.getPlayerInventory().Coins++;
+		Player.Instance.GetPlayerInventory().Coins++;
 	}
 }

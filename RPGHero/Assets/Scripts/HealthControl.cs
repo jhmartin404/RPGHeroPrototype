@@ -16,15 +16,15 @@ public class HealthControl : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		healthPotions.text = "" + Player.Instance.getPlayerInventory ().HealthPotions;
+		healthPotions.text = "" + Player.Instance.GetPlayerInventory ().HealthPotions;
 	}
 
 	public void UseHealthPotion()
 	{
-		if(Player.Instance.getPlayerInventory ().HealthPotions > 0)
+		if(Player.Instance.GetPlayerInventory ().HealthPotions > 0)
 		{
 			Player.Instance.Health += 20;
-			Player.Instance.getPlayerInventory().HealthPotions -= 1;
+			Player.Instance.GetPlayerInventory().HealthPotions -= 1;
 			gameObject.GetComponent<Button>().interactable = false;
 			Invoke("ReactivateControl",disableTime);
 		}

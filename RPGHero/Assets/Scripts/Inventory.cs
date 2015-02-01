@@ -76,25 +76,75 @@ public class Inventory
 		}
 	}
 
+	public RangedWeapon EquippedRangedWeapon
+	{
+		get
+		{
+			return equippedRangedWeapon;
+		}
+		set
+		{
+			equippedRangedWeapon = value;
+		}
+	}
+
+	public int UnequippedItemsCount
+	{
+		get
+		{
+			return unequippedItemsCount;
+		}
+		set
+		{
+			unequippedItemsCount = value;
+		}
+	}
+
 	public Inventory()
 	{
 		Sprite melee = Resources.Load<Sprite> ("BigSword");
 		Sprite ranged = Resources.Load<Sprite> ("bow");
 		Sprite shield = Resources.Load<Sprite> ("BigShield");
+		Sprite axe = Resources.Load<Sprite> ("bigAxe");
+		Sprite fireBlast = Resources.Load<Sprite> ("fireBlastIcon");
+		Sprite iceBlast = Resources.Load<Sprite> ("iceBlastIcon");
 		healthPotions = 2;
 		manaPotions = 2;
 		coins = 0;
 		//TESTING LINES
 		unequippedItems = new InventoryItem[20];
-		unequippedItems [0] = new InventoryItem ();
-		unequippedItems [1] = new InventoryItem ();
-		unequippedItemsCount = 2;
-		equippedMagic1 = new Magic ();
-		equippedMagic2 = new Magic ();
-		equippedMeleeWeapon = new MeleeWeapon(10,5,ItemType.Weapon,1,"Steel Sword",melee,10,true);
-		equippedRangedWeapon = new RangedWeapon(5,3,ItemType.Weapon,2,"Wooden Bow",ranged,7,true);
-		equippedShield = new Shield(50,ItemType.Shield,3,"Metal Shield",shield,9,true);
+		unequippedItems [0] = new MeleeWeapon(8,4,ItemType.Weapon,1,"Steel Axe",axe,8,true);
+		unequippedItems [1] = new RangedWeapon(3,2,ItemType.Weapon,2,"Weak Bow",ranged,5,true);
+		unequippedItems [2] = new Shield(30,ItemType.Shield,3,"Weak Shield",shield,5,true);
+		unequippedItems [3] = new Magic (7,ItemType.Magic,4,"Weak Fire Blast",fireBlast,-1,false);
+		unequippedItemsCount = 4;
+		equippedMagic1 = new Magic (10,ItemType.Magic,4,"Fire Blast",fireBlast,-1,false);
+		equippedMagic2 = new Magic (10,ItemType.Magic,5,"Ice Blast",iceBlast,-1,false);
+		equippedMeleeWeapon = new MeleeWeapon(10,5,ItemType.Weapon,6,"Steel Sword",melee,10,true);
+		equippedRangedWeapon = new RangedWeapon(5,3,ItemType.Weapon,7,"Wooden Bow",ranged,7,true);
+		equippedShield = new Shield(50,ItemType.Shield,8,"Metal Shield",shield,9,true);
 		//Save();
+	}
+
+	public InventoryItem[] GetUnequippedItems()
+	{
+		return unequippedItems;
+	}
+
+	public void AddUnequippedItem(InventoryItem itm)
+	{
+		unequippedItems [unequippedItemsCount] = itm;
+		unequippedItemsCount++;
+	}
+
+	public void RemoveUnequippedItem(InventoryItem itm)
+	{
+		
+	}
+
+	public void RemoveUnequippedItem(int index)
+	{
+		
 	}
 
 	//public void Load()

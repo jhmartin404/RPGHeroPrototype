@@ -21,4 +21,11 @@ public class MeleeWeapon : Weapon
 	{
 		meleeCost = stamCost;
 	}
+
+	public override string ToString()
+	{
+		string result = base.ToString ();
+		result += "Stamina Cost: " +meleeCost + "\n";
+		return result;
+	}
 }

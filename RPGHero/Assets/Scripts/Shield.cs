@@ -21,4 +21,11 @@ public class Shield : InventoryItem
 	{
 		defence = def;
 	}
+
+	public override string ToString()
+	{
+		string result = base.ToString ();
+		result += "Defence: " +defence + "\n";
+		return result;
+	}
 }
