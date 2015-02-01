@@ -10,8 +10,8 @@ public class Inventory
 	private Shield equippedShield;
 	private Magic equippedMagic1;
 	private Magic equippedMagic2;
-	private InventoryItem[] unequippedItems;
-	private int unequippedItemsCount;
+	private List<InventoryItem> unequippedItems;
+	//private int unequippedItemsCount;
 	private int coins;
 	private int healthPotions;
 	private int manaPotions;
@@ -88,18 +88,6 @@ public class Inventory
 		}
 	}
 
-	public int UnequippedItemsCount
-	{
-		get
-		{
-			return unequippedItemsCount;
-		}
-		set
-		{
-			unequippedItemsCount = value;
-		}
-	}
-
 	public Inventory()
 	{
 		Sprite melee = Resources.Load<Sprite> ("BigSword");
@@ -112,12 +100,12 @@ public class Inventory
 		manaPotions = 2;
 		coins = 0;
 		//TESTING LINES
-		unequippedItems = new InventoryItem[20];
-		unequippedItems [0] = new MeleeWeapon(8,4,ItemType.Weapon,1,"Steel Axe",axe,8,true);
-		unequippedItems [1] = new RangedWeapon(3,2,ItemType.Weapon,2,"Weak Bow",ranged,5,true);
-		unequippedItems [2] = new Shield(30,ItemType.Shield,3,"Weak Shield",shield,5,true);
-		unequippedItems [3] = new Magic (7,ItemType.Magic,4,"Weak Fire Blast",fireBlast,-1,false);
-		unequippedItemsCount = 4;
+		unequippedItems = new List<InventoryItem>();
+		unequippedItems.Add(new MeleeWeapon(8,4,ItemType.Weapon,1,"Steel Axe",axe,8,true));
+		unequippedItems.Add(new RangedWeapon(3,2,ItemType.Weapon,2,"Weak Bow",ranged,5,true));
+		unequippedItems.Add(new Shield(30,ItemType.Shield,3,"Weak Shield",shield,5,true));
+		unequippedItems.Add(new Magic (7,ItemType.Magic,4,"Weak Fire Blast",fireBlast,-1,false));
+		//unequippedItemsCount = 4;
 		equippedMagic1 = new Magic (10,ItemType.Magic,4,"Fire Blast",fireBlast,-1,false);
 		equippedMagic2 = new Magic (10,ItemType.Magic,5,"Ice Blast",iceBlast,-1,false);
 		equippedMeleeWeapon = new MeleeWeapon(10,5,ItemType.Weapon,6,"Steel Sword",melee,10,true);
@@ -126,25 +114,25 @@ public class Inventory
 		//Save();
 	}
 
-	public InventoryItem[] GetUnequippedItems()
+	public List<InventoryItem> GetUnequippedItems()
 	{
 		return unequippedItems;
 	}
 
 	public void AddUnequippedItem(InventoryItem itm)
 	{
-		unequippedItems [unequippedItemsCount] = itm;
-		unequippedItemsCount++;
+		unequippedItems.Add(itm);
+		//unequippedItemsCount++;
 	}
 
 	public void RemoveUnequippedItem(InventoryItem itm)
 	{
-		
+		unequippedItems.Remove (itm);
 	}
 
 	public void RemoveUnequippedItem(int index)
 	{
-		
+		unequippedItems.RemoveAt(index);
 	}
 
 	//public void Load()

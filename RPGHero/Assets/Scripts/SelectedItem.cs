@@ -26,22 +26,33 @@ public class SelectedItem : MonoBehaviour
 	{
 		if(selectedItem.GetType().ToString()=="MeleeWeapon")
 		{
-			Player.Instance.GetPlayerInventory ().AddUnequippedItem (Player.Instance.GetPlayerInventory ().EquippedMeleeWeapon);
+			InventoryItem prevEquipped = Player.Instance.GetPlayerInventory ().EquippedMeleeWeapon;
+			Player.Instance.GetPlayerInventory ().AddUnequippedItem (prevEquipped);
+			Player.Instance.GetPlayerInventory ().RemoveUnequippedItem(selectedItem);
 			Player.Instance.GetPlayerInventory ().EquippedMeleeWeapon = (MeleeWeapon)selectedItem;
+			SlctdItem = prevEquipped;
 			GameObject.Find("ComparedItem").GetComponent<ComparedItem>().SetCompared(selectedItem.GetType());
+
 		}
 		if(selectedItem.GetType().ToString()=="RangedWeapon")
 		{
-			Player.Instance.GetPlayerInventory ().AddUnequippedItem (Player.Instance.GetPlayerInventory ().EquippedRangedWeapon);
+			InventoryItem prevEquipped = Player.Instance.GetPlayerInventory ().EquippedRangedWeapon;
+			Player.Instance.GetPlayerInventory ().AddUnequippedItem (prevEquipped);
+			Player.Instance.GetPlayerInventory ().RemoveUnequippedItem(selectedItem);
 			Player.Instance.GetPlayerInventory ().EquippedRangedWeapon = (RangedWeapon)selectedItem;
+			SlctdItem = prevEquipped;
 			GameObject.Find("ComparedItem").GetComponent<ComparedItem>().SetCompared(selectedItem.GetType());
 		}
 		if(selectedItem.GetType().ToString()=="Shield")
 		{
-			Player.Instance.GetPlayerInventory ().AddUnequippedItem (Player.Instance.GetPlayerInventory ().EquippedShield);
+			InventoryItem prevEquipped = Player.Instance.GetPlayerInventory ().EquippedShield;
+			Player.Instance.GetPlayerInventory ().AddUnequippedItem (prevEquipped);
+			Player.Instance.GetPlayerInventory ().RemoveUnequippedItem(selectedItem);
 			Player.Instance.GetPlayerInventory ().EquippedShield = (Shield)selectedItem;
+			SlctdItem = prevEquipped;
 			GameObject.Find("ComparedItem").GetComponent<ComparedItem>().SetCompared(selectedItem.GetType());
 		}
+		GameObject.Find ("Main Camera").GetComponent<InventoryScript> ().ResetBoard ();
 	}
 	// Use this for initialization
 	void Start () 

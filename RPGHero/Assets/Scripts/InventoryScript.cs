@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class InventoryScript : MonoBehaviour 
@@ -10,7 +11,7 @@ public class InventoryScript : MonoBehaviour
 	private Text healthPotionText;
 	private Text manaPotionText;
 	public GameObject[] inventorySlots;
-	private InventoryItem[] unequippedItems;
+	private List<InventoryItem> unequippedItems;
 	private int slotCount;
 
 	// Use this for initialization
@@ -27,15 +28,16 @@ public class InventoryScript : MonoBehaviour
 		filter = ItemType.Weapon;
 
 		//inventorySlots = GameObject.FindGameObjectsWithTag ("InventorySlot");
-		slotCount = 0;
-		for(int i=0;i<playerInventory.UnequippedItemsCount;++i)
-		{
-			if(unequippedItems[i].GetItemType() == filter)
-			{
-				inventorySlots[slotCount].GetComponent<InventorySlot>().SetItem(unequippedItems[i]);
-				slotCount++;
-			}
-		}
+		ResetBoard ();
+		//slotCount = 0;
+		//for(int i=0;i<unequippedItems.Count;++i)
+		//{
+		//	if(unequippedItems[i].GetItemType() == filter)
+		//	{
+		//		inventorySlots[slotCount].GetComponent<InventorySlot>().SetItem(unequippedItems[i]);
+		//		slotCount++;
+		//	}
+		//}
 	}
 	
 	// Update is called once per frame
@@ -53,46 +55,46 @@ public class InventoryScript : MonoBehaviour
 	public void SetFilterToWeapon()
 	{
 		filter = ItemType.Weapon;
-		slotCount = 0;
+		//slotCount = 0;
 		ResetBoard ();
-		for(int i=0;i<playerInventory.UnequippedItemsCount;++i)
-		{
-			if(unequippedItems[i].GetItemType() == filter)
-			{
-				inventorySlots[slotCount].GetComponent<InventorySlot>().SetItem(unequippedItems[i]);
-				slotCount++;
-			}
-		}
+		//for(int i=0;i<unequippedItems.Count;++i)
+		//{
+		//	if(unequippedItems[i].GetItemType() == filter)
+		//	{
+		//		inventorySlots[slotCount].GetComponent<InventorySlot>().SetItem(unequippedItems[i]);
+		//		slotCount++;
+		//	}
+		//}
 	}
 
 	public void SetFilterToShield()
 	{
 		filter = ItemType.Shield;
-		slotCount = 0;
+		//slotCount = 0;
 		ResetBoard ();
-		for(int i=0;i<playerInventory.UnequippedItemsCount;++i)
-		{
-			if(unequippedItems[i].GetItemType() == filter)
-			{
-				inventorySlots[slotCount].GetComponent<InventorySlot>().SetItem(unequippedItems[i]);
-				slotCount++;
-			}
-		}
+		//for(int i=0;i<unequippedItems.Count;++i)
+		//{
+		//	if(unequippedItems[i].GetItemType() == filter)
+		//	{
+		//		inventorySlots[slotCount].GetComponent<InventorySlot>().SetItem(unequippedItems[i]);
+		//		slotCount++;
+		//	}
+		//}
 	}
 
 	public void SetFilterToMagic()
 	{
 		filter = ItemType.Magic;
-		slotCount = 0;
+		//slotCount = 0;
 		ResetBoard ();
-		for(int i=0;i<playerInventory.UnequippedItemsCount;++i)
-		{
-			if(unequippedItems[i].GetItemType() == filter)
-			{
-				inventorySlots[slotCount].GetComponent<InventorySlot>().SetItem(unequippedItems[i]);
-				slotCount++;
-			}
-		}
+		//for(int i=0;i<unequippedItems.Count;++i)
+		//{
+		//	if(unequippedItems[i].GetItemType() == filter)
+		//	{
+		//		inventorySlots[slotCount].GetComponent<InventorySlot>().SetItem(unequippedItems[i]);
+		//		slotCount++;
+		//	}
+		//}
 	}
 
 	public void ResetBoard()
@@ -100,6 +102,15 @@ public class InventoryScript : MonoBehaviour
 		foreach(GameObject obj in inventorySlots)
 		{
 			obj.GetComponent<InventorySlot>().SetItem(null);
+		}
+		slotCount = 0;
+		for(int i=0;i<unequippedItems.Count;++i)
+		{
+			if(unequippedItems[i].GetItemType() == filter)
+			{
+				inventorySlots[slotCount].GetComponent<InventorySlot>().SetItem(unequippedItems[i]);
+				slotCount++;
+			}
 		}
 	}
 }
