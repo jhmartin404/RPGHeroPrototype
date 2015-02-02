@@ -43,7 +43,7 @@ public class WeaponControl : MonoBehaviour
 		controlPosition = transform.position;
 		actionAreaCenter = actionArea.renderer.bounds.center;
 		actionAreaCenter.y = actionAreaCenter.y + 1;//Move center up a bit
-		actionAreaRadius = actionArea.GetComponent<CircleCollider2D>().radius;
+		actionAreaRadius = actionArea.GetComponent<CircleCollider2D>().radius;//Collider is used to get the radius the collider is not actually used though
 
 	}
 	
@@ -81,7 +81,6 @@ public class WeaponControl : MonoBehaviour
 				Vector2 delta = Input.GetTouch(0).deltaPosition;
 				if(delta.x >0)
 				{
-					//Quaternion rotate = Quaternion.AngleAxis(delta.x*degrees,Vector3.forward);
 					weapon.transform.rotation = Quaternion.Euler(0,0,Mathf.Clamp(degrees+weapon.transform.eulerAngles.z,0,90));
 				}
 				else if(delta.x<0)
