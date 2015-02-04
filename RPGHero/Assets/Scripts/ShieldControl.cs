@@ -38,7 +38,8 @@ public class ShieldControl : MonoBehaviour
 	{
 		if (Input.touchCount > 0)
 		{
-			if((Input.GetTouch(0).phase == TouchPhase.Began || (Input.GetTouch(0).phase == TouchPhase.Moved)) && controlState == ControlState.Stationary && equippedShield.Defence>0)
+			if((Input.GetTouch(0).phase == TouchPhase.Began || (Input.GetTouch(0).phase == TouchPhase.Moved)) && controlState == ControlState.Stationary && equippedShield.Defence>0
+			   && !GameObject.Find("Main Camera").GetComponent<LevelScript>().IconSelected)
 			{
 				Vector2 touchPos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 				if (collider2D == Physics2D.OverlapCircle(touchPos, fingerRadius))
@@ -46,6 +47,7 @@ public class ShieldControl : MonoBehaviour
 					controlState = ControlState.Active;
 					//transform.localScale = newSize;
 					shield.renderer.enabled = true;//render the shield
+					GameObject.Find("Main Camera").GetComponent<LevelScript>().IconSelected = true;
 				}
 				
 				
@@ -61,6 +63,7 @@ public class ShieldControl : MonoBehaviour
 				controlState = ControlState.Stationary;
 				shield.renderer.enabled = false;//disable the renderer for the shield
 				transform.position = controlPosition;
+				GameObject.Find("Main Camera").GetComponent<LevelScript>().IconSelected = false;
 				//transform.localScale = new Vector2(1.0f,1.0f);
 			}
 		}

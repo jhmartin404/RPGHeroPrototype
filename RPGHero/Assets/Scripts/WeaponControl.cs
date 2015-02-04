@@ -53,7 +53,7 @@ public class WeaponControl : MonoBehaviour
 		if (Input.touchCount > 0)
 		{
 			if((Input.GetTouch(0).phase == TouchPhase.Began || (Input.GetTouch(0).phase == TouchPhase.Moved)) && controlState == ControlState.Stationary 
-			   && Player.Instance.Stamina>meleeWeapon.MeleeCost)
+			   && Player.Instance.Stamina>meleeWeapon.MeleeCost && !GameObject.Find("Main Camera").GetComponent<LevelScript>().IconSelected)
 			{
 				Vector2 touchPos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 				if (collider2D == Physics2D.OverlapCircle(touchPos, fingerRadius))
@@ -63,6 +63,7 @@ public class WeaponControl : MonoBehaviour
 					//transform.localScale = newSize;
 					//weapon.renderer.enabled = true;//render the weapon
 					actionArea.renderer.enabled = true;
+					GameObject.Find("Main Camera").GetComponent<LevelScript>().IconSelected = true;
 				}
 				
 				
@@ -96,6 +97,7 @@ public class WeaponControl : MonoBehaviour
 				//transform.localScale = new Vector2(1.0f,1.0f);//set weapon icon back to normal size
 				weapon.renderer.enabled = false;//disable the renderer for the weapon
 				actionArea.renderer.enabled = false;
+				GameObject.Find("Main Camera").GetComponent<LevelScript>().IconSelected = false;
 				//rigidbody2D.isKinematic = false;
 				//weapon.GetComponent<PolygonCollider2D>().isTrigger = false;//Remove trigger to disable collisions
 			}

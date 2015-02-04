@@ -8,6 +8,19 @@ public class LevelScript : MonoBehaviour
 	private Image healthBar;
 	private Image staminaBar;
 	private Image manaBar;
+	private bool iconSelected;
+
+	public bool IconSelected
+	{
+		get
+		{
+			return iconSelected;
+		}
+		set
+		{
+			iconSelected = value;
+		}
+	}
 
 	// Use this for initialization
 	void Start () 

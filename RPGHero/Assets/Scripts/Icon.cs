@@ -79,12 +79,14 @@ public class Icon : MonoBehaviour
 
 		if (Input.touchCount > 0 && iconState != IconState.Thrown)
 		{
-			if((Input.GetTouch(0).phase == TouchPhase.Began || Input.GetTouch(0).phase == TouchPhase.Moved) && iconState == IconState.Rotating)
+			if((Input.GetTouch(0).phase == TouchPhase.Began || Input.GetTouch(0).phase == TouchPhase.Moved) && iconState == IconState.Rotating
+			   && !GameObject.Find("Main Camera").GetComponent<LevelScript>().IconSelected)
 			{
 				Vector2 touchPos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 				if (collider2D == Physics2D.OverlapCircle(touchPos, fingerRadius))
 				{
-					iconState = IconState.Grabbed;		
+					iconState = IconState.Grabbed;
+					GameObject.Find("Main Camera").GetComponent<LevelScript>().IconSelected = true;
 					//startPosition = transform.position;
 					//rigidbody2D.isKinematic = true;
 				}
@@ -94,6 +96,7 @@ public class Icon : MonoBehaviour
 			else if(Input.GetTouch(0).phase == TouchPhase.Ended && iconState == IconState.Grabbed)
 			{
 				iconState = IconState.Thrown;
+				GameObject.Find("Main Camera").GetComponent<LevelScript>().IconSelected = false;
 				//endPosition = transform.position;
 				//rigidbody2D.isKinematic = false;
 			}
