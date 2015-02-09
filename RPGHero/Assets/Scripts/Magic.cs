@@ -5,6 +5,18 @@ public class Magic : InventoryItem
 {
 	private int manaCost;
 
+	public int ManaCost
+	{
+		get
+		{
+			return manaCost;
+		}
+		set
+		{
+			manaCost = value;
+		}
+	}
+
 	public Magic(int costMana,ItemType item, int id, string name, Sprite image, int cost, bool purchase) : base(item, id, name, image, cost, purchase)
 	{
 		manaCost = costMana;

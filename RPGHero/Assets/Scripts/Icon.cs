@@ -17,17 +17,18 @@ public enum IconState
 
 public class Icon : MonoBehaviour
 {
-	private const float fingerRadius = 0.5f;
+	protected const float fingerRadius = 0.5f;
+	protected GameObject mainCamera;
 	//private Sprite iconImage;
-	private IconType iconType;
-	private Transform center;
-	private float degreesPerSecond;
-	private IconState iconState;
-	private float iconSpeed = 5.0f;
+	protected IconType iconType;
+	protected Transform center;
+	protected float degreesPerSecond;
+	protected IconState iconState;
+	protected float iconSpeed = 5.0f;
 
-	private Vector2 startPosition;//start position of the fireball
-	private Vector2 endPosition;//end position of the fireball
-	private Vector3 v;
+	protected Vector2 startPosition;//start position of the fireball
+	protected Vector2 endPosition;//end position of the fireball
+	protected Vector3 v;
 
 	public Transform Center
 	{
@@ -54,8 +55,9 @@ public class Icon : MonoBehaviour
 	}
 
 	// Use this for initialization
-	void Start () 
+	public virtual void Start () 
 	{
+		mainCamera = GameObject.Find ("Main Camera");
 		iconState = IconState.Rotating;
 		//center = GameObject.Find ("LeftCircle").transform;
 		//degreesPerSecond = 85.0f;
@@ -63,18 +65,18 @@ public class Icon : MonoBehaviour
 	}
 	
 	// Update is called once per frame
-	void Update () 
+	public virtual void Update () 
 	{
 		if (Input.touchCount > 0 && iconState != IconState.Thrown)
 		{
 			if((Input.GetTouch(0).phase == TouchPhase.Began || Input.GetTouch(0).phase == TouchPhase.Moved) && iconState == IconState.Rotating
-			   && !GameObject.Find("Main Camera").GetComponent<LevelScript>().IconSelected)
+			   && !mainCamera.GetComponent<LevelScript>().IconSelected)
 			{
 				Vector2 touchPos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 				if (collider2D == Physics2D.OverlapCircle(touchPos, fingerRadius))
 				{
 					iconState = IconState.Grabbed;
-					GameObject.Find("Main Camera").GetComponent<LevelScript>().IconSelected = true;
+					mainCamera.GetComponent<LevelScript>().IconSelected = true;
 					//startPosition = transform.position;
 					rigidbody2D.isKinematic = true;
 				}
@@ -84,7 +86,7 @@ public class Icon : MonoBehaviour
 			else if(Input.GetTouch(0).phase == TouchPhase.Ended && iconState == IconState.Grabbed)
 			{
 				iconState = IconState.Thrown;
-				GameObject.Find("Main Camera").GetComponent<LevelScript>().IconSelected = false;
+				mainCamera.GetComponent<LevelScript>().IconSelected = false;
 				//endPosition = transform.position;
 				rigidbody2D.isKinematic = false;
 			}
@@ -106,7 +108,7 @@ public class Icon : MonoBehaviour
 
 	}
 
-	void LateUpdate()
+	public virtual void LateUpdate()
 	{
 		if(iconState == IconState.Thrown)
 		{

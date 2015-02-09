@@ -88,6 +88,30 @@ public class Inventory
 		}
 	}
 
+	public Magic EquippedMagic1
+	{
+		get
+		{
+			return equippedMagic1;
+		}
+		set
+		{
+			equippedMagic1 = value;
+		}
+	}
+
+	public Magic EquippedMagic2
+	{
+		get
+		{
+			return equippedMagic2;
+		}
+		set
+		{
+			equippedMagic2 = value;
+		}
+	}
+
 	public Inventory()
 	{
 		Sprite melee = Resources.Load<Sprite> ("BigSword");

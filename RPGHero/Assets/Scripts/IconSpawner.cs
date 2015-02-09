@@ -5,19 +5,29 @@ using System.Collections.Generic;
 public class IconSpawner : MonoBehaviour 
 {
 	private List<GameObject> emptySlots;
-	private Object iconPrefab;
+	private Object coinPrefab;
+	private Object rangedPrefab;
+	private Object magic1Prefab;
+	private int randomNum;
+
+	private List<Object> iconArray;
 
 	void Awake()
 	{
 		emptySlots = new List<GameObject> ();
+		iconArray = new List<Object> ();
 	}
 
 	// Use this for initialization
 	void Start () 
 	{
 		Debug.Log ("Creating Icon Spawner");
-		//emptySlots = new List<GameObject> ();
-		iconPrefab = Resources.Load ("Prefabs/IconPrefab");
+		//coinPrefab =
+		iconArray.Add(Resources.Load ("Prefabs/CoinIconPrefab"));
+		//rangedPrefab = 
+		iconArray.Add(Resources.Load ("Prefabs/RangedIconPrefab"));
+		//magic1Prefab = 
+		iconArray.Add(Resources.Load ("Prefabs/MagicIconPrefab"));
 	}
 	
 	// Update is called once per frame
@@ -25,7 +35,8 @@ public class IconSpawner : MonoBehaviour
 	{
 		for(int i=0;i<emptySlots.Count;++i)
 		{
-			GameObject child = Instantiate(iconPrefab,emptySlots[i].transform.position,Quaternion.identity) as GameObject;
+			randomNum = Random.Range(0,iconArray.Count);
+			GameObject child = Instantiate(iconArray[randomNum],emptySlots[i].transform.position,Quaternion.identity) as GameObject;
 			child.GetComponent<Icon>().Center = emptySlots[i].GetComponent<IconSlot>().Center;
 			child.GetComponent<Icon>().DegreesPerSecond = emptySlots[i].GetComponent<IconSlot>().DegreesPerSecond;
 			emptySlots[i].GetComponent<IconSlot>().SetIcon(child);
@@ -34,7 +45,6 @@ public class IconSpawner : MonoBehaviour
 
 	public void NotifyEmpty(GameObject slot)
 	{
-	//	if(emptySlots != null)
 		emptySlots.Add (slot);
 	}
 
