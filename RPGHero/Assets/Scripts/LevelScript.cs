@@ -5,9 +5,9 @@ using System.Collections;
 public class LevelScript : MonoBehaviour 
 {
 	private PlayerStats playerStats;
-	private Image healthBar;
-	private Image staminaBar;
-	private Image manaBar;
+	public Image healthBar;
+	public Image staminaBar;
+	public Image manaBar;
 	private bool iconSelected;
 
 	public bool IconSelected
@@ -27,13 +27,13 @@ public class LevelScript : MonoBehaviour
 	{
 		playerStats = Player.Instance.GetPlayerStats ();
 
-		healthBar = GameObject.Find ("RemainingHealthBar").GetComponent<Image> ();
+		//healthBar = GameObject.Find ("RemainingHealthBar").GetComponent<Image> ();
 		healthBar.fillAmount = (float)(Player.Instance.Health/ (float)playerStats.HealthStat);
 
-		staminaBar = GameObject.Find ("RemainingStaminaBar").GetComponent<Image> ();
+		//staminaBar = GameObject.Find ("RemainingStaminaBar").GetComponent<Image> ();
 		staminaBar.fillAmount = (float)(Player.Instance.Stamina/ (float)playerStats.MaxStamina);
 
-		manaBar = GameObject.Find ("RemainingManaBar").GetComponent<Image> ();
+		//manaBar = GameObject.Find ("RemainingManaBar").GetComponent<Image> ();
 		manaBar.fillAmount = (float)(Player.Instance.Mana/ (float)playerStats.MaxMana);
 	}
 	

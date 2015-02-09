@@ -42,7 +42,7 @@ public class WeaponControl : MonoBehaviour
 		weapon.GetComponent<SpriteRenderer> ().sprite = meleeWeapon.GetItemImage ();
 		controlPosition = transform.position;
 		actionAreaCenter = actionArea.renderer.bounds.center;
-		actionAreaCenter.y = actionAreaCenter.y + 1;//Move center up a bit
+		//actionAreaCenter.y = actionAreaCenter.y + 1;//Move center up a bit
 		actionAreaRadius = actionArea.GetComponent<CircleCollider2D>().radius;//Collider is used to get the radius the collider is not actually used though
 
 	}

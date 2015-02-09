@@ -17,7 +17,7 @@ public class IconSpawner : MonoBehaviour
 	{
 		Debug.Log ("Creating Icon Spawner");
 		//emptySlots = new List<GameObject> ();
-		iconPrefab = Resources.Load ("IconPrefab");
+		iconPrefab = Resources.Load ("Prefabs/IconPrefab");
 	}
 	
 	// Update is called once per frame
@@ -35,7 +35,7 @@ public class IconSpawner : MonoBehaviour
 	public void NotifyEmpty(GameObject slot)
 	{
 	//	if(emptySlots != null)
-			emptySlots.Add (slot);
+		emptySlots.Add (slot);
 	}
 
 	public void NotifyFull(GameObject slot)

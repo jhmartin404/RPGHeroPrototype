@@ -5,37 +5,37 @@ using System.Collections;
 public class CharacterScene : MonoBehaviour 
 {
 	private PlayerStats playerStats;
-	private Text levelText;
-	private Text healthText;
-	private Text luckText;
-	private Text meleeText;
-	private Text rangedText;
-	private Text magicText;
-	private Image expBar;
+	public Text levelText;
+	public Text healthText;
+	public Text luckText;
+	public Text meleeText;
+	public Text rangedText;
+	public Text magicText;
+	public Image expBar;
 
 	// Use this for initialization
 	void Start () 
 	{
 		playerStats = Player.Instance.GetPlayerStats ();
-		levelText = GameObject.Find ("LevelText").GetComponent<Text>();
+		//levelText = GameObject.Find ("LevelText").GetComponent<Text>();
 		levelText.text = "Level " + playerStats.ExpLevel;
 
-		healthText = GameObject.Find ("HealthText").GetComponent<Text>();
+		//healthText = GameObject.Find ("HealthText").GetComponent<Text>();
 		healthText.text = "Health: " + playerStats.HealthStat;
 
-		luckText = GameObject.Find ("LuckText").GetComponent<Text>();
+		//luckText = GameObject.Find ("LuckText").GetComponent<Text>();
 		luckText.text = "Luck: " + playerStats.LuckStat;
 
-		meleeText = GameObject.Find ("MeleeText").GetComponent<Text>();
+		//meleeText = GameObject.Find ("MeleeText").GetComponent<Text>();
 		meleeText.text = "Melee: " + playerStats.MeleeStat;
 
-		rangedText = GameObject.Find ("RangedText").GetComponent<Text>();
+		//rangedText = GameObject.Find ("RangedText").GetComponent<Text>();
 		rangedText.text = "Ranged: " + playerStats.RangedStat;
 
-		magicText = GameObject.Find ("MagicText").GetComponent<Text>();
+		//magicText = GameObject.Find ("MagicText").GetComponent<Text>();
 		magicText.text = "Magic: " + playerStats.MagicStat;
 
-		expBar = GameObject.Find ("Exp").GetComponent<Image> ();
+		//expBar = GameObject.Find ("Exp").GetComponent<Image> ();
 		expBar.fillAmount = (float)((float)playerStats.CurrentExp / (float)playerStats.NeededExp);
 	}
 	

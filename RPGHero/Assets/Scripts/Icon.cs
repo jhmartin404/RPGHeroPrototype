@@ -23,6 +23,7 @@ public class Icon : MonoBehaviour
 	private Transform center;
 	private float degreesPerSecond;
 	private IconState iconState;
+	private float iconSpeed = 5.0f;
 
 	private Vector2 startPosition;//start position of the fireball
 	private Vector2 endPosition;//end position of the fireball
@@ -64,19 +65,6 @@ public class Icon : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		if(iconState == IconState.Rotating)
-		{
-			Rotating();
-		}
-		else if(iconState == IconState.Grabbed)
-		{
-			Grabbed();
-		}
-		else if(iconState == IconState.Thrown)
-		{
-			Thrown();
-		}
-
 		if (Input.touchCount > 0 && iconState != IconState.Thrown)
 		{
 			if((Input.GetTouch(0).phase == TouchPhase.Began || Input.GetTouch(0).phase == TouchPhase.Moved) && iconState == IconState.Rotating
@@ -88,7 +76,7 @@ public class Icon : MonoBehaviour
 					iconState = IconState.Grabbed;
 					GameObject.Find("Main Camera").GetComponent<LevelScript>().IconSelected = true;
 					//startPosition = transform.position;
-					//rigidbody2D.isKinematic = true;
+					rigidbody2D.isKinematic = true;
 				}
 				
 				
@@ -98,25 +86,48 @@ public class Icon : MonoBehaviour
 				iconState = IconState.Thrown;
 				GameObject.Find("Main Camera").GetComponent<LevelScript>().IconSelected = false;
 				//endPosition = transform.position;
-				//rigidbody2D.isKinematic = false;
+				rigidbody2D.isKinematic = false;
 			}
+		}
+
+		if(iconState == IconState.Rotating)
+		{
+			OnRotatingState();
+		}
+		else if(iconState == IconState.Grabbed)
+		{
+			OnGrabbedState();
+		}
+		else if(iconState == IconState.Thrown)
+		{
+			OnThrownState();
+		}
+
+
+	}
+
+	void LateUpdate()
+	{
+		if(iconState == IconState.Thrown)
+		{
+			rigidbody2D.velocity = (endPosition - startPosition).normalized*iconSpeed;
 		}
 	}
 
-	public virtual void Rotating()
+	protected virtual void OnRotatingState()
 	{
 		v = Quaternion.AngleAxis (degreesPerSecond * Time.deltaTime, Vector3.forward) * v;
 		transform.position = center.position + v;
 	}
 
-	public virtual void Grabbed()
+	protected virtual void OnGrabbedState()
 	{
 		startPosition = transform.position;
 		Vector2 pos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 		transform.position = pos;
 	}
 
-	public virtual void Thrown()
+	protected virtual void OnThrownState()
 	{
 		endPosition = transform.position;
 	}

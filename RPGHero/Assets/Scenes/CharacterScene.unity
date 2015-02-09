@@ -901,6 +901,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de3e52b643df36345901b8d893084a92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelText: {fileID: 2092763770}
+  healthText: {fileID: 1145489674}
+  luckText: {fileID: 2004531181}
+  meleeText: {fileID: 926376750}
+  rangedText: {fileID: 1979101056}
+  magicText: {fileID: 1162601487}
+  expBar: {fileID: 107514905}
 --- !u!1001 &1941524172
 Prefab:
   m_ObjectHideFlags: 0

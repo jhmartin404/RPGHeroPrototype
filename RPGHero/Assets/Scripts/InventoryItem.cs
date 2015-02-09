@@ -61,14 +61,4 @@ public class InventoryItem
 			result += "Cost: " +itemCost + "\n";
 		return result;
 	}
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }

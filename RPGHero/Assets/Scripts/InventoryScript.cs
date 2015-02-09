@@ -7,9 +7,9 @@ public class InventoryScript : MonoBehaviour
 {
 	private Inventory playerInventory;
 	private ItemType filter;
-	private Text coinsText;
-	private Text healthPotionText;
-	private Text manaPotionText;
+	public Text coinsText;
+	public Text healthPotionText;
+	public Text manaPotionText;
 	public GameObject[] inventorySlots;
 	private List<InventoryItem> unequippedItems;
 	private int slotCount;
@@ -19,11 +19,11 @@ public class InventoryScript : MonoBehaviour
 	{
 		playerInventory = Player.Instance.GetPlayerInventory ();
 		unequippedItems = playerInventory.GetUnequippedItems ();
-		coinsText = GameObject.Find ("CoinCount").GetComponent<Text>();
+		//coinsText = GameObject.Find ("CoinCount").GetComponent<Text>();
 		coinsText.text = "" + playerInventory.Coins;
-		healthPotionText = GameObject.Find ("HealthPotionCount").GetComponent<Text>();
+		//healthPotionText = GameObject.Find ("HealthPotionCount").GetComponent<Text>();
 		healthPotionText.text = "" + playerInventory.HealthPotions;
-		manaPotionText = GameObject.Find ("ManaPotionCount").GetComponent<Text>();
+		//manaPotionText = GameObject.Find ("ManaPotionCount").GetComponent<Text>();
 		manaPotionText.text = "" + playerInventory.ManaPotions;
 		filter = ItemType.Weapon;
 
