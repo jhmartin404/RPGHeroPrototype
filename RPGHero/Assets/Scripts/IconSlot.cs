@@ -7,6 +7,7 @@ public class IconSlot : MonoBehaviour
 	public Transform center;
 	private Vector3 v;
 	private bool isEmpty;
+	private bool notified;
 	private GameObject iconSpawner;
 	private GameObject icon;
 
@@ -41,6 +42,7 @@ public class IconSlot : MonoBehaviour
 		isEmpty = true;
 		iconSpawner = GameObject.Find ("IconSpawner");
 		iconSpawner.GetComponent<IconSpawner> ().NotifyEmpty (gameObject);
+		notified = true;
 		icon = null;
 	}
 	
@@ -49,12 +51,18 @@ public class IconSlot : MonoBehaviour
 	{
 		v = Quaternion.AngleAxis (degreesPerSecond * Time.deltaTime, Vector3.forward) * v;
 		transform.position = center.position + v;
-	}
 
+		if(icon == null && !notified)
+		{
+			iconSpawner.GetComponent<IconSpawner>().NotifyEmpty(gameObject);
+			notified = true;
+		}
+	}
 	public void SetIcon(GameObject icn)
 	{
 		icon = icn;
 		iconSpawner.GetComponent<IconSpawner> ().NotifyFull (gameObject);
 		isEmpty = false;
+		notified = false;
 	}
 }
