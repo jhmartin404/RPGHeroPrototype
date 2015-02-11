@@ -32,6 +32,18 @@ public class WeaponControl : MonoBehaviour
 		}
 	}
 
+	public MeleeWeapon Weapon
+	{
+		get
+		{
+			return meleeWeapon;
+		}
+		set
+		{
+			meleeWeapon = value;
+		}
+	}
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -78,7 +90,7 @@ public class WeaponControl : MonoBehaviour
 				float degrees = 10;
 				Vector2 pos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 				transform.position = pos;
-				float angle = (Mathf.Atan2(transform.position.y, transform.position.x) - Mathf.Atan2(actionAreaCenter.y, actionAreaCenter.x)) * Mathf.Rad2Deg;
+				//float angle = (Mathf.Atan2(transform.position.y, transform.position.x) - Mathf.Atan2(actionAreaCenter.y, actionAreaCenter.x)) * Mathf.Rad2Deg;
 				Vector2 delta = Input.GetTouch(0).deltaPosition;
 				if(delta.x >0)
 				{

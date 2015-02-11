@@ -18,19 +18,24 @@ public class ComparedItem : MonoBehaviour
 		}
 	}
 
-	public void SetCompared(System.Type type)
+	public void SetCompared(InventoryItem selectedItem)
 	{
-		if(type.ToString()=="MeleeWeapon")
+		switch(selectedItem.GetItemType())
 		{
-			comparedItem = Player.Instance.GetPlayerInventory().EquippedMeleeWeapon;
-		}
-		if(type.ToString()=="RangedWeapon")
-		{
-			comparedItem = Player.Instance.GetPlayerInventory().EquippedRangedWeapon;
-		}
-		if(type.ToString()=="Shield")
-		{
+		case ItemType.Weapon:
+			Weapon item = selectedItem as Weapon;
+			if(item.WpnType == WeaponType.Melee)
+			{
+				comparedItem = Player.Instance.GetPlayerInventory().EquippedMeleeWeapon;
+			}
+			if(item.WpnType == WeaponType.Ranged)
+			{
+				comparedItem = Player.Instance.GetPlayerInventory().EquippedRangedWeapon;
+			}
+			break;
+		case ItemType.Shield:
 			comparedItem = Player.Instance.GetPlayerInventory().EquippedShield;
+			break;
 		}
 
 		GameObject.Find("ComparedItemImage").GetComponent<SpriteRenderer> ().sprite = comparedItem.GetItemImage ();

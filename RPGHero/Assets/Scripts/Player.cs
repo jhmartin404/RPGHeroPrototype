@@ -11,6 +11,7 @@ public class Player
 	//private int coins;
 	private float stamina;
 	private float mana;
+	private bool isDefending;
 	private int currentLevel;
 	private PlayerStats playerStats;
 	private Inventory playerInventory;
@@ -48,6 +49,18 @@ public class Player
 		set
 		{
 			mana = value;
+		}
+	}
+
+	public bool IsDefending
+	{
+		get
+		{
+			return isDefending;
+		}
+		set
+		{
+			isDefending = value;
 		}
 	}
 

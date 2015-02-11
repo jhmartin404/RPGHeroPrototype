@@ -7,6 +7,7 @@ public class IconSlot : MonoBehaviour
 	public Transform center;
 	private Vector3 v;
 	private bool isEmpty;
+	private GameObject iconSpawner;
 	private GameObject icon;
 
 	public Transform Center
@@ -36,12 +37,10 @@ public class IconSlot : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		//degressPerSecond = -85.0f;
-		//center = GameObject.Find ("LeftCircle").transform;
 		v = transform.position - center.position;
 		isEmpty = true;
-		Debug.Log (gameObject.ToString ());
-		GameObject.Find ("IconSpawner").GetComponent<IconSpawner> ().NotifyEmpty (gameObject);
+		iconSpawner = GameObject.Find ("IconSpawner");
+		iconSpawner.GetComponent<IconSpawner> ().NotifyEmpty (gameObject);
 		icon = null;
 	}
 	
@@ -55,7 +54,7 @@ public class IconSlot : MonoBehaviour
 	public void SetIcon(GameObject icn)
 	{
 		icon = icn;
-		GameObject.Find ("IconSpawner").GetComponent<IconSpawner> ().NotifyFull (gameObject);
+		iconSpawner.GetComponent<IconSpawner> ().NotifyFull (gameObject);
 		isEmpty = false;
 	}
 }

@@ -9,6 +9,8 @@ public class LevelScript : MonoBehaviour
 	public Image staminaBar;
 	public Image manaBar;
 	private bool iconSelected;
+	private GameObject enemySpawner;
+	private GameObject weapon;
 
 	public bool IconSelected
 	{
@@ -20,6 +22,12 @@ public class LevelScript : MonoBehaviour
 		{
 			iconSelected = value;
 		}
+	}
+
+	void Awake()
+	{
+		weapon = Instantiate(Player.Instance.GetPlayerInventory ().EquippedMeleeWeapon.MeleeWeaponPrefab,transform.position,Quaternion.identity) as GameObject;
+		weapon.name = "Weapon";
 	}
 
 	// Use this for initialization
@@ -35,6 +43,8 @@ public class LevelScript : MonoBehaviour
 
 		//manaBar = GameObject.Find ("RemainingManaBar").GetComponent<Image> ();
 		manaBar.fillAmount = (float)(Player.Instance.Mana/ (float)playerStats.MaxMana);
+
+		enemySpawner = GameObject.Find ("EnemySpawner");
 	}
 	
 	// Update is called once per frame
@@ -43,6 +53,11 @@ public class LevelScript : MonoBehaviour
 		healthBar.fillAmount = (float)(Player.Instance.Health/ (float)playerStats.HealthStat);
 		staminaBar.fillAmount = (float)(Player.Instance.Stamina/ (float)playerStats.MaxStamina);
 		manaBar.fillAmount = (float)(Player.Instance.Mana/ (float)playerStats.MaxMana);
+
+		if(Player.Instance.Health <=0)
+		{
+			enemySpawner.GetComponent<EnemySpawner>().NotifyPlayerDied();
+		}
 
 		if(Application.platform == RuntimePlatform.Android)
 		{
@@ -56,5 +71,10 @@ public class LevelScript : MonoBehaviour
 	public void addCoin()
 	{
 		Player.Instance.GetPlayerInventory().Coins++;
+	}
+
+	public void GoBack()
+	{
+		Application.LoadLevel ("LevelSelectScene");
 	}
 }

@@ -18,39 +18,43 @@ public class SelectedItem : MonoBehaviour
 			GameObject.Find("SelectedItemImage").GetComponent<SpriteRenderer> ().sprite = selectedItem.GetItemImage ();
 			Text selectedText = GameObject.Find("SelectedItemText").GetComponent<Text>();
 			selectedText.text = selectedItem.ToString();
-			GameObject.Find("ComparedItem").GetComponent<ComparedItem>().SetCompared(selectedItem.GetType());
+			GameObject.Find("ComparedItem").GetComponent<ComparedItem>().SetCompared(selectedItem);
 		}
 	}
 
 	public void EquipItem()
 	{
-		if(selectedItem.GetType().ToString()=="MeleeWeapon")
+		switch(selectedItem.GetItemType())
 		{
-			InventoryItem prevEquipped = Player.Instance.GetPlayerInventory ().EquippedMeleeWeapon;
-			Player.Instance.GetPlayerInventory ().AddUnequippedItem (prevEquipped);
-			Player.Instance.GetPlayerInventory ().RemoveUnequippedItem(selectedItem);
-			Player.Instance.GetPlayerInventory ().EquippedMeleeWeapon = (MeleeWeapon)selectedItem;
-			SlctdItem = prevEquipped;
-			GameObject.Find("ComparedItem").GetComponent<ComparedItem>().SetCompared(selectedItem.GetType());
-
-		}
-		if(selectedItem.GetType().ToString()=="RangedWeapon")
-		{
-			InventoryItem prevEquipped = Player.Instance.GetPlayerInventory ().EquippedRangedWeapon;
-			Player.Instance.GetPlayerInventory ().AddUnequippedItem (prevEquipped);
-			Player.Instance.GetPlayerInventory ().RemoveUnequippedItem(selectedItem);
-			Player.Instance.GetPlayerInventory ().EquippedRangedWeapon = (RangedWeapon)selectedItem;
-			SlctdItem = prevEquipped;
-			GameObject.Find("ComparedItem").GetComponent<ComparedItem>().SetCompared(selectedItem.GetType());
-		}
-		if(selectedItem.GetType().ToString()=="Shield")
-		{
-			InventoryItem prevEquipped = Player.Instance.GetPlayerInventory ().EquippedShield;
-			Player.Instance.GetPlayerInventory ().AddUnequippedItem (prevEquipped);
+		case ItemType.Weapon:
+			Weapon item = selectedItem as Weapon;
+			if(item.WpnType == WeaponType.Melee)
+			{
+				InventoryItem prevEquipped = Player.Instance.GetPlayerInventory ().EquippedMeleeWeapon;
+				Player.Instance.GetPlayerInventory ().AddUnequippedItem (prevEquipped);
+				Player.Instance.GetPlayerInventory ().RemoveUnequippedItem(selectedItem);
+				Player.Instance.GetPlayerInventory ().EquippedMeleeWeapon = (MeleeWeapon)selectedItem;
+				SlctdItem = prevEquipped;
+				GameObject.Find("ComparedItem").GetComponent<ComparedItem>().SetCompared(selectedItem);
+			}
+			else if(item.WpnType == WeaponType.Ranged)
+			{
+				InventoryItem prevEquipped = Player.Instance.GetPlayerInventory ().EquippedRangedWeapon;
+				Player.Instance.GetPlayerInventory ().AddUnequippedItem (prevEquipped);
+				Player.Instance.GetPlayerInventory ().RemoveUnequippedItem(selectedItem);
+				Player.Instance.GetPlayerInventory ().EquippedRangedWeapon = (RangedWeapon)selectedItem;
+				SlctdItem = prevEquipped;
+				GameObject.Find("ComparedItem").GetComponent<ComparedItem>().SetCompared(selectedItem);
+			}
+			break;
+		case ItemType.Shield:
+			InventoryItem prevShield = Player.Instance.GetPlayerInventory ().EquippedShield;
+			Player.Instance.GetPlayerInventory ().AddUnequippedItem (prevShield);
 			Player.Instance.GetPlayerInventory ().RemoveUnequippedItem(selectedItem);
 			Player.Instance.GetPlayerInventory ().EquippedShield = (Shield)selectedItem;
-			SlctdItem = prevEquipped;
-			GameObject.Find("ComparedItem").GetComponent<ComparedItem>().SetCompared(selectedItem.GetType());
+			SlctdItem = prevShield;
+			GameObject.Find("ComparedItem").GetComponent<ComparedItem>().SetCompared(selectedItem);
+			break;
 		}
 		GameObject.Find ("Main Camera").GetComponent<InventoryScript> ().ResetBoard ();
 	}

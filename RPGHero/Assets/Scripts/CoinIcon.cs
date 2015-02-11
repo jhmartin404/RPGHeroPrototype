@@ -8,6 +8,7 @@ public class CoinIcon : Icon
 	public override void Start () 
 	{
 		base.Start ();
+		iconType = IconType.Coin;
 	}
 	
 	// Update is called once per frame

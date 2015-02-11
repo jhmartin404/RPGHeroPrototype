@@ -17,7 +17,7 @@ public class RangedWeapon : Weapon
 		}
 	}
 	
-	public RangedWeapon(int stamCost, int damage, ItemType item, int id, string name, Sprite image, int cost, bool purchase) : base(damage, item, id, name, image, cost, purchase)
+	public RangedWeapon(int stamCost, int damage, WeaponType weap, ItemType item, int id, string name, Sprite image, int cost, bool purchase) : base(damage, weap, item, id, name, image, cost, purchase)
 	{
 		rangedCost = stamCost;
 	}

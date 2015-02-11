@@ -54,13 +54,35 @@ public class Icon : MonoBehaviour
 		}
 	}
 
+	public IconType Type
+	{
+		get
+		{
+			return iconType;
+		}
+		set
+		{
+			iconType = value;
+		}
+	}
+
+	public IconState State
+	{
+		get
+		{
+			return iconState;
+		}
+		set
+		{
+			iconState = value;
+		}
+	}
+
 	// Use this for initialization
 	public virtual void Start () 
 	{
 		mainCamera = GameObject.Find ("Main Camera");
 		iconState = IconState.Rotating;
-		//center = GameObject.Find ("LeftCircle").transform;
-		//degreesPerSecond = 85.0f;
 		v = transform.position - center.position;
 	}
 	

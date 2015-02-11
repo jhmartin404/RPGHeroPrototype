@@ -120,20 +120,24 @@ public class Inventory
 		Sprite axe = Resources.Load<Sprite> ("bigAxe");
 		Sprite fireBlast = Resources.Load<Sprite> ("fireBlastIcon");
 		Sprite iceBlast = Resources.Load<Sprite> ("iceBlastIcon");
+
+		Object axePrefab = Resources.Load ("Prefabs/AxePrefab");
+		Object steelSwordPrefab = Resources.Load ("Prefabs/SteelSwordPrefab");
+
 		healthPotions = 2;
 		manaPotions = 2;
 		coins = 0;
 		//TESTING LINES
 		unequippedItems = new List<InventoryItem>();
-		unequippedItems.Add(new MeleeWeapon(8,4,ItemType.Weapon,1,"Steel Axe",axe,8,true));
-		unequippedItems.Add(new RangedWeapon(3,2,ItemType.Weapon,2,"Weak Bow",ranged,5,true));
+		unequippedItems.Add(new MeleeWeapon(8,axePrefab,4,WeaponType.Melee,ItemType.Weapon,1,"Steel Axe",axe,8,true));
+		unequippedItems.Add(new RangedWeapon(3,2,WeaponType.Ranged, ItemType.Weapon,2,"Weak Bow",ranged,5,true));
 		unequippedItems.Add(new Shield(30,ItemType.Shield,3,"Weak Shield",shield,5,true));
-		unequippedItems.Add(new Magic (7,ItemType.Magic,4,"Weak Fire Blast",fireBlast,-1,false));
+		unequippedItems.Add(new Magic (7,3,ItemType.Magic,4,"Weak Fire Blast",fireBlast,-1,false));
 		//unequippedItemsCount = 4;
-		equippedMagic1 = new Magic (10,ItemType.Magic,4,"Fire Blast",fireBlast,-1,false);
-		equippedMagic2 = new Magic (10,ItemType.Magic,5,"Ice Blast",iceBlast,-1,false);
-		equippedMeleeWeapon = new MeleeWeapon(10,5,ItemType.Weapon,6,"Steel Sword",melee,10,true);
-		equippedRangedWeapon = new RangedWeapon(5,3,ItemType.Weapon,7,"Wooden Bow",ranged,7,true);
+		equippedMagic1 = new Magic (10,5,ItemType.Magic,4,"Fire Blast",fireBlast,-1,false);
+		equippedMagic2 = new Magic (10,5,ItemType.Magic,5,"Ice Blast",iceBlast,-1,false);
+		equippedMeleeWeapon = new MeleeWeapon(10,steelSwordPrefab,5,WeaponType.Melee,ItemType.Weapon,6,"Steel Sword",melee,10,true);
+		equippedRangedWeapon = new RangedWeapon(5,3,WeaponType.Ranged,ItemType.Weapon,7,"Wooden Bow",ranged,7,true);
 		equippedShield = new Shield(50,ItemType.Shield,8,"Metal Shield",shield,9,true);
 		//Save();
 	}
@@ -146,7 +150,6 @@ public class Inventory
 	public void AddUnequippedItem(InventoryItem itm)
 	{
 		unequippedItems.Add(itm);
-		//unequippedItemsCount++;
 	}
 
 	public void RemoveUnequippedItem(InventoryItem itm)

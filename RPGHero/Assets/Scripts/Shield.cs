@@ -3,9 +3,9 @@ using System.Collections;
 
 public class Shield : InventoryItem 
 {
-	private int defence;
+	private float defence;
 	
-	public int Defence
+	public float Defence
 	{
 		get
 		{
@@ -17,9 +17,14 @@ public class Shield : InventoryItem
 		}
 	}
 	
-	public Shield(int def, ItemType item, int id, string name, Sprite image, int cost, bool purchase) : base(item, id, name, image, cost, purchase)
+	public Shield(float def, ItemType item, int id, string name, Sprite image, int cost, bool purchase) : base(item, id, name, image, cost, purchase)
 	{
 		defence = def;
+	}
+
+	public void BlockDamage(float damage)
+	{
+		defence -= damage;
 	}
 
 	public override string ToString()

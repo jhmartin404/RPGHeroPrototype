@@ -4,6 +4,7 @@ using System.Collections;
 public class MeleeWeapon : Weapon
 {
 	private int meleeCost;
+	private Object meleeWeaponPrefab;
 
 	public int MeleeCost
 	{
@@ -17,8 +18,21 @@ public class MeleeWeapon : Weapon
 		}
 	}
 
-	public MeleeWeapon(int stamCost, int damage, ItemType item, int id, string name, Sprite image, int cost, bool purchase) : base(damage, item, id, name, image, cost, purchase)
+	public Object MeleeWeaponPrefab
 	{
+		get
+		{
+			return meleeWeaponPrefab;
+		}
+		set
+		{
+			meleeWeaponPrefab = value;
+		}
+	}
+
+	public MeleeWeapon(int stamCost,Object prefab, int damage, WeaponType weap, ItemType item, int id, string name, Sprite image, int cost, bool purchase) : base(damage, weap, item, id, name, image, cost, purchase)
+	{
+		meleeWeaponPrefab = prefab;
 		meleeCost = stamCost;
 	}
 

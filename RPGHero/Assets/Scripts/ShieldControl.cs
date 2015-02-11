@@ -48,6 +48,7 @@ public class ShieldControl : MonoBehaviour
 					//transform.localScale = newSize;
 					shield.renderer.enabled = true;//render the shield
 					GameObject.Find("Main Camera").GetComponent<LevelScript>().IconSelected = true;
+					Player.Instance.IsDefending = true;
 				}
 				
 				
@@ -64,6 +65,7 @@ public class ShieldControl : MonoBehaviour
 				shield.renderer.enabled = false;//disable the renderer for the shield
 				transform.position = controlPosition;
 				GameObject.Find("Main Camera").GetComponent<LevelScript>().IconSelected = false;
+				Player.Instance.IsDefending = false;
 				//transform.localScale = new Vector2(1.0f,1.0f);
 			}
 		}

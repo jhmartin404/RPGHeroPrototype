@@ -1,9 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public enum WeaponType
+{
+	Melee,
+	Ranged
+};
+
 public class Weapon : InventoryItem 
 {
 	private int damage;
+	private WeaponType weaponType;
 
 	public int Damage
 	{
@@ -17,9 +24,22 @@ public class Weapon : InventoryItem
 		}
 	}
 
-	public Weapon(int dam,ItemType item, int id, string name, Sprite image, int cost, bool purchase) : base(item, id, name, image, cost, purchase)
+	public WeaponType WpnType
+	{
+		get
+		{
+			return weaponType;
+		}
+		set
+		{
+			weaponType = value;
+		}
+	}
+
+	public Weapon(int dam,WeaponType weap, ItemType item, int id, string name, Sprite image, int cost, bool purchase) : base(item, id, name, image, cost, purchase)
 	{
 		damage = dam;
+		weaponType = weap;
 	}
 
 	public override string ToString()
@@ -27,5 +47,15 @@ public class Weapon : InventoryItem
 		string result = base.ToString ();
 		result += "Damage: " +damage + "\n";
 		return result;
+	}
+
+	public virtual void DealDamage(GameObject enemy)
+	{
+		Enemy damagedEnemy = enemy.GetComponent<Enemy>();
+
+		if(damagedEnemy != null)
+		{
+			enemy.GetComponent<Enemy>().EnemyHealth -= damage;
+		}
 	}
 }

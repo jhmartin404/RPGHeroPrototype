@@ -10,11 +10,25 @@ public class RangedIcon : Icon
 	private RangedWeapon equippedRanged;
 	private Vector3 leftSide = new Vector3(-0.9f,-1.8f,0);
 	private Vector3 rightSide = new Vector3 (0.9f,-1.8f,0);
-	bool startThrow;
+	private bool startThrow;
+
+	public RangedWeapon EquippedRanged
+	{
+		get
+		{
+			return equippedRanged;
+		}
+		set
+		{
+			equippedRanged = value;
+		}
+	}
+
 	// Use this for initialization
 	public override void Start () 
 	{
 		base.Start ();
+		iconType = IconType.Ranged;
 		lineRenderer = GameObject.Find ("LineRenderer").GetComponent<LineRenderer> ();
 		equippedRanged = Player.Instance.GetPlayerInventory ().EquippedRangedWeapon;
 		startThrow = false;
@@ -78,14 +92,9 @@ public class RangedIcon : Icon
 	protected override void OnGrabbedState()
 	{
 		Debug.Log ("InGrabstate");
-		//if(!actionArea.renderer.enabled)
-		//{
-		//	actionArea.renderer.enabled = true;
-		//}
 		if(startThrow)
 		{
 			Debug.Log("Throw Started");
-			//isGrabbed=false;
 			Vector2 pos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 			if(Vector2.Distance(startPosition,pos)<2)
 				transform.position = pos;
@@ -107,12 +116,6 @@ public class RangedIcon : Icon
 	protected override void OnThrownState()
 	{
 		Debug.Log ("NOW THROWN");
-		//if(actionArea.renderer.enabled)
-		//{
-		//	actionArea.renderer.enabled = false;
-		//	endPosition = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-		//}
-
 	}
 
 	public override void LateUpdate()
