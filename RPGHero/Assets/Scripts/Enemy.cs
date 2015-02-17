@@ -15,26 +15,33 @@ public enum EnemyType
 
 public class Enemy : MonoBehaviour
 {
+	protected OnState move;
+	protected OnState attack;
+	protected OnState lowHealth;
+	protected OnState die;
+	protected FiniteStateMachine fsm;
 	protected float xDirection = 1.0f;
 	protected float yDirection = 0.0f;
 	protected float attackDistance = 4.5f;
 	protected float sizeChangeSpeed = 1.0f;
-	protected float enemySpeed;
+	public float enemySpeed = 5.0f;
 	protected EnemyType enemyType;
-	protected float enemyHealth;
-	protected float enemyAttackDamage;
-	protected float attackTime=5.0f;
+	public float enemyHealth = 50.0f;
+	protected float lowEnemyHealth;
+	public float enemyAttackDamage = 10.0f;
+	public float attackTime = 5.0f;
 	private float attackTimer = 0.0f;
 	protected float enemyYPosition;
 
 	protected Vector2 movement;
 	
-	protected int expGiven;
+	public int expGiven = 50;
 	protected bool isDead;
 	protected GameObject enemySpawner;
 	protected bool isAttacking;
 	protected Vector3 actionAreaCenter;
 	protected Vector3 size;
+	private Color normalColor;
 
 	public float EnemyHealth
 	{
@@ -50,18 +57,21 @@ public class Enemy : MonoBehaviour
 	// Use this for initialization
 	public virtual void Start () 
 	{
+		move = OnMove;
+		attack = OnAttack;
+		lowHealth = OnLowHealth;
+		die = OnDie;
+		fsm = new FiniteStateMachine ();
+		lowEnemyHealth = enemyHealth * 0.25f;
 		rigidbody2D.isKinematic = true;
 		actionAreaCenter = GameObject.Find ("ActionArea").transform.renderer.bounds.center;
 		enemySpawner = GameObject.Find ("EnemySpawner");
 		size = transform.localScale;
 		enemyType = EnemyType.Bandit;
-		enemyHealth = 50;
-		enemyAttackDamage = 10;
-		enemySpeed = 5.0f;
-		expGiven = 50;
 		enemyYPosition = transform.position.y;
 		isAttacking = false;
 		isDead = false;
+		normalColor = renderer.material.color;
 	}
 	
 	// Update is called once per frame
@@ -69,37 +79,27 @@ public class Enemy : MonoBehaviour
 	{
 		attackTimer += Time.deltaTime;
 		//Move left to right
-		if(!isAttacking)
+		if(fsm.GetCurrentState() != attack)
 		{
-			Move ();
+			fsm.PushState(move);
+			//OnMove ();
 		}
 		//Move up down
-		else if(isAttacking)
-		{
-			Attack();
-		}
-		if (Camera.main.WorldToViewportPoint (this.transform.position).x < 0.15) 
-		{
-			xDirection = 1;
-		}
-		else if(Camera.main.WorldToViewportPoint (this.transform.position).x > 0.85)
-		{
-			xDirection = -1;
-		}
-		
-		//if(attackTimer > attackTime-0.5f)
+		//else if(isAttacking)
 		//{
-		//	renderer.material.color = attackColor; //Warn the player that the enemy is about to attack
+			//OnAttack();
 		//}
 
-		if(enemyHealth < 25.0f)
-		{
-			LowHealth();
-		}
+		//if(enemyHealth <= lowEnemyHealth)
+		//{
+		//	fsm.PushState(lowHealth);
+			//OnLowHealth();
+		//}
 
-		if(attackTimer > attackTime && enemyHealth>0 && !isAttacking)
+		if(attackTimer > attackTime && enemyHealth>0 && fsm.GetCurrentState() != attack/*!isAttacking*/)
 		{
-			isAttacking = true;
+			//isAttacking = true;
+			fsm.PushState(attack);
 			yDirection = -1.0f;
 		}
 		
@@ -108,17 +108,40 @@ public class Enemy : MonoBehaviour
 		if(enemyHealth<=0)
 		{
 			if(!isDead)
-				Die();
+			{
+				fsm.PushState(die);
+				//OnDie();
+			}
 		}
+
+		Debug.Log("State: " +fsm.GetCurrentState ().Method.Name);
+		fsm.DoState ();
 	}
 
-	protected virtual void Move()
+	//Flash enemy's color, used to show when enemy is hit
+	protected IEnumerator Flash(Color collideColor)
+	{
+		renderer.material.color = collideColor;
+		yield return new WaitForSeconds(0.1f);
+		renderer.material.color = normalColor;
+	}
+
+	protected virtual void OnMove()
 	{
 		movement.y = 0;
 		movement.x = xDirection * enemySpeed * Time.deltaTime;
+
+		if (Camera.main.WorldToViewportPoint (this.transform.position).x < 0.15) 
+		{
+			xDirection = 1;
+		}
+		else if(Camera.main.WorldToViewportPoint (this.transform.position).x > 0.85)
+		{
+			xDirection = -1;
+		}
 	}
 
-	protected virtual void Attack()
+	protected virtual void OnAttack()
 	{
 		movement.x = 0;
 		movement.y = yDirection * enemySpeed * Time.deltaTime;
@@ -127,15 +150,7 @@ public class Enemy : MonoBehaviour
 		{
 			yDirection = 1.0f;
 			sizeChangeSpeed = -1.0f;
-			//StartCoroutine(AttackedPlayer());//Flash red screen
-			if(!Player.Instance.IsDefending)
-			{
-				Player.Instance.Health -= enemyAttackDamage;
-			}
-			else if(Player.Instance.IsDefending)
-			{
-				Player.Instance.GetPlayerInventory().EquippedShield.BlockDamage(enemyAttackDamage);
-			}
+			Player.Instance.TakeDamage(this);
 		}
 		
 		if(yDirection>= 0.0f && transform.position.y >= enemyYPosition && sizeChangeSpeed <0)
@@ -143,65 +158,74 @@ public class Enemy : MonoBehaviour
 			isAttacking = false;
 			sizeChangeSpeed = 1.0f;
 			attackTimer = 0;
-			//renderer.material.color = normalColor;
+			fsm.PopState();
 		}
 	}
 
-	protected virtual void LowHealth()
+	protected virtual void OnLowHealth()
 	{
 		attackTime = 3.0f;
+		fsm.PopState ();
 	}
 
-	protected virtual void Die()
+	protected virtual void OnDie()
 	{
-		Player.Instance.GetPlayerStats ().CurrentExp += expGiven;
+		Player.Instance.AddExperience(expGiven);
 		isDead = true;
 		enemySpawner.GetComponent<EnemySpawner> ().NotifyEnemyDied ();
+		fsm.PopState ();
 		Destroy (gameObject);
 	}
 
-	void OnCollisionEnter2D(Collision2D other)
+	protected virtual void OnTriggerEnter2D(Collider2D other)
 	{
-		if(other.gameObject.tag == "Magic")
+		OnHit (other);
+	}
+
+	protected virtual void OnHit(Collider2D col)
+	{
+		if(col.gameObject.tag == "Magic")
 		{
-			MagicIcon magicIcon = other.gameObject.GetComponent<MagicIcon>();
-			if(magicIcon.State == IconState.Thrown)
-			{
-				magicIcon.EquippedMagic.DealDamage(this.gameObject);
-				Destroy(other.gameObject);
-			}
+			OnHitByMagic(col);
 		}
-		else if(other.gameObject.tag == "Ranged")
+		else if(col.gameObject.tag == "Ranged")
 		{
-			RangedIcon rangedIcon = other.gameObject.GetComponent<RangedIcon>();
-			if(rangedIcon.State == IconState.Thrown)
-			{
-				rangedIcon.EquippedRanged.DealDamage(this.gameObject);
-				Destroy(other.gameObject);
-			}
+			OnHitByRanged(col);
 		}
-		if(other.gameObject.tag == "Melee")
+		else if(col.gameObject.tag == "Melee")
 		{
-			Debug.Log("Enter Collision");
-			WeaponControl control = GameObject.Find("WeaponControl").GetComponent<WeaponControl>();
-			if(control.CntrlState == ControlState.Active)
-			{
-				Debug.Log("Damage Done");
-				control.Weapon.DealDamage(this.gameObject);
-			}
+			OnHitByMelee(col);
 		}
 	}
-	void OnCollisionStay2D(Collision2D other)
+
+	protected virtual void OnHitByRanged(Collider2D col)
 	{
-		if(other.gameObject.tag == "Melee")
+		RangedIcon rangedIcon = col.gameObject.GetComponent<RangedIcon>();
+		if(rangedIcon.State == IconState.Thrown)
 		{
-			Debug.Log("Stay Collision");
-			WeaponControl control = GameObject.Find("WeaponControl").GetComponent<WeaponControl>();
-			if(control.CntrlState == ControlState.Active)
-			{
-				Debug.Log("Damage Done");
-				control.Weapon.DealDamage(this.gameObject);
-			}
+			rangedIcon.EquippedRanged.DealDamage(this);
+			Destroy(col.gameObject);
+		}
+	}
+
+	protected virtual void OnHitByMagic(Collider2D col)
+	{
+		MagicIcon magicIcon = col.gameObject.GetComponent<MagicIcon>();
+		if(magicIcon.State == IconState.Thrown)
+		{
+			magicIcon.EquippedMagic.DealDamage(this);
+			Destroy(col.gameObject);
+		}
+	}
+
+	protected virtual void OnHitByMelee(Collider2D col)
+	{
+		WeaponControl control = GameObject.Find("WeaponControl").GetComponent<WeaponControl>();
+		if(control.CntrlState == ControlState.Active)
+		{
+			Color collideColor = new Color (255, 0, 0, 255);
+			StartCoroutine(Flash(collideColor));
+			control.Weapon.DealDamage(this);
 		}
 	}
 }

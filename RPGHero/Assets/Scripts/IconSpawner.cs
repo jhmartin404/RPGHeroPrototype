@@ -39,7 +39,7 @@ public class IconSpawner : MonoBehaviour
 			GameObject child = Instantiate(iconArray[randomNum],emptySlots[i].transform.position,Quaternion.identity) as GameObject;
 			child.GetComponent<Icon>().Center = emptySlots[i].GetComponent<IconSlot>().Center;
 			child.GetComponent<Icon>().DegreesPerSecond = emptySlots[i].GetComponent<IconSlot>().DegreesPerSecond;
-			emptySlots[i].GetComponent<IconSlot>().SetIcon(child);
+			emptySlots[i].GetComponent<IconSlot>().SetIcon(child.GetComponent<Icon>());
 		}
 	}
 

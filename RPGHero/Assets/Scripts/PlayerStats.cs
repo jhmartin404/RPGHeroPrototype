@@ -171,6 +171,20 @@ public class PlayerStats
 		}
 	}
 
+	public bool CheckLevelUp()
+	{
+		if(currentExp>=neededExp)
+		{
+			expLevel++;
+			neededExp *=expLevel;
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
 	//public void Load()
 	//{
 	//	Debug.Log("Loading PlayerStats");

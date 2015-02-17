@@ -49,13 +49,8 @@ public class Weapon : InventoryItem
 		return result;
 	}
 
-	public virtual void DealDamage(GameObject enemy)
+	public virtual void DealDamage(Enemy enemy)
 	{
-		Enemy damagedEnemy = enemy.GetComponent<Enemy>();
-
-		if(damagedEnemy != null)
-		{
-			enemy.GetComponent<Enemy>().EnemyHealth -= damage;
-		}
+		enemy.EnemyHealth -= damage;
 	}
 }

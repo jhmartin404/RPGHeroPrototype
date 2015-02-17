@@ -11,7 +11,6 @@ public class Inventory
 	private Magic equippedMagic1;
 	private Magic equippedMagic2;
 	private List<InventoryItem> unequippedItems;
-	//private int unequippedItemsCount;
 	private int coins;
 	private int healthPotions;
 	private int manaPotions;
@@ -114,10 +113,10 @@ public class Inventory
 
 	public Inventory()
 	{
-		Sprite melee = Resources.Load<Sprite> ("BigSword");
+		Sprite melee = Resources.Load<Sprite> ("SteelSwordImage");
 		Sprite ranged = Resources.Load<Sprite> ("bow");
 		Sprite shield = Resources.Load<Sprite> ("BigShield");
-		Sprite axe = Resources.Load<Sprite> ("bigAxe");
+		Sprite axe = Resources.Load<Sprite> ("SteelAxeImage");
 		Sprite fireBlast = Resources.Load<Sprite> ("fireBlastIcon");
 		Sprite iceBlast = Resources.Load<Sprite> ("iceBlastIcon");
 
@@ -133,7 +132,6 @@ public class Inventory
 		unequippedItems.Add(new RangedWeapon(3,2,WeaponType.Ranged, ItemType.Weapon,2,"Weak Bow",ranged,5,true));
 		unequippedItems.Add(new Shield(30,ItemType.Shield,3,"Weak Shield",shield,5,true));
 		unequippedItems.Add(new Magic (7,3,ItemType.Magic,4,"Weak Fire Blast",fireBlast,-1,false));
-		//unequippedItemsCount = 4;
 		equippedMagic1 = new Magic (10,5,ItemType.Magic,4,"Fire Blast",fireBlast,-1,false);
 		equippedMagic2 = new Magic (10,5,ItemType.Magic,5,"Ice Blast",iceBlast,-1,false);
 		equippedMeleeWeapon = new MeleeWeapon(10,steelSwordPrefab,5,WeaponType.Melee,ItemType.Weapon,6,"Steel Sword",melee,10,true);

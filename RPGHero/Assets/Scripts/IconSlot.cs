@@ -9,7 +9,7 @@ public class IconSlot : MonoBehaviour
 	private bool isEmpty;
 	private bool notified;
 	private GameObject iconSpawner;
-	private GameObject icon;
+	private Icon icon;
 
 	public Transform Center
 	{
@@ -52,13 +52,14 @@ public class IconSlot : MonoBehaviour
 		v = Quaternion.AngleAxis (degreesPerSecond * Time.deltaTime, Vector3.forward) * v;
 		transform.position = center.position + v;
 
-		if(icon == null && !notified)
+		if((icon == null || icon.State == IconState.Thrown) && !notified)
 		{
+			Debug.Log("Spawn Icon In Slot");
 			iconSpawner.GetComponent<IconSpawner>().NotifyEmpty(gameObject);
 			notified = true;
 		}
 	}
-	public void SetIcon(GameObject icn)
+	public void SetIcon(Icon icn)
 	{
 		icon = icn;
 		iconSpawner.GetComponent<IconSpawner> ().NotifyFull (gameObject);

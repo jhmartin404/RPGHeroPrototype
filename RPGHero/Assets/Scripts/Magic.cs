@@ -24,14 +24,9 @@ public class Magic : InventoryItem
 		damage = dam;
 	}
 
-	public virtual void DealDamage(GameObject enemy)
+	public virtual void DealDamage(Enemy enemy)
 	{
-		Enemy damagedEnemy = enemy.GetComponent<Enemy>();
-		
-		if(damagedEnemy != null)
-		{
-			enemy.GetComponent<Enemy>().EnemyHealth -= damage;
-		}
+		enemy.GetComponent<Enemy>().EnemyHealth -= damage;
 	}
 
 	public override string ToString()

@@ -150,6 +150,28 @@ public class Player
 		}
 	}
 
+	public void TakeDamage(Enemy enemy)
+	{
+		if(!IsDefending)
+		{
+			Health -= enemy.enemyAttackDamage;
+		}
+		else if(IsDefending)
+		{
+			bool blocked = playerInventory.EquippedShield.BlockDamage(enemy.enemyAttackDamage);
+			if(!blocked)
+			{
+				Health -= enemy.enemyAttackDamage;
+			}
+		}
+	}
+
+	public void AddExperience(int exp)
+	{
+		playerStats.CurrentExp += exp;
+		playerStats.CheckLevelUp();
+	}
+
 	//public void Save()
 	//{
 	//	Dictionary<string, object> dictionary = new Dictionary<string, object>();

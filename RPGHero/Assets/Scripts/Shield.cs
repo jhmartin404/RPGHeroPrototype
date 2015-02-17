@@ -22,9 +22,17 @@ public class Shield : InventoryItem
 		defence = def;
 	}
 
-	public void BlockDamage(float damage)
+	public bool BlockDamage(float damage)
 	{
-		defence -= damage;
+		if(defence>=damage)
+		{
+			defence -= damage;
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	public override string ToString()

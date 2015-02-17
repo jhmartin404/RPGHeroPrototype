@@ -51,10 +51,8 @@ public class WeaponControl : MonoBehaviour
 		actionArea = GameObject.Find ("ActionArea");
 		weapon = GameObject.Find ("Weapon");
 		meleeWeapon = Player.Instance.GetPlayerInventory ().EquippedMeleeWeapon;
-		weapon.GetComponent<SpriteRenderer> ().sprite = meleeWeapon.GetItemImage ();
 		controlPosition = transform.position;
 		actionAreaCenter = actionArea.renderer.bounds.center;
-		//actionAreaCenter.y = actionAreaCenter.y + 1;//Move center up a bit
 		actionAreaRadius = actionArea.GetComponent<CircleCollider2D>().radius;//Collider is used to get the radius the collider is not actually used though
 
 	}
@@ -70,10 +68,7 @@ public class WeaponControl : MonoBehaviour
 				Vector2 touchPos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 				if (collider2D == Physics2D.OverlapCircle(touchPos, fingerRadius))
 				{
-					controlState = ControlState.Grabbed;		
-					//rigidbody2D.isKinematic = true;
-					//transform.localScale = newSize;
-					//weapon.renderer.enabled = true;//render the weapon
+					controlState = ControlState.Grabbed;
 					actionArea.renderer.enabled = true;
 					GameObject.Find("Main Camera").GetComponent<LevelScript>().IconSelected = true;
 				}
@@ -90,7 +85,6 @@ public class WeaponControl : MonoBehaviour
 				float degrees = 10;
 				Vector2 pos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 				transform.position = pos;
-				//float angle = (Mathf.Atan2(transform.position.y, transform.position.x) - Mathf.Atan2(actionAreaCenter.y, actionAreaCenter.x)) * Mathf.Rad2Deg;
 				Vector2 delta = Input.GetTouch(0).deltaPosition;
 				if(delta.x >0)
 				{
@@ -104,14 +98,11 @@ public class WeaponControl : MonoBehaviour
 			else if((Input.GetTouch(0).phase == TouchPhase.Ended && controlState != ControlState.Stationary) || Player.Instance.Stamina<=0)
 			{
 				controlState = ControlState.Stationary;
-				//weapon.transform.rotation = Quaternion.Euler(0,0,30);//rotate sword back to initial angle
 				transform.position = controlPosition;
-				//transform.localScale = new Vector2(1.0f,1.0f);//set weapon icon back to normal size
 				weapon.renderer.enabled = false;//disable the renderer for the weapon
+				weapon.GetComponent<PolygonCollider2D>().isTrigger = false;
 				actionArea.renderer.enabled = false;
 				GameObject.Find("Main Camera").GetComponent<LevelScript>().IconSelected = false;
-				//rigidbody2D.isKinematic = false;
-				//weapon.GetComponent<PolygonCollider2D>().isTrigger = false;//Remove trigger to disable collisions
 			}
 		}
 		
@@ -129,6 +120,7 @@ public class WeaponControl : MonoBehaviour
 		{
 			controlState = ControlState.Active;
 			weapon.renderer.enabled = true;//render the weapon
+			weapon.GetComponent<PolygonCollider2D>().isTrigger = true;
 			weapon.transform.position = actionAreaCenter;
 		}
 	}

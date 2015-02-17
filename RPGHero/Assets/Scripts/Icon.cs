@@ -155,4 +155,31 @@ public class Icon : MonoBehaviour
 	{
 		endPosition = transform.position;
 	}
+
+	protected virtual void OnTriggerEnter2D(Collider2D other)
+	{
+		OnHit (other);
+	}
+
+	protected virtual void OnHit(Collider2D col)
+	{
+		if(col.gameObject.tag == "Enemy")
+		{
+			OnHitEnemy(col);
+		}
+		else if(col.gameObject.tag == "Player")
+		{
+			OnHitPlayer(col);
+		}
+	}
+
+	protected virtual void OnHitEnemy(Collider2D col)
+	{
+
+	}
+	
+	protected virtual void OnHitPlayer(Collider2D col)
+	{
+
+	}
 }
