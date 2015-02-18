@@ -19,6 +19,11 @@ public class FiniteStateMachine
 		if (currentStateFunction != null)
 			currentStateFunction ();
 	}
+
+	public void DoStateImmediate(OnState state)
+	{
+		state ();
+	}
 	public OnState PopState ()
 	{
 		return states.Pop ();

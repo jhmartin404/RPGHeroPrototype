@@ -9,10 +9,10 @@ public class EnemySpawner : MonoBehaviour
 
 	void Awake()
 	{
-		LevelScript.OnLevelStartEvent += OnLevelStart;
-		LevelScript.OnLevelRunningEvent += OnLevelRunning;
-		LevelScript.OnLevelWonEvent += OnLevelWon;
-		LevelScript.OnLevelLostEvent += OnLevelLost;
+		LevelStateManager.OnLevelStartEvent += OnLevelStart;
+		LevelStateManager.OnLevelRunningEvent += OnLevelRunning;
+		LevelStateManager.OnLevelWonEvent += OnLevelWon;
+		LevelStateManager.OnLevelLostEvent += OnLevelLost;
 	}
 
 	// Use this for initialization
@@ -37,12 +37,14 @@ public class EnemySpawner : MonoBehaviour
 	{
 		levelOverText.SetActive (true);
 		levelOverButton.SetActive (true);
+		LevelStateManager.PushState (LevelState.Won);
 	}
 	
 	public void NotifyPlayerDied()
 	{
 		levelOverText.SetActive (true);
 		levelOverButton.SetActive (true);
+		LevelStateManager.PushState (LevelState.Lost);
 	}
 
 	public void OnLevelStart()

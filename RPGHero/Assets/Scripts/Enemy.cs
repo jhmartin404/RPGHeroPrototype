@@ -84,11 +84,6 @@ public class Enemy : MonoBehaviour
 			fsm.PushState(move);
 			//OnMove ();
 		}
-		//Move up down
-		//else if(isAttacking)
-		//{
-			//OnAttack();
-		//}
 
 		//if(enemyHealth <= lowEnemyHealth)
 		//{
@@ -96,9 +91,8 @@ public class Enemy : MonoBehaviour
 			//OnLowHealth();
 		//}
 
-		if(attackTimer > attackTime && enemyHealth>0 && fsm.GetCurrentState() != attack/*!isAttacking*/)
+		if(attackTimer > attackTime && enemyHealth>0 && fsm.GetCurrentState() != attack)
 		{
-			//isAttacking = true;
 			fsm.PushState(attack);
 			yDirection = -1.0f;
 		}
