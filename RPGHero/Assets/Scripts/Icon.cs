@@ -182,4 +182,9 @@ public class Icon : MonoBehaviour
 	{
 
 	}
+
+	void OnBecameInvisible()
+	{
+		Destroy (gameObject);
+	}
 }

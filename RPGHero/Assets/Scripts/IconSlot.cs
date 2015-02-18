@@ -52,7 +52,7 @@ public class IconSlot : MonoBehaviour
 		v = Quaternion.AngleAxis (degreesPerSecond * Time.deltaTime, Vector3.forward) * v;
 		transform.position = center.position + v;
 
-		if((icon == null || icon.State == IconState.Thrown) && !notified)
+		if((icon == null /*|| icon.State == IconState.Thrown*/) && !notified)
 		{
 			Debug.Log("Spawn Icon In Slot");
 			iconSpawner.GetComponent<IconSpawner>().NotifyEmpty(gameObject);

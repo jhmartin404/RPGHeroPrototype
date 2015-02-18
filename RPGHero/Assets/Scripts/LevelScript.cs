@@ -2,8 +2,21 @@
 using UnityEngine.UI;
 using System.Collections;
 
+public enum LevelState
+{
+	Start,
+	Running,
+	Lost,
+	Won
+};
+
 public class LevelScript : MonoBehaviour 
 {
+	public static FiniteStateMachine fsm;
+	public static event OnState OnLevelStartEvent;
+	public static event OnState OnLevelRunningEvent;
+	public static event OnState OnLevelLostEvent;
+	public static event OnState OnLevelWonEvent;
 	private PlayerStats playerStats;
 	public Image healthBar;
 	public Image staminaBar;
@@ -28,6 +41,7 @@ public class LevelScript : MonoBehaviour
 	{
 		weapon = Instantiate(Player.Instance.GetPlayerInventory ().EquippedMeleeWeapon.MeleeWeaponPrefab,transform.position,Quaternion.identity) as GameObject;
 		weapon.name = "Weapon";
+		fsm = new FiniteStateMachine ();
 	}
 
 	// Use this for initialization
@@ -35,16 +49,17 @@ public class LevelScript : MonoBehaviour
 	{
 		playerStats = Player.Instance.GetPlayerStats ();
 
-		//healthBar = GameObject.Find ("RemainingHealthBar").GetComponent<Image> ();
 		healthBar.fillAmount = (float)(Player.Instance.Health/ (float)playerStats.HealthStat);
 
-		//staminaBar = GameObject.Find ("RemainingStaminaBar").GetComponent<Image> ();
 		staminaBar.fillAmount = (float)(Player.Instance.Stamina/ (float)playerStats.MaxStamina);
 
-		//manaBar = GameObject.Find ("RemainingManaBar").GetComponent<Image> ();
 		manaBar.fillAmount = (float)(Player.Instance.Mana/ (float)playerStats.MaxMana);
 
 		enemySpawner = GameObject.Find ("EnemySpawner");
+
+		fsm.PushState (OnLevelStartEvent);
+		fsm.DoState ();
+		fsm.PushState (OnLevelRunningEvent);
 	}
 	
 	// Update is called once per frame
@@ -57,15 +72,18 @@ public class LevelScript : MonoBehaviour
 		if(Player.Instance.Health <=0)
 		{
 			enemySpawner.GetComponent<EnemySpawner>().NotifyPlayerDied();
+			fsm.PushState(OnLevelLostEvent);
 		}
 
 		if(Application.platform == RuntimePlatform.Android)
 		{
 			if(Input.GetKey(KeyCode.Escape))
 			{
-				Application.LoadLevel("LevelSelectScene");
+				GoBack();
 			}
 		}
+
+		fsm.DoState ();
 	}
 
 	public void addCoin()

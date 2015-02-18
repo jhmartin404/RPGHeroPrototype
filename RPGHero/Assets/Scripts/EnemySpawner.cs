@@ -7,6 +7,14 @@ public class EnemySpawner : MonoBehaviour
 	private GameObject levelOverText;
 	private GameObject levelOverButton;
 
+	void Awake()
+	{
+		LevelScript.OnLevelStartEvent += OnLevelStart;
+		LevelScript.OnLevelRunningEvent += OnLevelRunning;
+		LevelScript.OnLevelWonEvent += OnLevelWon;
+		LevelScript.OnLevelLostEvent += OnLevelLost;
+	}
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -29,13 +37,31 @@ public class EnemySpawner : MonoBehaviour
 	{
 		levelOverText.SetActive (true);
 		levelOverButton.SetActive (true);
-		//Application.LoadLevel ("LevelSelectScene");
 	}
 	
 	public void NotifyPlayerDied()
 	{
 		levelOverText.SetActive (true);
 		levelOverButton.SetActive (true);
-		//Application.LoadLevel ("StartScene");
+	}
+
+	public void OnLevelStart()
+	{
+		Debug.Log ("OnLevelStart EnemySpawner");
+	}
+
+	public void OnLevelRunning()
+	{
+		Debug.Log ("OnLevelRunning EnemySpawner");
+	}
+
+	public void OnLevelWon()
+	{
+		Debug.Log ("OnLevelWon EnemySpawner");
+	}
+
+	public void OnLevelLost()
+	{
+		Debug.Log ("OnLevelLost EnemySpawner");
 	}
 }

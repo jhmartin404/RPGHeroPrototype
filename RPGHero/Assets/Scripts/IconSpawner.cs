@@ -16,6 +16,11 @@ public class IconSpawner : MonoBehaviour
 	{
 		emptySlots = new List<GameObject> ();
 		iconArray = new List<Object> ();
+
+		LevelScript.OnLevelStartEvent += OnLevelStart;
+		LevelScript.OnLevelRunningEvent += OnLevelRunning;
+		LevelScript.OnLevelWonEvent += OnLevelWon;
+		LevelScript.OnLevelLostEvent += OnLevelLost;
 	}
 
 	// Use this for initialization
@@ -51,5 +56,25 @@ public class IconSpawner : MonoBehaviour
 	public void NotifyFull(GameObject slot)
 	{
 		emptySlots.Remove (slot);
+	}
+
+	public void OnLevelStart()
+	{
+		Debug.Log ("OnLevelStart IconSpawner");
+	}
+
+	public void OnLevelRunning()
+	{
+		Debug.Log ("OnLevelRunning IconSpawner");
+	}
+	
+	public void OnLevelWon()
+	{
+		Debug.Log ("OnLevelWon IconSpawner");
+	}
+	
+	public void OnLevelLost()
+	{
+		Debug.Log ("OnLevelLost IconSpawner");
 	}
 }
