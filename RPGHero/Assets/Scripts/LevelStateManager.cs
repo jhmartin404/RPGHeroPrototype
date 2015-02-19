@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+//States for the level
 public enum LevelState
 {
 	Start,
@@ -12,11 +13,11 @@ public enum LevelState
 public class LevelStateManager : MonoBehaviour 
 {
 
-	private static FiniteStateMachine fsm;
-	public static event OnState OnLevelStartEvent;
-	public static event OnState OnLevelRunningEvent;
-	public static event OnState OnLevelLostEvent;
-	public static event OnState OnLevelWonEvent;
+	private static FiniteStateMachine fsm;//fsm to manage the state of the level
+	public static event OnState OnLevelStartEvent;//Event for registering Start methods
+	public static event OnState OnLevelRunningEvent;//Event for registering Running methods
+	public static event OnState OnLevelLostEvent;//Event for registering Lost methods
+	public static event OnState OnLevelWonEvent;//Event for registering Won methods
 	
 	void Awake()
 	{
@@ -80,6 +81,7 @@ public class LevelStateManager : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
+		//execute the current state
 		fsm.DoState ();
 	}
 }

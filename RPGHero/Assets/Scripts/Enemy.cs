@@ -15,11 +15,11 @@ public enum EnemyType
 
 public class Enemy : MonoBehaviour
 {
-	protected OnState move;
-	protected OnState attack;
-	protected OnState lowHealth;
-	protected OnState die;
-	protected FiniteStateMachine fsm;
+	protected OnState move;//delegate for moving state
+	protected OnState attack;//delegate for attack state
+	protected OnState lowHealth;//delegate for lowHealth state
+	protected OnState die;//delegate for die state
+	protected FiniteStateMachine fsm;//fsm to keep track of the enemy's state
 	protected float xDirection = 1.0f;
 	protected float yDirection = 0.0f;
 	protected float attackDistance = 4.5f;
@@ -57,6 +57,7 @@ public class Enemy : MonoBehaviour
 	// Use this for initialization
 	public virtual void Start () 
 	{
+		//Set the methods for the delegates
 		move = OnMove;
 		attack = OnAttack;
 		lowHealth = OnLowHealth;
@@ -81,7 +82,7 @@ public class Enemy : MonoBehaviour
 		//Move left to right
 		if(fsm.GetCurrentState() != attack)
 		{
-			fsm.PushState(move);
+			fsm.PushState(move);//Player should always at least be moving
 			//OnMove ();
 		}
 
@@ -93,7 +94,7 @@ public class Enemy : MonoBehaviour
 
 		if(attackTimer > attackTime && enemyHealth>0 && fsm.GetCurrentState() != attack)
 		{
-			fsm.PushState(attack);
+			fsm.PushState(attack);//Switch to attack state
 			yDirection = -1.0f;
 		}
 		
@@ -103,13 +104,13 @@ public class Enemy : MonoBehaviour
 		{
 			if(!isDead)
 			{
-				fsm.PushState(die);
+				fsm.PushState(die);//Switch to die state
 				//OnDie();
 			}
 		}
 
-		Debug.Log("State: " +fsm.GetCurrentState ().Method.Name);
-		fsm.DoState ();
+		Debug.Log("State: " +fsm.GetCurrentState ().Method.Name);//used for testing
+		fsm.DoState ();//Run the method associate with the current state the enemy is in
 	}
 
 	//Flash enemy's color, used to show when enemy is hit
@@ -152,7 +153,7 @@ public class Enemy : MonoBehaviour
 			isAttacking = false;
 			sizeChangeSpeed = 1.0f;
 			attackTimer = 0;
-			fsm.PopState();
+			fsm.PopState();//when attack is finished pop the state off the stack
 		}
 	}
 

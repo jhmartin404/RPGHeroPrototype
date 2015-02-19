@@ -17,6 +17,7 @@ public class IconSpawner : MonoBehaviour
 		emptySlots = new List<GameObject> ();
 		iconArray = new List<Object> ();
 
+		//Register the IconSpawner methods with the LevelStateManager
 		LevelStateManager.OnLevelStartEvent += OnLevelStart;
 		LevelStateManager.OnLevelRunningEvent += OnLevelRunning;
 		LevelStateManager.OnLevelWonEvent += OnLevelWon;

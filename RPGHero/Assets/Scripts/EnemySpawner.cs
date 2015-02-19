@@ -7,6 +7,7 @@ public class EnemySpawner : MonoBehaviour
 	private GameObject levelOverText;
 	private GameObject levelOverButton;
 
+	//Register the EnemySpawner methods with the LevelStateManager
 	void Awake()
 	{
 		LevelStateManager.OnLevelStartEvent += OnLevelStart;
@@ -37,14 +38,14 @@ public class EnemySpawner : MonoBehaviour
 	{
 		levelOverText.SetActive (true);
 		levelOverButton.SetActive (true);
-		LevelStateManager.PushState (LevelState.Won);
+		LevelStateManager.PushState (LevelState.Won);//Switch the level to won state
 	}
 	
 	public void NotifyPlayerDied()
 	{
 		levelOverText.SetActive (true);
 		levelOverButton.SetActive (true);
-		LevelStateManager.PushState (LevelState.Lost);
+		LevelStateManager.PushState (LevelState.Lost);//Switch the level to lost state
 	}
 
 	public void OnLevelStart()
