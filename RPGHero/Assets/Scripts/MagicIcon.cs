@@ -21,7 +21,8 @@ public class MagicIcon : Icon
 	public override void Start () 
 	{
 		base.Start ();
-		equippedMagic = Player.Instance.GetPlayerInventory ().EquippedMagic1;
+		//equippedMagic = Player.Instance.GetPlayerInventory ().EquippedMagic1;
+		gameObject.GetComponent<SpriteRenderer> ().sprite = equippedMagic.GetItemImage ();
 		actionArea = GameObject.Find ("ActionArea");
 		iconType = IconType.Magic;
 	}
@@ -39,7 +40,6 @@ public class MagicIcon : Icon
 				{
 					iconState = IconState.Grabbed;
 					mainCamera.GetComponent<LevelScript>().IconSelected = true;
-					//startPosition = transform.position;
 					rigidbody2D.isKinematic = true;
 					actionArea.renderer.enabled = true;
 				}
@@ -50,7 +50,6 @@ public class MagicIcon : Icon
 			{
 				iconState = IconState.Thrown;
 				mainCamera.GetComponent<LevelScript>().IconSelected = false;
-				//endPosition = transform.position;
 				rigidbody2D.isKinematic = false;
 				actionArea.renderer.enabled = false;
 				endPosition = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);

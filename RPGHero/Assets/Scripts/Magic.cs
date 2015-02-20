@@ -3,8 +3,8 @@ using System.Collections;
 
 public class Magic : InventoryItem 
 {
-	private int manaCost;
-	private int damage;
+	protected int manaCost;
+	protected int damage;
 
 	public int ManaCost
 	{

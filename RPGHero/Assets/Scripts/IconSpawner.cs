@@ -7,7 +7,6 @@ public class IconSpawner : MonoBehaviour
 	private List<GameObject> emptySlots;
 	private Object coinPrefab;
 	private Object rangedPrefab;
-	private Object magic1Prefab;
 	private int randomNum;
 
 	private List<Object> iconArray;
@@ -42,10 +41,20 @@ public class IconSpawner : MonoBehaviour
 		for(int i=0;i<emptySlots.Count;++i)
 		{
 			randomNum = Random.Range(0,iconArray.Count);
-			GameObject child = Instantiate(iconArray[randomNum],emptySlots[i].transform.position,Quaternion.identity) as GameObject;
-			child.GetComponent<Icon>().Center = emptySlots[i].GetComponent<IconSlot>().Center;
-			child.GetComponent<Icon>().DegreesPerSecond = emptySlots[i].GetComponent<IconSlot>().DegreesPerSecond;
-			emptySlots[i].GetComponent<IconSlot>().SetIcon(child.GetComponent<Icon>());
+			Vector3 spawnedIconPosition = emptySlots[i].transform.position;
+			spawnedIconPosition.z -= 0.2f;
+			GameObject spawnedIcon = Instantiate(iconArray[randomNum],spawnedIconPosition,Quaternion.identity) as GameObject;
+			MagicIcon mIcon = spawnedIcon.GetComponent<MagicIcon>();
+			if(mIcon != null)
+			{
+				if(i%2==0)
+					mIcon.EquippedMagic = Player.Instance.GetPlayerInventory().EquippedMagic2;
+				else
+					mIcon.EquippedMagic = Player.Instance.GetPlayerInventory().EquippedMagic1;
+			}
+			spawnedIcon.GetComponent<Icon>().Center = emptySlots[i].GetComponent<IconSlot>().Center;
+			spawnedIcon.GetComponent<Icon>().DegreesPerSecond = emptySlots[i].GetComponent<IconSlot>().DegreesPerSecond;
+			emptySlots[i].GetComponent<IconSlot>().SetIcon(spawnedIcon.GetComponent<Icon>());
 		}
 	}
 
