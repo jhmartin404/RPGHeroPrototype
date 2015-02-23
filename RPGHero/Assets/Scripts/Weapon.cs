@@ -51,6 +51,7 @@ public class Weapon : InventoryItem
 
 	public virtual void DealDamage(Enemy enemy)
 	{
-		enemy.EnemyHealth -= damage;
+		enemy.TakeDamage (damage);
+		//enemy.EnemyHealth -= damage;
 	}
 }

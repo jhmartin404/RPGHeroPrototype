@@ -31,14 +31,17 @@ public class Enemy : MonoBehaviour
 	public float enemyAttackDamage = 10.0f;
 	public float attackTime = 5.0f;
 	private float attackTimer = 0.0f;
+	private float magicTimer = 0.0f; //timer used to manage magic effects
+	private float damageOverTimeAmount;
 	protected float enemyYPosition;
 
 	protected Vector2 movement;
 	
 	public int expGiven = 50;
-	protected bool isDead;
+	//protected bool isDead;
 	protected GameObject enemySpawner;
-	protected bool isAttacking;
+	protected bool isSlowed;
+	protected bool isDamageOverTime;
 	protected Vector3 actionAreaCenter;
 	protected Vector3 size;
 	private Color normalColor;
@@ -70,8 +73,7 @@ public class Enemy : MonoBehaviour
 		size = transform.localScale;
 		enemyType = EnemyType.Bandit;
 		enemyYPosition = transform.position.y;
-		isAttacking = false;
-		isDead = false;
+		//isDead = false;
 		normalColor = renderer.material.color;
 	}
 	
@@ -100,9 +102,21 @@ public class Enemy : MonoBehaviour
 		
 		transform.Translate (movement);
 
+		if(isDamageOverTime)
+		{
+			Color collideColor = new Color (255, 0, 0, 255);
+			StartCoroutine(Flash(collideColor));
+			magicTimer -= Time.deltaTime;
+			enemyHealth -= damageOverTimeAmount*Time.deltaTime;
+			if(magicTimer<=0)
+			{
+				isDamageOverTime = false;
+			}
+		}
+
 		if(enemyHealth<=0)
 		{
-			if(!isDead)
+			if(fsm.GetCurrentState() != die)
 			{
 				fsm.PushState(die);//Switch to die state
 				//OnDie();
@@ -110,6 +124,7 @@ public class Enemy : MonoBehaviour
 		}
 
 		Debug.Log("State: " +fsm.GetCurrentState ().Method.Name);//used for testing
+		Debug.Log ("Enemy Health: " + enemyHealth);
 		fsm.DoState ();//Run the method associate with the current state the enemy is in
 	}
 
@@ -150,7 +165,7 @@ public class Enemy : MonoBehaviour
 		
 		if(yDirection>= 0.0f && transform.position.y >= enemyYPosition && sizeChangeSpeed <0)
 		{
-			isAttacking = false;
+			//isAttacking = false;
 			sizeChangeSpeed = 1.0f;
 			attackTimer = 0;
 			fsm.PopState();//when attack is finished pop the state off the stack
@@ -166,7 +181,7 @@ public class Enemy : MonoBehaviour
 	protected virtual void OnDie()
 	{
 		Player.Instance.AddExperience(expGiven);
-		isDead = true;
+		//isDead = true;
 		enemySpawner.GetComponent<EnemySpawner> ().NotifyEnemyDied ();
 		fsm.PopState ();
 		Destroy (gameObject);
@@ -181,46 +196,71 @@ public class Enemy : MonoBehaviour
 	{
 		if(col.gameObject.tag == "Magic")
 		{
-			OnHitByMagic(col);
+			MagicIcon magicIcon = col.gameObject.GetComponent<MagicIcon>();
+			if(magicIcon.State == IconState.Thrown)
+			{
+				OnHitByMagic(magicIcon);
+			}
 		}
 		else if(col.gameObject.tag == "Ranged")
 		{
-			OnHitByRanged(col);
+			RangedIcon rangedIcon = col.gameObject.GetComponent<RangedIcon>();
+			if(rangedIcon.State == IconState.Thrown)
+			{
+				OnHitByRanged(rangedIcon);
+			}
 		}
 		else if(col.gameObject.tag == "Melee")
 		{
-			OnHitByMelee(col);
+			WeaponControl control = GameObject.Find("WeaponControl").GetComponent<WeaponControl>();
+			if(control.CntrlState == ControlState.Active)
+			{
+				OnHitByMelee(control);
+			}
 		}
 	}
 
-	protected virtual void OnHitByRanged(Collider2D col)
+	public virtual void TakeDamage(float damageAmount)
 	{
-		RangedIcon rangedIcon = col.gameObject.GetComponent<RangedIcon>();
-		if(rangedIcon.State == IconState.Thrown)
-		{
-			rangedIcon.EquippedRanged.DealDamage(this);
-			Destroy(col.gameObject);
-		}
+		enemyHealth -= damageAmount;
 	}
 
-	protected virtual void OnHitByMagic(Collider2D col)
+	public virtual void SlowDown(float speedDecrease, float timeOver)
 	{
-		MagicIcon magicIcon = col.gameObject.GetComponent<MagicIcon>();
-		if(magicIcon.State == IconState.Thrown)
-		{
-			magicIcon.EquippedMagic.DealDamage(this);
-			Destroy(col.gameObject);
-		}
+		float resetEnemySpeed = enemySpeed;
+		enemySpeed -= speedDecrease;
+		StartCoroutine (BackToFullSpeed(resetEnemySpeed,timeOver));
 	}
 
-	protected virtual void OnHitByMelee(Collider2D col)
+	IEnumerator BackToFullSpeed (float resetEnemySpeed, float timeOver)
 	{
-		WeaponControl control = GameObject.Find("WeaponControl").GetComponent<WeaponControl>();
-		if(control.CntrlState == ControlState.Active)
-		{
-			Color collideColor = new Color (255, 0, 0, 255);
-			StartCoroutine(Flash(collideColor));
-			control.Weapon.DealDamage(this);
-		}
+		yield return new WaitForSeconds (timeOver);
+		enemySpeed = resetEnemySpeed;
+	}
+
+	public virtual void TakeDamageOverTime(float damageAmount, float timeOver)
+	{
+		isDamageOverTime = true;
+		magicTimer = timeOver;
+		damageOverTimeAmount = damageAmount;
+	}
+
+	protected virtual void OnHitByRanged(RangedIcon rangedIcon)
+	{
+		rangedIcon.EquippedRanged.DealDamage(this);
+		Destroy(rangedIcon.gameObject);
+	}
+
+	protected virtual void OnHitByMagic(MagicIcon magicIcon)
+	{
+		magicIcon.EquippedMagic.DealDamage(this);
+		Destroy(magicIcon.gameObject);
+	}
+
+	protected virtual void OnHitByMelee(WeaponControl control)
+	{
+		Color collideColor = new Color (255, 0, 0, 255);
+		StartCoroutine(Flash(collideColor));
+		control.Weapon.DealDamage(this);
 	}
 }

@@ -131,9 +131,9 @@ public class Inventory
 		unequippedItems.Add(new MeleeWeapon(8,axePrefab,4,WeaponType.Melee,ItemType.Weapon,1,"Steel Axe",axe,8,true));
 		unequippedItems.Add(new RangedWeapon(3,2,WeaponType.Ranged, ItemType.Weapon,2,"Weak Bow",ranged,5,true));
 		unequippedItems.Add(new Shield(30,ItemType.Shield,3,"Weak Shield",shield,5,true));
-		unequippedItems.Add(new Magic (7,3,ItemType.Magic,4,"Weak Fire Blast",fireBlast,-1,false));
-		equippedMagic1 = new FireBlastMagic (3.0f,10,5,ItemType.Magic,4,"Fire Blast",fireBlast,-1,false);
-		equippedMagic2 = new FrostBlastMagic (2.5f,10,5,ItemType.Magic,5,"Frost Blast",iceBlast,-1,false);
+		unequippedItems.Add(new FireBlastMagic (2.0f,2.5f,7,ItemType.Magic,4,"Weak Fire Blast",fireBlast,-1,false));
+		equippedMagic1 = new FireBlastMagic (3.0f,5,10,ItemType.Magic,4,"Fire Blast",fireBlast,-1,false);
+		equippedMagic2 = new FrostBlastMagic (2.5f,2.5f,10,ItemType.Magic,5,"Frost Blast",iceBlast,-1,false);
 		equippedMeleeWeapon = new MeleeWeapon(10,steelSwordPrefab,5,WeaponType.Melee,ItemType.Weapon,6,"Steel Sword",melee,10,true);
 		equippedRangedWeapon = new RangedWeapon(5,3,WeaponType.Ranged,ItemType.Weapon,7,"Wooden Bow",ranged,7,true);
 		equippedShield = new Shield(50,ItemType.Shield,8,"Metal Shield",shield,9,true);

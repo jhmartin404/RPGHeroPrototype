@@ -4,7 +4,6 @@ using System.Collections;
 public class Magic : InventoryItem 
 {
 	protected int manaCost;
-	protected int damage;
 
 	public int ManaCost
 	{
@@ -18,15 +17,14 @@ public class Magic : InventoryItem
 		}
 	}
 
-	public Magic(int costMana, int dam, ItemType item, int id, string name, Sprite image, int cost, bool purchase) : base(item, id, name, image, cost, purchase)
+	public Magic(int costMana, ItemType item, int id, string name, Sprite image, int cost, bool purchase) : base(item, id, name, image, cost, purchase)
 	{
 		manaCost = costMana;
-		damage = dam;
 	}
 
 	public virtual void DealDamage(Enemy enemy)
 	{
-		enemy.GetComponent<Enemy>().EnemyHealth -= damage;
+		//enemy.EnemyHealth -= damage;
 	}
 
 	public override string ToString()

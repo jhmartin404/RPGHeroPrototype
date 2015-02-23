@@ -47,10 +47,11 @@ public class IconSpawner : MonoBehaviour
 			MagicIcon mIcon = spawnedIcon.GetComponent<MagicIcon>();
 			if(mIcon != null)
 			{
-				if(i%2==0)
-					mIcon.EquippedMagic = Player.Instance.GetPlayerInventory().EquippedMagic2;
-				else
+				randomNum = Random.Range(1,3);
+				if(randomNum==1)
 					mIcon.EquippedMagic = Player.Instance.GetPlayerInventory().EquippedMagic1;
+				else
+					mIcon.EquippedMagic = Player.Instance.GetPlayerInventory().EquippedMagic2;
 			}
 			spawnedIcon.GetComponent<Icon>().Center = emptySlots[i].GetComponent<IconSlot>().Center;
 			spawnedIcon.GetComponent<Icon>().DegreesPerSecond = emptySlots[i].GetComponent<IconSlot>().DegreesPerSecond;
