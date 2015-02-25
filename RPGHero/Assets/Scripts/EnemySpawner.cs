@@ -24,8 +24,9 @@ public class EnemySpawner : MonoBehaviour
 		levelOverText.SetActive (false);
 		levelOverButton = GameObject.Find ("LevelOverButton");
 		levelOverButton.SetActive (false);
-		enemyPrefab = Resources.Load ("Prefabs/EnemyPrefab");
-		GameObject child = Instantiate(enemyPrefab,transform.position,Quaternion.identity) as GameObject;
+		enemyPrefab = Resources.Load ("Prefabs/SpiderBossPrefab");
+		//REMEMBER TO UNCOMMENT THIS LATER WHEN LOADING ENEMY PREFAB IS IMPROVED
+		GameObject enemy = Instantiate(enemyPrefab,transform.position,Quaternion.identity) as GameObject;
 	}
 	
 	// Update is called once per frame

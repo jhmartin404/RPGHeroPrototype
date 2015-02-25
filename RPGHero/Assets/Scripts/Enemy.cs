@@ -10,7 +10,8 @@ public enum EnemyType
 	Wolf,
 	Skeleton,
 	Orc,
-	Boss
+	Boss,
+	Spider
 };
 
 public class Enemy : MonoBehaviour
@@ -25,12 +26,12 @@ public class Enemy : MonoBehaviour
 	protected float attackDistance = 4.5f;
 	protected float sizeChangeSpeed = 1.0f;
 	public float enemySpeed = 5.0f;
-	protected EnemyType enemyType;
+	public EnemyType enemyType;
 	public float enemyHealth = 50.0f;
 	protected float lowEnemyHealth;
 	public float enemyAttackDamage = 10.0f;
 	public float attackTime = 5.0f;
-	private float attackTimer = 0.0f;
+	protected float attackTimer = 0.0f;
 	private float magicTimer = 0.0f; //timer used to manage magic effects
 	private float damageOverTimeAmount;
 	protected float enemyYPosition;
@@ -44,7 +45,7 @@ public class Enemy : MonoBehaviour
 	protected bool isDamageOverTime;
 	protected Vector3 actionAreaCenter;
 	protected Vector3 size;
-	private Color normalColor;
+	protected Color normalColor;
 
 	public float EnemyHealth
 	{
@@ -71,7 +72,7 @@ public class Enemy : MonoBehaviour
 		actionAreaCenter = GameObject.Find ("ActionArea").transform.renderer.bounds.center;
 		enemySpawner = GameObject.Find ("EnemySpawner");
 		size = transform.localScale;
-		enemyType = EnemyType.Bandit;
+		//enemyType = EnemyType.Bandit;
 		enemyYPosition = transform.position.y;
 		//isDead = false;
 		normalColor = renderer.material.color;
@@ -82,7 +83,7 @@ public class Enemy : MonoBehaviour
 	{
 		attackTimer += Time.deltaTime;
 		//Move left to right
-		if(fsm.GetCurrentState() != attack)
+		if(fsm.GetCurrentState() == null)
 		{
 			fsm.PushState(move);//Player should always at least be moving
 			//OnMove ();
@@ -94,7 +95,7 @@ public class Enemy : MonoBehaviour
 			//OnLowHealth();
 		//}
 
-		if(attackTimer > attackTime && enemyHealth>0 && fsm.GetCurrentState() != attack)
+		if(attackTimer > attackTime && enemyHealth>0 && fsm.GetCurrentState() == move)
 		{
 			fsm.PushState(attack);//Switch to attack state
 			yDirection = -1.0f;
