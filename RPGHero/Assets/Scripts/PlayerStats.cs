@@ -176,6 +176,7 @@ public class PlayerStats
 		if(currentExp>=neededExp)
 		{
 			expLevel++;
+			currentExp = currentExp - neededExp;
 			neededExp *=expLevel;
 			return true;
 		}

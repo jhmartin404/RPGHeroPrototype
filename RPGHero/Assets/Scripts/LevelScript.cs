@@ -11,6 +11,7 @@ public class LevelScript : MonoBehaviour
 	private bool iconSelected;
 	private GameObject enemySpawner;
 	private GameObject weapon;
+	private GameObject shield;
 
 	public bool IconSelected
 	{
@@ -28,6 +29,8 @@ public class LevelScript : MonoBehaviour
 	{
 		weapon = Instantiate(Player.Instance.GetPlayerInventory ().EquippedMeleeWeapon.MeleeWeaponPrefab,transform.position,Quaternion.identity) as GameObject;
 		weapon.name = "Weapon";
+		shield = Instantiate (Player.Instance.GetPlayerInventory ().EquippedShield.ShieldPrefab, transform.position, Quaternion.identity) as GameObject;
+		shield.name = "Shield";
 	}
 
 	// Use this for initialization

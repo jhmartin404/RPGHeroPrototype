@@ -21,6 +21,10 @@
    inkscape:export-ydpi="90">
   <defs
      id="defs4">
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3955"
+       is_visible="true" />
     <clipPath
        id="clipPath3007"
        clipPathUnits="userSpaceOnUse">
@@ -375,9 +379,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.93998064"
-     inkscape:cx="488.51717"
-     inkscape:cy="336.7078"
+     inkscape:zoom="1.2953491"
+     inkscape:cx="-50.761315"
+     inkscape:cy="173.58339"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -4816,5 +4820,36 @@
          id="rect4265-48-4"
          style="opacity:0.98999999;fill:#550000;fill-opacity:1;stroke:#000000;stroke-width:4.77999401;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
     </g>
+    <path
+       sodipodi:type="arc"
+       style="opacity:0.98999999;fill:#fff6d5;fill-opacity:1;stroke:#000000;stroke-width:5;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="path3503-17-1-1"
+       sodipodi:cx="304.28571"
+       sodipodi:cy="555.93359"
+       sodipodi:rx="40"
+       sodipodi:ry="40"
+       d="m 344.28571,555.93359 a 40,40 0 1 1 -80,0 40,40 0 1 1 80,0 z"
+       transform="matrix(1.1294118,0,0,1.1294118,-493.61439,378.3456)"
+       inkscape:export-filename="C:\Users\James\SkyDrive\CS483\GameArtResources\lightningIcon.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:#ffff00;stroke:#000000;stroke-width:1.52903914px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -142.66196,968.00654 -20.14162,30.75371 10.23634,2.03585 -13.29907,20.3806 9.93993,0.241 -12.75369,19.81 27.80495,-23.8063 -12.48766,-1.709 14.01474,-19.21586 -10.80679,-1.36244 17.0252,-23.74287 -9.53233,-3.38469"
+       id="path3953"
+       inkscape:path-effect="#path-effect3955"
+       inkscape:original-d="m -142.66196,968.00654 -20.14162,30.75371 10.23634,2.03585 -13.29907,20.3806 9.93993,0.241 -12.75369,19.81 27.80495,-23.8063 -12.48766,-1.709 14.01474,-19.21586 -10.80679,-1.36244 17.0252,-23.74287 z"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\Users\James\SkyDrive\CS483\GameArtResources\lightningIcon.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="opacity:0.98999999;fill:#b4b4b4;fill-opacity:1;stroke:#000000;stroke-width:1.18937814;stroke-opacity:1"
+       d="m -359.06096,1024.9852 -6.2814,-3.4566 -6.24424,-3.4938 8.54866,-0.037 0,-56.5698 c -1.5042,-0.402 -4.44241,-2.0308 -7.47078,-4.2 -3.82243,-2.738 -6.27108,-5.2357 -5.46371,-5.6124 l 3.23362,-1.5239 c 0.80738,-0.3767 4.54039,1.5364 8.36282,4.2743 1.24088,0.8889 2.34973,1.715 3.23362,2.4903 0.5108,-0.1873 1.08572,-0.2973 1.70973,-0.2973 0.44341,0 0.87203,0.05 1.26371,0.1486 0.85076,-0.7343 1.85265,-1.5121 3.01062,-2.3416 3.82242,-2.7379 7.55544,-4.651 8.36281,-4.2743 l 3.27079,1.5239 c 0.80738,0.3767 -1.64128,2.8744 -5.4637,5.6124 -2.64865,1.8972 -5.22146,3.3629 -6.83893,3.977 l 0,56.7184 8.58583,-0.037 -5.90973,3.5682 -5.90972,3.5309 z"
+       id="rect4398-4"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\Users\James\SkyDrive\CS483\GameArtResources\archerShot.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
   </g>
 </svg>

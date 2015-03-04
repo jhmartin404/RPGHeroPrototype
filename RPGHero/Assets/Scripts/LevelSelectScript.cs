@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
-public class LevelSelectScript : MonoBehaviour {
-
+public class LevelSelectScript : MonoBehaviour 
+{
+	private Button levelButton;
 	// Use this for initialization
 	void Start () 
 	{
@@ -36,8 +38,10 @@ public class LevelSelectScript : MonoBehaviour {
 		Application.LoadLevel("InventoryScene");
 	}
 
-	public void SelectLevelScene()
+	public void SelectLevelScene(Button level)
 	{
+		Player.Instance.CurrentLevel = int.Parse(level.name);
+		Debug.Log (Player.Instance.CurrentLevel);
 		Application.LoadLevel("LevelScene");
 	}
 }

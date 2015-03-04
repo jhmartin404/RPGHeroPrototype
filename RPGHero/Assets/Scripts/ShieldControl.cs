@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class ShieldControl : MonoBehaviour 
@@ -6,10 +7,12 @@ public class ShieldControl : MonoBehaviour
 	private GameObject shield;
 	private Shield equippedShield;
 	private ControlState controlState;
-	private Vector2 controlPosition;//Original position of the control
+	private Vector3 controlPosition;//Original position of the control
 	private Vector3 actionAreaCenter;
 	private float actionAreaRadius;
 	private float fingerRadius = 0.5f;
+	private GameObject shieldDefence;
+	private Text shieldDefenceText;
 
 	public ControlState CntrlState
 	{
@@ -29,8 +32,13 @@ public class ShieldControl : MonoBehaviour
 		controlState = ControlState.Stationary;
 		shield = GameObject.Find ("Shield");
 		equippedShield = Player.Instance.GetPlayerInventory ().EquippedShield;
-		shield.GetComponent<SpriteRenderer> ().sprite = equippedShield.GetItemImage ();
+		//shield.GetComponent<SpriteRenderer> ().sprite = equippedShield.GetItemImage ();
 		controlPosition = transform.position;
+		Object shieldDefencePrefab = Resources.Load ("Prefabs/ShieldDefenceText");
+		shieldDefence = Instantiate (shieldDefencePrefab, transform.position, transform.rotation) as GameObject;
+		shieldDefence.transform.SetParent (GameObject.Find ("Canvas").transform, false);
+		shieldDefence.transform.position = transform.position;
+		shieldDefenceText = shieldDefence.GetComponent<Text> ();
 	}
 	
 	// Update is called once per frame
@@ -45,33 +53,58 @@ public class ShieldControl : MonoBehaviour
 				if (collider2D == Physics2D.OverlapCircle(touchPos, fingerRadius))
 				{
 					controlState = ControlState.Active;
-					//transform.localScale = newSize;
 					shield.renderer.enabled = true;//render the shield
+					shield.GetComponent<PolygonCollider2D>().isTrigger = true;
+					Vector3 pos = transform.position;
+					pos.z += 0.5f;
+					shield.transform.position = pos;
 					GameObject.Find("Main Camera").GetComponent<LevelScript>().IconSelected = true;
-					Player.Instance.IsDefending = true;
 				}
 				
 				
 			}
 			else if(Input.GetTouch(0).phase == TouchPhase.Moved && controlState == ControlState.Active) 
 			{
-				Vector2 pos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
+				Vector3 pos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
+				pos.z = -1;
 				transform.position = pos;
-				//actionArea.renderer.enabled = false;
+				Vector3 shieldPos = pos;
+				shieldPos.z += 0.5f;
+				shield.transform.position = shieldPos;
 			}
 			else if((Input.GetTouch(0).phase == TouchPhase.Ended && controlState == ControlState.Active))
 			{
 				controlState = ControlState.Stationary;
 				shield.renderer.enabled = false;//disable the renderer for the shield
+				shield.GetComponent<PolygonCollider2D>().isTrigger = false;
 				transform.position = controlPosition;
+				Vector3 shieldPos = controlPosition;
+				shieldPos.z += 0.5f;
+				shield.transform.position = shieldPos;
 				GameObject.Find("Main Camera").GetComponent<LevelScript>().IconSelected = false;
-				Player.Instance.IsDefending = false;
-				//transform.localScale = new Vector2(1.0f,1.0f);
 			}
 		}
 		
 		Vector3 newPosition = shield.transform.position;
 		newPosition.x = transform.position.x;
 		shield.transform.position = newPosition;
+		shieldDefence.transform.position = transform.position;
+		shieldDefenceText.text = "" + equippedShield.Defence;
+	}
+
+	protected virtual void OnTriggerEnter2D(Collider2D other)
+	{
+		if(other.CompareTag ("Enemy"))
+		{
+			Player.Instance.IsDefending = true;
+		}
+	}
+
+	public virtual void OnTriggerExit2D(Collider2D other)
+	{
+		if(other.CompareTag ("Enemy"))
+		{
+			Player.Instance.IsDefending = false;
+		}
 	}
 }

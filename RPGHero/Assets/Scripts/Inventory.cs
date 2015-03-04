@@ -117,11 +117,13 @@ public class Inventory
 		Sprite ranged = Resources.Load<Sprite> ("bow");
 		Sprite shield = Resources.Load<Sprite> ("BigShield");
 		Sprite axe = Resources.Load<Sprite> ("SteelAxeImage");
+		Sprite lightning = Resources.Load<Sprite> ("lightningIcon");
 		Sprite fireBlast = Resources.Load<Sprite> ("fireBlastIcon");
 		Sprite iceBlast = Resources.Load<Sprite> ("iceBlastIcon");
 
 		Object axePrefab = Resources.Load ("Prefabs/AxePrefab");
 		Object steelSwordPrefab = Resources.Load ("Prefabs/SteelSwordPrefab");
+		Object shield1Prefab = Resources.Load ("Prefabs/Shield1Prefab");
 
 		healthPotions = 2;
 		manaPotions = 2;
@@ -130,13 +132,14 @@ public class Inventory
 		unequippedItems = new List<InventoryItem>();
 		unequippedItems.Add(new MeleeWeapon(8,axePrefab,4,WeaponType.Melee,ItemType.Weapon,1,"Steel Axe",axe,8,true));
 		unequippedItems.Add(new RangedWeapon(3,2,WeaponType.Ranged, ItemType.Weapon,2,"Weak Bow",ranged,5,true));
-		unequippedItems.Add(new Shield(30,ItemType.Shield,3,"Weak Shield",shield,5,true));
+		unequippedItems.Add(new Shield(30,shield1Prefab, ItemType.Shield,3,"Weak Shield",shield,5,true));
 		unequippedItems.Add(new FireBlastMagic (2.0f,2.5f,7,ItemType.Magic,4,"Weak Fire Blast",fireBlast,-1,false));
-		equippedMagic1 = new FireBlastMagic (3.0f,5,10,ItemType.Magic,4,"Fire Blast",fireBlast,-1,false);
-		equippedMagic2 = new FrostBlastMagic (2.5f,2.5f,10,ItemType.Magic,5,"Frost Blast",iceBlast,-1,false);
+		//equippedMagic1 = new FireBlastMagic (3.0f,5,10,ItemType.Magic,4,"Fire Blast",fireBlast,-1,false);
+		equippedMagic1 = new LightningMagic (5,10,ItemType.Magic,4,"Lightning Attack",lightning,-1,false);
+		equippedMagic2 = new FrostBlastMagic (2.5f,0.5f,10,ItemType.Magic,5,"Frost Blast",iceBlast,-1,false);
 		equippedMeleeWeapon = new MeleeWeapon(10,steelSwordPrefab,5,WeaponType.Melee,ItemType.Weapon,6,"Steel Sword",melee,10,true);
 		equippedRangedWeapon = new RangedWeapon(5,3,WeaponType.Ranged,ItemType.Weapon,7,"Wooden Bow",ranged,7,true);
-		equippedShield = new Shield(50,ItemType.Shield,8,"Metal Shield",shield,9,true);
+		equippedShield = new Shield(50,shield1Prefab,ItemType.Shield,8,"Metal Shield",shield,9,true);
 		//Save();
 	}
 

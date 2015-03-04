@@ -4,11 +4,11 @@ using System.Collections;
 public class SpiderBoss : Boss 
 {
 	private Object spiderShot;
-	private float spiderShotSpeed=50;
+	public float spiderShotSpeed = 50;
 	public override void Start ()
 	{
 		base.Start ();
-		spiderShot = Resources.Load ("Prefabs/SpiderBossShotPrefab") as Object;
+		spiderShot = Resources.Load ("Prefabs/SpiderBossShotPrefab");
 	}
 	protected override void OnSpecialAttack()
 	{

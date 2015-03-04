@@ -4,6 +4,7 @@ using System.Collections;
 public class Shield : InventoryItem 
 {
 	private float defence;
+	private Object shieldPrefab;
 	
 	public float Defence
 	{
@@ -16,15 +17,28 @@ public class Shield : InventoryItem
 			defence = value;
 		}
 	}
+
+	public Object ShieldPrefab
+	{
+		get
+		{
+			return shieldPrefab;
+		}
+		set
+		{
+			shieldPrefab = value;
+		}
+	}
 	
-	public Shield(float def, ItemType item, int id, string name, Sprite image, int cost, bool purchase) : base(item, id, name, image, cost, purchase)
+	public Shield(float def, Object prefab, ItemType item, int id, string name, Sprite image, int cost, bool purchase) : base(item, id, name, image, cost, purchase)
 	{
 		defence = def;
+		shieldPrefab = prefab;
 	}
 
 	public bool BlockDamage(float damage)
 	{
-		if(defence>=damage)
+		if(defence >= damage)
 		{
 			defence -= damage;
 			return true;

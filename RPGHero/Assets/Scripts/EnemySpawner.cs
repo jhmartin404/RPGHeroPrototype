@@ -24,8 +24,39 @@ public class EnemySpawner : MonoBehaviour
 		levelOverText.SetActive (false);
 		levelOverButton = GameObject.Find ("LevelOverButton");
 		levelOverButton.SetActive (false);
-		enemyPrefab = Resources.Load ("Prefabs/SpiderBossPrefab");
-		//REMEMBER TO UNCOMMENT THIS LATER WHEN LOADING ENEMY PREFAB IS IMPROVED
+		//enemyPrefab = Resources.Load ("Prefabs/SpiderBossPrefab");
+
+		switch(Player.Instance.CurrentLevel)
+		{
+		case 1:
+			enemyPrefab = Resources.Load("Prefabs/BanditPrefab");
+			break;
+		case 2:
+			enemyPrefab = Resources.Load("Prefabs/EaglePrefab");
+			break;
+		case 3:
+			enemyPrefab = Resources.Load("Prefabs/WolfPrefab");
+			break;
+		case 4:
+			enemyPrefab = Resources.Load("Prefabs/OrcPrefab");
+			break;
+		case 5:
+			enemyPrefab = Resources.Load("Prefabs/SpiderBossPrefab");
+			break;
+		case 6:
+			enemyPrefab = Resources.Load("Prefabs/SkeletonPrefab");
+			break;
+		case 7:
+			enemyPrefab = Resources.Load("Prefabs/CougarPrefab");
+			break;
+		case 8:
+			enemyPrefab = Resources.Load("Prefabs/ArcherPrefab");
+			break;
+		default:
+			enemyPrefab = Resources.Load("Prefabs/BanditPrefab");
+			break;
+		}
+
 		GameObject enemy = Instantiate(enemyPrefab,transform.position,Quaternion.identity) as GameObject;
 	}
 	
