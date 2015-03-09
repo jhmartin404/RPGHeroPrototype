@@ -68,15 +68,15 @@ public class EnemySpawner : MonoBehaviour
 	
 	public void NotifyEnemyDied()
 	{
-		levelOverText.SetActive (true);
-		levelOverButton.SetActive (true);
+		//levelOverText.SetActive (true);
+		//levelOverButton.SetActive (true);
 		LevelStateManager.PushState (LevelState.Won);//Switch the level to won state
 	}
 	
 	public void NotifyPlayerDied()
 	{
-		levelOverText.SetActive (true);
-		levelOverButton.SetActive (true);
+		//levelOverText.SetActive (true);
+		//levelOverButton.SetActive (true);
 		LevelStateManager.PushState (LevelState.Lost);//Switch the level to lost state
 	}
 
@@ -93,10 +93,14 @@ public class EnemySpawner : MonoBehaviour
 	public void OnLevelWon()
 	{
 		Debug.Log ("OnLevelWon EnemySpawner");
+		levelOverText.SetActive (true);
+		levelOverButton.SetActive (true);
 	}
 
 	public void OnLevelLost()
 	{
 		Debug.Log ("OnLevelLost EnemySpawner");
+		levelOverText.SetActive (true);
+		levelOverButton.SetActive (true);
 	}
 }

@@ -52,7 +52,7 @@ public class WeaponControl : MonoBehaviour
 		weapon = GameObject.Find ("Weapon");
 		meleeWeapon = Player.Instance.GetPlayerInventory ().EquippedMeleeWeapon;
 		controlPosition = transform.position;
-		actionAreaCenter = actionArea.renderer.bounds.center;
+		actionAreaCenter = actionArea.GetComponent<Renderer>().bounds.center;
 		actionAreaRadius = actionArea.GetComponent<CircleCollider2D>().radius;//Collider is used to get the radius the collider is not actually used though
 
 	}
@@ -66,10 +66,10 @@ public class WeaponControl : MonoBehaviour
 			   && Player.Instance.Stamina>meleeWeapon.MeleeCost && !GameObject.Find("Main Camera").GetComponent<LevelScript>().IconSelected)
 			{
 				Vector2 touchPos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-				if (collider2D == Physics2D.OverlapCircle(touchPos, fingerRadius))
+				if (GetComponent<Collider2D>() == Physics2D.OverlapCircle(touchPos, fingerRadius))
 				{
 					controlState = ControlState.Grabbed;
-					actionArea.renderer.enabled = true;
+					actionArea.GetComponent<Renderer>().enabled = true;
 					GameObject.Find("Main Camera").GetComponent<LevelScript>().IconSelected = true;
 				}
 				
@@ -99,9 +99,9 @@ public class WeaponControl : MonoBehaviour
 			{
 				controlState = ControlState.Stationary;
 				transform.position = controlPosition;
-				weapon.renderer.enabled = false;//disable the renderer for the weapon
+				weapon.GetComponent<Renderer>().enabled = false;//disable the renderer for the weapon
 				weapon.GetComponent<PolygonCollider2D>().isTrigger = false;
-				actionArea.renderer.enabled = false;
+				actionArea.GetComponent<Renderer>().enabled = false;
 				GameObject.Find("Main Camera").GetComponent<LevelScript>().IconSelected = false;
 			}
 		}
@@ -119,7 +119,7 @@ public class WeaponControl : MonoBehaviour
 		if(Vector2.Distance(actionAreaCenter,transform.position) < actionAreaRadius && controlState == ControlState.Grabbed)
 		{
 			controlState = ControlState.Active;
-			weapon.renderer.enabled = true;//render the weapon
+			weapon.GetComponent<Renderer>().enabled = true;//render the weapon
 			weapon.GetComponent<PolygonCollider2D>().isTrigger = true;
 			weapon.transform.position = actionAreaCenter;
 		}

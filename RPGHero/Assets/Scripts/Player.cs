@@ -100,6 +100,10 @@ public class Player
 
 	public Inventory GetPlayerInventory()
 	{
+		//-------------------------------------------------
+		//REMEMEBER THIS LINE HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		//----------------------------------------------------
+		playerInventory.Serialize ();
 		return playerInventory;
 	}
 

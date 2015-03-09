@@ -7,7 +7,8 @@ public enum LevelState
 	Start,
 	Running,
 	Lost,
-	Won
+	Won,
+	Invalid
 };
 
 public class LevelStateManager : MonoBehaviour 
@@ -30,6 +31,7 @@ public class LevelStateManager : MonoBehaviour
 		//Start the level
 		fsm.PushState (OnLevelStartEvent);
 		fsm.DoState ();
+
 		//Enter Running State
 		fsm.PushState (OnLevelRunningEvent);
 	}
@@ -40,6 +42,7 @@ public class LevelStateManager : MonoBehaviour
 		{
 		case LevelState.Lost:
 			fsm.PushState(OnLevelLostEvent);
+			fsm.DoState();
 			break;
 		case LevelState.Running:
 			fsm.PushState(OnLevelRunningEvent);
@@ -49,6 +52,7 @@ public class LevelStateManager : MonoBehaviour
 			break;
 		case LevelState.Won:
 			fsm.PushState(OnLevelWonEvent);
+			fsm.DoState();
 			break;
 		}
 	}
@@ -58,30 +62,35 @@ public class LevelStateManager : MonoBehaviour
 		fsm.PopState ();
 	}
 
-	//public static LevelState GetCurrentState ()
-	//{
-	//	LevelState currentLevel;
-	//	switch(fsm.GetCurrentState())
-	//	{
-	//	case OnLevelLostEvent:
-	//		currentLevel = LevelState.Lost;
-	//		break;
-	//	case OnLevelRunningEvent:
-	//		currentLevel = LevelState.Running;
-	//		break;
-	//	case OnLevelStartEvent:
-	//		currentLevel = LevelState.Start;
-	//		break;
-	//	case OnLevelWonEvent:
-	//		currentLevel = LevelState.Won;
-	//		break;
-	//	}
-	//}
+	public static LevelState GetCurrentState ()
+	{
+		LevelState currentLevelState = LevelState.Invalid;
+		if(fsm.GetCurrentState().Equals(OnLevelStartEvent))
+		{
+			currentLevelState = LevelState.Start;
+		}
+		else if(fsm.GetCurrentState().Equals(OnLevelRunningEvent))
+		{
+			currentLevelState = LevelState.Running;
+		}
+		else if(fsm.GetCurrentState().Equals(OnLevelLostEvent))
+		{
+			currentLevelState = LevelState.Lost;
+		}
+		else if(fsm.GetCurrentState().Equals(OnLevelWonEvent))
+		{
+			currentLevelState = LevelState.Won;
+		}
+		return currentLevelState;
+	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-		//execute the current state
-		fsm.DoState ();
+		//execute the current state if level state is running
+		if(fsm.GetCurrentState() == OnLevelRunningEvent)
+		{
+			fsm.DoState ();
+		}
 	}
 }

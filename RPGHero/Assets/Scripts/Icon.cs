@@ -92,25 +92,19 @@ public class Icon : MonoBehaviour
 		if (Input.touchCount > 0 && iconState != IconState.Thrown)
 		{
 			if((Input.GetTouch(0).phase == TouchPhase.Began || Input.GetTouch(0).phase == TouchPhase.Moved) && iconState == IconState.Rotating
-			   && !mainCamera.GetComponent<LevelScript>().IconSelected)
+			   && !mainCamera.GetComponent<LevelScript>().IconSelected && OnCheckSelected())
 			{
 				Vector2 touchPos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-				if (collider2D == Physics2D.OverlapCircle(touchPos, fingerRadius))
+				if (GetComponent<Collider2D>() == Physics2D.OverlapCircle(touchPos, fingerRadius))
 				{
-					iconState = IconState.Grabbed;
-					mainCamera.GetComponent<LevelScript>().IconSelected = true;
-					//startPosition = transform.position;
-					rigidbody2D.isKinematic = true;
+					OnIconTouched();
 				}
 				
 				
 			}
 			else if(Input.GetTouch(0).phase == TouchPhase.Ended && iconState == IconState.Grabbed)
 			{
-				iconState = IconState.Thrown;
-				mainCamera.GetComponent<LevelScript>().IconSelected = false;
-				//endPosition = transform.position;
-				rigidbody2D.isKinematic = false;
+				OnIconLetGo();
 			}
 		}
 
@@ -130,11 +124,30 @@ public class Icon : MonoBehaviour
 
 	}
 
+	protected virtual bool OnCheckSelected()
+	{
+		return true;
+	}
+
+	protected virtual void OnIconTouched()
+	{
+		iconState = IconState.Grabbed;
+		mainCamera.GetComponent<LevelScript>().IconSelected = true;
+		GetComponent<Rigidbody2D>().isKinematic = true;
+	}
+
+	protected virtual void OnIconLetGo()
+	{
+		iconState = IconState.Thrown;
+		mainCamera.GetComponent<LevelScript>().IconSelected = false;
+		GetComponent<Rigidbody2D>().isKinematic = false;	
+	}
+
 	public virtual void LateUpdate()
 	{
 		if(iconState == IconState.Thrown)
 		{
-			rigidbody2D.velocity = (endPosition - startPosition).normalized*iconSpeed;
+			GetComponent<Rigidbody2D>().velocity = (endPosition - startPosition).normalized*iconSpeed;
 		}
 	}
 
@@ -181,6 +194,11 @@ public class Icon : MonoBehaviour
 	protected virtual void OnHitPlayer(Collider2D col)
 	{
 
+	}
+
+	public virtual void OnDestroy()
+	{
+		Destroy (gameObject);
 	}
 
 	void OnBecameInvisible()

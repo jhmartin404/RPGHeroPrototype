@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using MiniJSON;
+using System.Text;
+using System.IO;
+using Pathfinding.Serialization.JsonFx;
 
 public class Inventory
 {
@@ -113,33 +115,33 @@ public class Inventory
 
 	public Inventory()
 	{
-		Sprite melee = Resources.Load<Sprite> ("SteelSwordImage");
-		Sprite ranged = Resources.Load<Sprite> ("bow");
-		Sprite shield = Resources.Load<Sprite> ("BigShield");
-		Sprite axe = Resources.Load<Sprite> ("SteelAxeImage");
-		Sprite lightning = Resources.Load<Sprite> ("lightningIcon");
-		Sprite fireBlast = Resources.Load<Sprite> ("fireBlastIcon");
-		Sprite iceBlast = Resources.Load<Sprite> ("iceBlastIcon");
+		//Sprite melee = Resources.Load<Sprite> ("SteelSwordImage");
+		//Sprite ranged = Resources.Load<Sprite> ("bow");
+		//Sprite shield = Resources.Load<Sprite> ("BigShield");
+		//Sprite axe = Resources.Load<Sprite> ("SteelAxeImage");
+		//Sprite lightning = Resources.Load<Sprite> ("lightningIcon");
+		//Sprite fireBlast = Resources.Load<Sprite> ("fireBlastIcon");
+		//Sprite iceBlast = Resources.Load<Sprite> ("iceBlastIcon");
 
-		Object axePrefab = Resources.Load ("Prefabs/AxePrefab");
-		Object steelSwordPrefab = Resources.Load ("Prefabs/SteelSwordPrefab");
-		Object shield1Prefab = Resources.Load ("Prefabs/Shield1Prefab");
+		//Object axePrefab = Resources.Load ("Prefabs/AxePrefab");
+		//Object steelSwordPrefab = Resources.Load ("Prefabs/SteelSwordPrefab");
+		//Object shield1Prefab = Resources.Load ("Prefabs/Shield1Prefab");
 
 		healthPotions = 2;
 		manaPotions = 2;
 		coins = 0;
 		//TESTING LINES
 		unequippedItems = new List<InventoryItem>();
-		unequippedItems.Add(new MeleeWeapon(8,axePrefab,4,WeaponType.Melee,ItemType.Weapon,1,"Steel Axe",axe,8,true));
-		unequippedItems.Add(new RangedWeapon(3,2,WeaponType.Ranged, ItemType.Weapon,2,"Weak Bow",ranged,5,true));
-		unequippedItems.Add(new Shield(30,shield1Prefab, ItemType.Shield,3,"Weak Shield",shield,5,true));
-		unequippedItems.Add(new FireBlastMagic (2.0f,2.5f,7,ItemType.Magic,4,"Weak Fire Blast",fireBlast,-1,false));
-		//equippedMagic1 = new FireBlastMagic (3.0f,5,10,ItemType.Magic,4,"Fire Blast",fireBlast,-1,false);
-		equippedMagic1 = new LightningMagic (5,10,ItemType.Magic,4,"Lightning Attack",lightning,-1,false);
-		equippedMagic2 = new FrostBlastMagic (2.5f,0.5f,10,ItemType.Magic,5,"Frost Blast",iceBlast,-1,false);
-		equippedMeleeWeapon = new MeleeWeapon(10,steelSwordPrefab,5,WeaponType.Melee,ItemType.Weapon,6,"Steel Sword",melee,10,true);
-		equippedRangedWeapon = new RangedWeapon(5,3,WeaponType.Ranged,ItemType.Weapon,7,"Wooden Bow",ranged,7,true);
-		equippedShield = new Shield(50,shield1Prefab,ItemType.Shield,8,"Metal Shield",shield,9,true);
+		unequippedItems.Add(new MeleeWeapon(8,"Prefabs/AxePrefab",4,WeaponType.Melee,ItemType.Weapon,1,"Steel Axe","SteelAxeImage",8,true));
+		unequippedItems.Add(new RangedWeapon(3,2,WeaponType.Ranged, ItemType.Weapon,2,"Weak Bow","bow",5,true));
+		unequippedItems.Add(new Shield(30,"Prefabs/Shield1Prefab", ItemType.Shield,3,"Weak Shield","BigShield",5,true));
+		unequippedItems.Add(new FireBlastMagic (2.0f,2.5f,7,ItemType.Magic,4,"Weak Fire Blast","fireBlastIcon",-1,false));
+		equippedMagic1 = new FireBlastMagic (3.0f,5,10,ItemType.Magic,11,"Fire Blast","fireBlastIcon",-1,false);
+		//equippedMagic1 = new LightningMagic (5,10,ItemType.Magic,10,"Lightning Attack","lightningIcon",-1,false);
+		equippedMagic2 = new FrostBlastMagic (2.5f,0.5f,10,ItemType.Magic,5,"Frost Blast","iceBlastIcon",-1,false);
+		equippedMeleeWeapon = new MeleeWeapon(10,"Prefabs/SteelSwordPrefab",5,WeaponType.Melee,ItemType.Weapon,6,"Steel Sword","SteelSwordImage",10,true);
+		equippedRangedWeapon = new RangedWeapon(5,3,WeaponType.Ranged,ItemType.Weapon,7,"Wooden Bow","bow",7,true);
+		equippedShield = new Shield(50,"Prefabs/Shield1Prefab",ItemType.Shield,8,"Metal Shield","BigShield",9,true);
 		//Save();
 	}
 
@@ -167,6 +169,38 @@ public class Inventory
 	//{
 	//
 	//}
+
+	public void Serialize()
+	{
+		//Serialize the Inventory
+		List<InventoryItem> inventory = new List<InventoryItem> ();
+		inventory.Add (equippedMagic1);
+		inventory.Add (EquippedMagic2);
+		inventory.Add (equippedMeleeWeapon);
+		inventory.Add (equippedRangedWeapon);
+		inventory.Add (equippedShield);
+		inventory.AddRange (unequippedItems);
+
+		StringBuilder result = new StringBuilder(string.Empty);
+		
+		JsonWriterSettings settings = JsonDataWriter.CreateSettings(true);
+		settings.TypeHintName = "__type";//Store the type of the inventoryitem
+		
+		JsonWriter writer = new JsonWriter(result, settings);
+		
+		writer.Write(inventory);
+		
+		Debug.Log(result.ToString());//Print out the resulting Json
+
+		//Deserialize as a list of InventoryItems
+		List<InventoryItem> items = JsonReader.Deserialize<List<InventoryItem>> (result.ToString());
+
+		//Print out each item
+		for(int i=0;i<items.Count;++i)
+		{
+			Debug.Log(items[i]);
+		}
+	}
 
 	//public void Save()
 	//{

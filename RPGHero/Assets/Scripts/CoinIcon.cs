@@ -10,15 +10,4 @@ public class CoinIcon : Icon
 		base.Start ();
 		iconType = IconType.Coin;
 	}
-	
-	// Update is called once per frame
-	public override void Update () 
-	{
-		base.Update ();
-	}
-
-	public override void LateUpdate()
-	{
-		base.LateUpdate ();
-	}
 }

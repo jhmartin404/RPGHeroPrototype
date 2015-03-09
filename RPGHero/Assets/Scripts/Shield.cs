@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Pathfinding.Serialization.JsonFx;
 
 public class Shield : InventoryItem 
 {
 	private float defence;
+	[JsonMember]
+	private string shieldPrefabPath;
 	private Object shieldPrefab;
 	
 	public float Defence
@@ -18,6 +21,7 @@ public class Shield : InventoryItem
 		}
 	}
 
+	[JsonIgnore]
 	public Object ShieldPrefab
 	{
 		get
@@ -29,11 +33,17 @@ public class Shield : InventoryItem
 			shieldPrefab = value;
 		}
 	}
+
+	public Shield()
+	{
+
+	}
 	
-	public Shield(float def, Object prefab, ItemType item, int id, string name, Sprite image, int cost, bool purchase) : base(item, id, name, image, cost, purchase)
+	public Shield(float def, string prefabPath, ItemType item, int id, string name, string imagePath, int cost, bool purchase) : base(item, id, name, imagePath, cost, purchase)
 	{
 		defence = def;
-		shieldPrefab = prefab;
+		shieldPrefabPath = prefabPath;
+		shieldPrefab = Resources.Load(shieldPrefabPath);
 	}
 
 	public bool BlockDamage(float damage)

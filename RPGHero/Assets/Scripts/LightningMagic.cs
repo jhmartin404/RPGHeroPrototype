@@ -4,7 +4,8 @@ using System.Collections;
 public class LightningMagic : Magic 
 {
 	private float lightningDamage;
-	public LightningMagic(float dam, int costMana, ItemType item, int id, string name, Sprite image, int cost, bool purchase) : base(costMana,item, id, name, image, cost, purchase)
+
+	public LightningMagic(float dam, int costMana, ItemType item, int id, string name, string imagePath, int cost, bool purchase) : base(costMana,item, id, name, imagePath, cost, purchase)
 	{
 		lightningDamage = dam;
 	}

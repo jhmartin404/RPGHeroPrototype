@@ -6,7 +6,7 @@ public class FrostBlastMagic : Magic
 	private float frostDuration;
 	private float speedDecreaseRate;
 	
-	public FrostBlastMagic(float duration, float decreaseRate, int costMana, ItemType item, int id, string name, Sprite image, int cost, bool purchase) : base(costMana,item, id, name, image, cost, purchase)
+	public FrostBlastMagic(float duration, float decreaseRate, int costMana, ItemType item, int id, string name, string imagePath, int cost, bool purchase) : base(costMana,item, id, name, imagePath, cost, purchase)
 	{
 		frostDuration = duration;
 		speedDecreaseRate = decreaseRate;

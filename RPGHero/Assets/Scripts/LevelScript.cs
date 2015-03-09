@@ -54,7 +54,7 @@ public class LevelScript : MonoBehaviour
 		staminaBar.fillAmount = (float)(Player.Instance.Stamina/ (float)playerStats.MaxStamina);
 		manaBar.fillAmount = (float)(Player.Instance.Mana/ (float)playerStats.MaxMana);
 
-		if(Player.Instance.Health <=0)
+		if(Player.Instance.Health <= 0  && LevelStateManager.GetCurrentState() != LevelState.Lost)
 		{
 			enemySpawner.GetComponent<EnemySpawner>().NotifyPlayerDied();
 		}

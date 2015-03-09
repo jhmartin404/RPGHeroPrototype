@@ -50,10 +50,10 @@ public class ShieldControl : MonoBehaviour
 			   && !GameObject.Find("Main Camera").GetComponent<LevelScript>().IconSelected)
 			{
 				Vector2 touchPos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-				if (collider2D == Physics2D.OverlapCircle(touchPos, fingerRadius))
+				if (GetComponent<Collider2D>() == Physics2D.OverlapCircle(touchPos, fingerRadius))
 				{
 					controlState = ControlState.Active;
-					shield.renderer.enabled = true;//render the shield
+					shield.GetComponent<Renderer>().enabled = true;//render the shield
 					shield.GetComponent<PolygonCollider2D>().isTrigger = true;
 					Vector3 pos = transform.position;
 					pos.z += 0.5f;
@@ -75,7 +75,7 @@ public class ShieldControl : MonoBehaviour
 			else if((Input.GetTouch(0).phase == TouchPhase.Ended && controlState == ControlState.Active))
 			{
 				controlState = ControlState.Stationary;
-				shield.renderer.enabled = false;//disable the renderer for the shield
+				shield.GetComponent<Renderer>().enabled = false;//disable the renderer for the shield
 				shield.GetComponent<PolygonCollider2D>().isTrigger = false;
 				transform.position = controlPosition;
 				Vector3 shieldPos = controlPosition;

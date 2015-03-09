@@ -33,7 +33,7 @@ public class RangedIcon : Icon
 		equippedRanged = Player.Instance.GetPlayerInventory ().EquippedRangedWeapon;
 		startThrow = false;
 		actionArea = GameObject.Find ("ActionArea");
-		actionAreaCenter = actionArea.renderer.bounds.center;
+		actionAreaCenter = actionArea.GetComponent<Renderer>().bounds.center;
 		actionAreaRadius = actionArea.GetComponent<CircleCollider2D>().radius;
 	}
 	
@@ -43,29 +43,19 @@ public class RangedIcon : Icon
 		if (Input.touchCount > 0 && iconState != IconState.Thrown)
 		{
 			if((Input.GetTouch(0).phase == TouchPhase.Began || Input.GetTouch(0).phase == TouchPhase.Moved) && iconState == IconState.Rotating
-			   && !mainCamera.GetComponent<LevelScript>().IconSelected && Player.Instance.Stamina >= equippedRanged.RangedCost)
+			   && !mainCamera.GetComponent<LevelScript>().IconSelected && OnCheckSelected())
 			{
 				Vector2 touchPos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-				if (collider2D == Physics2D.OverlapCircle(touchPos, fingerRadius))
+				if (GetComponent<Collider2D>() == Physics2D.OverlapCircle(touchPos, fingerRadius))
 				{
-					iconState = IconState.Grabbed;
-					mainCamera.GetComponent<LevelScript>().IconSelected = true;
-					//startPosition = transform.position;
-					rigidbody2D.isKinematic = true;
-					actionArea.renderer.enabled = true;
+					OnIconTouched();
 				}
 				
 				
 			}
 			else if(Input.GetTouch(0).phase == TouchPhase.Ended && iconState == IconState.Grabbed)
 			{
-				iconState = IconState.Thrown;
-				mainCamera.GetComponent<LevelScript>().IconSelected = false;
-				lineRenderer.enabled = false;
-				rigidbody2D.isKinematic = false;
-				actionArea.renderer.enabled = false;
-				endPosition = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-				Player.Instance.Stamina -= equippedRanged.RangedCost;
+				OnIconLetGo();
 			}
 		}
 		
@@ -89,9 +79,28 @@ public class RangedIcon : Icon
 		}
 	}
 
+	protected override bool OnCheckSelected()
+	{
+		return Player.Instance.Stamina >= equippedRanged.RangedCost;
+	}
+	
+	protected override void OnIconTouched()
+	{
+		base.OnIconTouched ();
+		actionArea.GetComponent<Renderer>().enabled = true;
+	}
+	
+	protected override void OnIconLetGo()
+	{
+		base.OnIconLetGo ();
+		lineRenderer.enabled = false;
+		actionArea.GetComponent<Renderer>().enabled = false;
+		endPosition = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
+		Player.Instance.Stamina -= equippedRanged.RangedCost;
+	}
+
 	protected override void OnGrabbedState()
 	{
-		Debug.Log ("InGrabstate");
 		if(startThrow)
 		{
 			Debug.Log("Throw Started");
@@ -122,7 +131,7 @@ public class RangedIcon : Icon
 	{
 		if(iconState == IconState.Thrown)
 		{
-			rigidbody2D.velocity = (startPosition - endPosition).normalized*iconSpeed;
+			GetComponent<Rigidbody2D>().velocity = (startPosition - endPosition).normalized*iconSpeed;
 		}
 	}
 }

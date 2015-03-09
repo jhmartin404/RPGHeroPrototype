@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Pathfinding.Serialization.JsonFx;
 
+//[JsonOptIn]
 public class MeleeWeapon : Weapon
 {
 	private int meleeCost;
+	private string meleeWeaponPrefabPath;
 	private Object meleeWeaponPrefab;
 
 	public int MeleeCost
@@ -18,6 +21,19 @@ public class MeleeWeapon : Weapon
 		}
 	}
 
+	public string MeleeWeaponPrefabPath
+	{
+		get
+		{
+			return meleeWeaponPrefabPath;
+		}
+		set
+		{
+			meleeWeaponPrefabPath = value;
+		}
+	}
+
+	[JsonIgnore]
 	public Object MeleeWeaponPrefab
 	{
 		get
@@ -30,9 +46,15 @@ public class MeleeWeapon : Weapon
 		}
 	}
 
-	public MeleeWeapon(int stamCost,Object prefab, int damage, WeaponType weap, ItemType item, int id, string name, Sprite image, int cost, bool purchase) : base(damage, weap, item, id, name, image, cost, purchase)
+	public MeleeWeapon()
 	{
-		meleeWeaponPrefab = prefab;
+
+	}
+
+	public MeleeWeapon(int stamCost,string prefabPath, int damage, WeaponType weap, ItemType item, int id, string name, string imagePath, int cost, bool purchase) : base(damage, weap, item, id, name, imagePath, cost, purchase)
+	{
+		meleeWeaponPrefabPath = prefabPath;
+		meleeWeaponPrefab = Resources.Load (meleeWeaponPrefabPath);
 		meleeCost = stamCost;
 	}
 

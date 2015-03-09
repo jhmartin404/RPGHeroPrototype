@@ -32,7 +32,7 @@ public class InventorySlot : MonoBehaviour
 			if(Input.GetTouch(0).phase == TouchPhase.Began || (Input.GetTouch(0).phase == TouchPhase.Moved))
 			{
 				Vector2 touchPos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-				if (collider2D == Physics2D.OverlapCircle(touchPos, fingerRadius))
+				if (GetComponent<Collider2D>() == Physics2D.OverlapCircle(touchPos, fingerRadius))
 				{
 					if(item != null)
 						GameObject.Find("SelectedItem").GetComponent<SelectedItem>().SlctdItem = item;

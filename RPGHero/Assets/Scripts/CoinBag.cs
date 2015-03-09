@@ -47,7 +47,8 @@ public class CoinBag : MonoBehaviour
 		{
 			AddCoin();
 			coinCollected = true;
-			Destroy(col.gameObject);
+			CoinIcon icon = col.GetComponent<CoinIcon>();
+			icon.OnDestroy();
 		}
 	}
 }

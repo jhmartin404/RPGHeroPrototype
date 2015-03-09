@@ -76,12 +76,12 @@ public class Enemy : MonoBehaviour
 		die = OnDie;
 		fsm = new FiniteStateMachine ();
 		lowEnemyHealth = enemyHealth * 0.25f;
-		rigidbody2D.isKinematic = true;
-		actionAreaCenter = GameObject.Find ("ActionArea").transform.renderer.bounds.center;
+		GetComponent<Rigidbody2D>().isKinematic = true;
+		actionAreaCenter = GameObject.Find ("ActionArea").transform.GetComponent<Renderer>().bounds.center;
 		enemySpawner = GameObject.Find ("EnemySpawner");
 		size = transform.localScale;
 		enemyPosition = transform.position;
-		normalColor = renderer.material.color;
+		normalColor = GetComponent<Renderer>().material.color;
 		fullEnemyHealth = enemyHealth;
 		moveTimer = Random.Range (2, 5);
 		standTimer = Random.Range (1, 3);
@@ -95,70 +95,72 @@ public class Enemy : MonoBehaviour
 	// Update is called once per frame
 	public virtual void Update () 
 	{
-		attackTimer += Time.deltaTime;
+		if(LevelStateManager.GetCurrentState() == LevelState.Running)
+		{
+			attackTimer += Time.deltaTime;
 		
-		//Move left to right
-		if(fsm.GetCurrentState() == null)
-		{
-			fsm.PushState(move);//Player should always at least be moving if they have no state
-		}
-
-		//if(enemyHealth <= lowEnemyHealth)
-		//{
-		//	fsm.PushState(lowHealth);
-			//OnLowHealth();
-		//}
-
-		if(attackTimer > attackTime && enemyHealth>0 && fsm.GetCurrentState() == move)
-		{
-			enemyPosition = transform.position;
-			fsm.PushState(attack);//Switch to attack state
-			yDirection = -1.0f;
-		}
-
-		if(fsm.GetCurrentState() != attack)
-		{
-			transform.Translate (movement);
-		}
-
-		if(isDamageOverTime)
-		{
-			Color collideColor = new Color (255, 0, 0, 255);
-			StartCoroutine(Flash(collideColor));
-			magicTimer -= Time.deltaTime;
-			enemyHealth -= damageOverTimeAmount*Time.deltaTime;
-			if(magicTimer<=0)
+			//Move left to right
+			if(fsm.GetCurrentState() == null)
 			{
-				isDamageOverTime = false;
+				fsm.PushState(move);//Player should always at least be moving if they have no state
 			}
-		}
 
-		if(enemyHealth<=0)
-		{
-			if(fsm.GetCurrentState() != die)
+			//if(enemyHealth <= lowEnemyHealth)
+			//{
+			//	fsm.PushState(lowHealth);
+				//OnLowHealth();
+			//}
+
+			if(attackTimer > attackTime && enemyHealth>0 && fsm.GetCurrentState() == move)
 			{
-				fsm.PushState(die);//Switch to die state
+				enemyPosition = transform.position;
+				fsm.PushState(attack);//Switch to attack state
+				yDirection = -1.0f;
 			}
-		}
 
-		if(moveTimer <= 0)
-		{
-			fsm.PushState(stand);
+			if(fsm.GetCurrentState() != attack)
+			{
+				transform.Translate (movement);
+			}
 
-		}
+			if(isDamageOverTime)
+			{
+				Color collideColor = new Color (255, 0, 0, 255);
+				StartCoroutine(Flash(collideColor));
+				magicTimer -= Time.deltaTime;
+				enemyHealth -= damageOverTimeAmount*Time.deltaTime;
+				if(magicTimer<=0)
+				{
+					isDamageOverTime = false;
+				}
+			}
 
-		Debug.Log("State: " +fsm.GetCurrentState ().Method.Name);//used for testing
-		fsm.DoState ();//Run the method associate with the current state the enemy is in
-		if(enemyHealth>0)
-		{
-			UpdateEnemyHealthBar();
+			if(enemyHealth<=0)
+			{
+				if(fsm.GetCurrentState() != die)
+				{
+					fsm.PushState(die);//Switch to die state
+				}
+			}
+
+			if(moveTimer <= 0)
+			{
+				fsm.PushState(stand);
+			}
+
+			Debug.Log("State: " +fsm.GetCurrentState ().Method.Name);//used for testing
+			fsm.DoState ();//Run the method associate with the current state the enemy is in
+			if(enemyHealth>0)
+			{
+				UpdateEnemyHealthBar();
+			}
 		}
 	}
 
 	private void UpdateEnemyHealthBar()
 	{
 		Vector3 pos = transform.position;
-		pos.y += renderer.bounds.extents.y;
+		pos.y += GetComponent<Renderer>().bounds.extents.y;
 		enemyHealthBar.transform.position = pos; 
 		enemyHealthBarImage.fillAmount = enemyHealth / fullEnemyHealth;
 	}
@@ -166,9 +168,9 @@ public class Enemy : MonoBehaviour
 	//Flash enemy's color, used to show when enemy is hit
 	protected IEnumerator Flash(Color collideColor)
 	{
-		renderer.material.color = collideColor;
+		GetComponent<Renderer>().material.color = collideColor;
 		yield return new WaitForSeconds(0.1f);
-		renderer.material.color = normalColor;
+		GetComponent<Renderer>().material.color = normalColor;
 	}
 
 	protected virtual void OnMove()
@@ -231,20 +233,6 @@ public class Enemy : MonoBehaviour
 			attackTimer = 0;
 			fsm.PopState();//when attack is finished pop the state off the stack
 		}
-
-		//if(transform.position.y + movement.y <= actionAreaCenter.y && sizeChangeSpeed >0)
-		//{
-		//	yDirection = 1.0f;
-		//	sizeChangeSpeed = -1.0f;
-		//	Player.Instance.TakeDamage(this);
-		//}
-		
-		//if(yDirection>= 0.0f && transform.position.y + movement.y >= enemyYPosition && sizeChangeSpeed <0)
-		//{
-		//	sizeChangeSpeed = 1.0f;
-		//	attackTimer = 0;
-		//	fsm.PopState();//when attack is finished pop the state off the stack
-		//}
 	}
 
 	protected virtual void OnLowHealth()
@@ -256,7 +244,6 @@ public class Enemy : MonoBehaviour
 	protected virtual void OnDie()
 	{
 		Player.Instance.AddExperience(expGiven);
-		//isDead = true;
 		enemySpawner.GetComponent<EnemySpawner> ().NotifyEnemyDied ();
 		fsm.PopState ();
 		Destroy (enemyHealthBar);
@@ -324,13 +311,13 @@ public class Enemy : MonoBehaviour
 	protected virtual void OnHitByRanged(RangedIcon rangedIcon)
 	{
 		rangedIcon.EquippedRanged.DealDamage(this);
-		Destroy(rangedIcon.gameObject);
+		rangedIcon.OnDestroy ();
 	}
 
 	protected virtual void OnHitByMagic(MagicIcon magicIcon)
 	{
 		magicIcon.EquippedMagic.DealDamage(this);
-		Destroy(magicIcon.gameObject);
+		magicIcon.OnDestroy ();
 	}
 
 	protected virtual void OnHitByMelee(WeaponControl control)

@@ -36,7 +36,12 @@ public class Weapon : InventoryItem
 		}
 	}
 
-	public Weapon(int dam,WeaponType weap, ItemType item, int id, string name, Sprite image, int cost, bool purchase) : base(item, id, name, image, cost, purchase)
+	public Weapon()
+	{
+
+	}
+
+	public Weapon(int dam,WeaponType weap, ItemType item, int id, string name, string imagePath, int cost, bool purchase) : base(item, id, name, imagePath, cost, purchase)
 	{
 		damage = dam;
 		weaponType = weap;

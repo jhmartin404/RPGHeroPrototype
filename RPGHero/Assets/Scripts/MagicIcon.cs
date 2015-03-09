@@ -3,6 +3,8 @@ using System.Collections;
 
 public class MagicIcon : Icon 
 {
+	private Object fireBlastParticleSystemPrefab;
+	private GameObject fireBlastParticleSystem;
 	private GameObject actionArea;
 	private Magic equippedMagic;
 
@@ -21,53 +23,43 @@ public class MagicIcon : Icon
 	public override void Start () 
 	{
 		base.Start ();
+		fireBlastParticleSystemPrefab = Resources.Load ("Prefabs/FireBlastParticles");
 		//equippedMagic = Player.Instance.GetPlayerInventory ().EquippedMagic1;
 		gameObject.GetComponent<SpriteRenderer> ().sprite = equippedMagic.GetItemImage ();
 		actionArea = GameObject.Find ("ActionArea");
 		iconType = IconType.Magic;
 	}
-	
-	// Update is called once per frame
-	public override void Update () 
+
+	protected override bool OnCheckSelected()
 	{
-		if (Input.touchCount > 0 && iconState != IconState.Thrown)
-		{
-			if((Input.GetTouch(0).phase == TouchPhase.Began || Input.GetTouch(0).phase == TouchPhase.Moved) && iconState == IconState.Rotating
-			   && !mainCamera.GetComponent<LevelScript>().IconSelected && Player.Instance.Mana >= equippedMagic.ManaCost)
-			{
-				Vector2 touchPos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-				if (collider2D == Physics2D.OverlapCircle(touchPos, fingerRadius))
-				{
-					iconState = IconState.Grabbed;
-					mainCamera.GetComponent<LevelScript>().IconSelected = true;
-					rigidbody2D.isKinematic = true;
-					actionArea.renderer.enabled = true;
-				}
-				
-				
-			}
-			else if(Input.GetTouch(0).phase == TouchPhase.Ended && iconState == IconState.Grabbed)
-			{
-				iconState = IconState.Thrown;
-				mainCamera.GetComponent<LevelScript>().IconSelected = false;
-				rigidbody2D.isKinematic = false;
-				actionArea.renderer.enabled = false;
-				endPosition = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-				Player.Instance.Mana -= equippedMagic.ManaCost;
-			}
-		}
-		
-		if(iconState == IconState.Rotating)
-		{
-			OnRotatingState();
-		}
-		else if(iconState == IconState.Grabbed)
-		{
-			OnGrabbedState();
-		}
-		else if(iconState == IconState.Thrown)
-		{
-			OnThrownState();
-		}
+		return Player.Instance.Mana >= equippedMagic.ManaCost;
+	}
+
+	protected override void OnIconTouched()
+	{
+		base.OnIconTouched ();
+		actionArea.GetComponent<Renderer>().enabled = true;
+		fireBlastParticleSystem = Instantiate(fireBlastParticleSystemPrefab, transform.position, transform.rotation) as GameObject;
+		fireBlastParticleSystem.GetComponent<ParticleSystem>().Play();
+	}
+	
+	protected override void OnIconLetGo()
+	{
+		base.OnIconLetGo ();
+		actionArea.GetComponent<Renderer>().enabled = false;
+		endPosition = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
+		Player.Instance.Mana -= equippedMagic.ManaCost;
+	}
+
+	protected override void OnGrabbedState()
+	{
+		base.OnGrabbedState ();
+		fireBlastParticleSystem.transform.position = transform.position;
+	}
+
+	public override void OnDestroy()
+	{
+		Destroy (fireBlastParticleSystem);
+		Destroy (gameObject);
 	}
 }

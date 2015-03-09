@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Pathfinding.Serialization.JsonFx;
 
 public enum ItemType
 {
@@ -11,11 +12,22 @@ public enum ItemType
 
 public class InventoryItem 
 {
+	//[JsonMember]
+	//private string itemClass;
+	[JsonMember]
 	private ItemType itemType;
+	[JsonMember]
 	private int itemID;
+	[JsonMember]
 	private string itemName;
+	[JsonMember]
+	private string itemImagePath;
+
 	private Sprite itemImage;
+
+	[JsonMember]
 	private int itemCost;
+	[JsonMember]
 	private bool purchasable;
 
 	public InventoryItem()
@@ -23,14 +35,16 @@ public class InventoryItem
 
 	}
 
-	public InventoryItem(ItemType item, int id, string name, Sprite image, int cost, bool purchase)
+	public InventoryItem(ItemType item, int id, string name, string imagePath, int cost, bool purchase)
 	{
+		itemImagePath = imagePath;
 		itemType = item;
 		itemID = id;
 		itemName = name;
-		itemImage = image;
+		itemImage = Resources.Load<Sprite>(itemImagePath);
 		itemCost = cost;
 		purchasable = purchase;
+		//itemClass = this.GetType ().Name;
 	}
 
 	public string GetItemName()
@@ -52,6 +66,11 @@ public class InventoryItem
 	{
 		return itemType;
 	}
+
+	//public string GetItemClass()
+	//{
+	//	return itemClass;
+	//}
 
 	public override string ToString()
 	{
