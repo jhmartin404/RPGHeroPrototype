@@ -2,7 +2,6 @@
 using System.Collections;
 using Pathfinding.Serialization.JsonFx;
 
-//[JsonOptIn]
 public class MeleeWeapon : Weapon
 {
 	private int meleeCost;
@@ -38,6 +37,11 @@ public class MeleeWeapon : Weapon
 	{
 		get
 		{
+			//return meleeWeaponPrefab;
+			if(meleeWeaponPrefab == null)
+			{
+				meleeWeaponPrefab = Resources.Load (meleeWeaponPrefabPath);
+			}
 			return meleeWeaponPrefab;
 		}
 		set
@@ -48,7 +52,7 @@ public class MeleeWeapon : Weapon
 
 	public MeleeWeapon()
 	{
-
+		//meleeWeaponPrefab = Resources.Load (meleeWeaponPrefabPath);
 	}
 
 	public MeleeWeapon(int stamCost,string prefabPath, int damage, WeaponType weap, ItemType item, int id, string name, string imagePath, int cost, bool purchase) : base(damage, weap, item, id, name, imagePath, cost, purchase)

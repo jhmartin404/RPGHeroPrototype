@@ -1,0 +1,113 @@
+{
+	"__type": "Database, Assembly-CSharp",
+	"items": 
+		[
+			{
+				"__type": "MeleeWeapon, Assembly-CSharp",
+				"MeleeCost": 8,
+				"MeleeWeaponPrefabPath": "Prefabs/AxePrefab",
+				"Damage": 4,
+				"WpnType": "Melee",
+				"itemType": "Weapon",
+				"itemID": 1,
+				"itemName": "Steel Axe",
+				"itemImagePath": "SteelAxeImage",
+				"itemCost": 8,
+				"purchasable": true
+			},
+			{
+				"__type": "RangedWeapon, Assembly-CSharp",
+				"RangedCost": 3,
+				"Damage": 2,
+				"WpnType": "Ranged",
+				"itemType": "Weapon",
+				"itemID": 2,
+				"itemName": "Weak Bow",
+				"itemImagePath": "bow",
+				"itemCost": 5,
+				"purchasable": true
+			},
+			{
+				"__type": "Shield, Assembly-CSharp",
+				"Defence": 30,
+				"shieldPrefabPath": "Prefabs/Shield1Prefab",
+				"itemType": "Shield",
+				"itemID": 3,
+				"itemName": "Weak Shield",
+				"itemImagePath": "BigShield",
+				"itemCost": 5,
+				"purchasable": true
+			},
+			{
+				"__type": "LightningMagic, Assembly-CSharp",
+				"ManaCost": 10,
+				"lightningDamage": 5,
+				"itemType": "Magic",
+				"itemID": 10,
+				"itemName": "Lightning Attack",
+				"itemImagePath": "lightningIcon",
+				"itemCost": -1,
+				"purchasable": false
+			},
+			{
+				"__type": "FireBlastMagic, Assembly-CSharp",
+				"ManaCost": 10,
+				"fireDuration": 3,
+				"fireDamage": 5,
+				"itemType": "Magic",
+				"itemID": 11,
+				"itemName": "Fire Blast",
+				"itemImagePath": "fireBlastIcon",
+				"itemCost": -1,
+				"purchasable": false
+			},
+			{
+				"__type": "FrostBlastMagic, Assembly-CSharp",
+				"ManaCost": 10,
+				"frostDuration": 2.5,
+				"speedDecreaseRate": 0.5,
+				"itemType": "Magic",
+				"itemID": 5,
+				"itemName": "Frost Blast",
+				"itemImagePath": "iceBlastIcon",
+				"itemCost": -1,
+				"purchasable": false
+			},
+			{
+				"__type": "MeleeWeapon, Assembly-CSharp",
+				"MeleeCost": 10,
+				"MeleeWeaponPrefabPath": "Prefabs/SteelSwordPrefab",
+				"Damage": 5,
+				"WpnType": "Melee",
+				"itemType": "Weapon",
+				"itemID": 6,
+				"itemName": "Steel Sword",
+				"itemImagePath": "SteelSwordImage",
+				"itemCost": 10,
+				"purchasable": true
+			},
+			{
+				"__type": "RangedWeapon, Assembly-CSharp",
+				"RangedCost": 5,
+				"Damage": 3,
+				"WpnType": "Ranged",
+				"itemType": "Weapon",
+				"itemID": 7,
+				"itemName": "Wooden Bow",
+				"itemImagePath": "bow",
+				"itemCost": 7,
+				"purchasable": true
+			},
+			{
+				"__type": "Shield, Assembly-CSharp",
+				"Defence": 50,
+				"shieldPrefabPath": "Prefabs/Shield1Prefab",
+				"itemType": "Shield",
+				"itemID": 8,
+				"itemName": "Metal Shield",
+				"itemImagePath": "BigShield",
+				"itemCost": 9,
+				"purchasable": true
+			}
+		]
+}

@@ -1,9 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Pathfinding.Serialization.JsonFx;
 
 public class LightningMagic : Magic 
 {
+	[JsonMember]
 	private float lightningDamage;
+
+	public LightningMagic()
+	{
+
+	}
 
 	public LightningMagic(float dam, int costMana, ItemType item, int id, string name, string imagePath, int cost, bool purchase) : base(costMana,item, id, name, imagePath, cost, purchase)
 	{

@@ -17,6 +17,11 @@ public class Magic : InventoryItem
 		}
 	}
 
+	public Magic()
+	{
+
+	}
+
 	public Magic(int costMana, ItemType item, int id, string name, string imagePath, int cost, bool purchase) : base(item, id, name, imagePath, cost, purchase)
 	{
 		manaCost = costMana;

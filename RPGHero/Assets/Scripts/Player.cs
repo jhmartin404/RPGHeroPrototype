@@ -100,10 +100,6 @@ public class Player
 
 	public Inventory GetPlayerInventory()
 	{
-		//-------------------------------------------------
-		//REMEMEBER THIS LINE HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		//----------------------------------------------------
-		playerInventory.Serialize ();
 		return playerInventory;
 	}
 
@@ -143,14 +139,16 @@ public class Player
 		else
 		{
 			Debug.Log("Creating Player");
+			//just to initialize the Database *TEMPORARY*
+			InventoryItemDatabase.Instance.GetItemByID(1);
 			playerStats = new PlayerStats ();
 			playerInventory = new Inventory ();
 
 			health = playerStats.HealthStat;
 			stamina = playerStats.MaxStamina;
 			mana = playerStats.MaxMana;
-			//playerInventory.Coins = 0;
 			currentLevel = 0;
+
 		}
 	}
 

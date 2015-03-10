@@ -127,22 +127,22 @@ public class Inventory
 		//Object steelSwordPrefab = Resources.Load ("Prefabs/SteelSwordPrefab");
 		//Object shield1Prefab = Resources.Load ("Prefabs/Shield1Prefab");
 
+		Debug.Log ("Creating Inventory");
+
 		healthPotions = 2;
 		manaPotions = 2;
 		coins = 0;
 		//TESTING LINES
 		unequippedItems = new List<InventoryItem>();
-		unequippedItems.Add(new MeleeWeapon(8,"Prefabs/AxePrefab",4,WeaponType.Melee,ItemType.Weapon,1,"Steel Axe","SteelAxeImage",8,true));
-		unequippedItems.Add(new RangedWeapon(3,2,WeaponType.Ranged, ItemType.Weapon,2,"Weak Bow","bow",5,true));
-		unequippedItems.Add(new Shield(30,"Prefabs/Shield1Prefab", ItemType.Shield,3,"Weak Shield","BigShield",5,true));
-		unequippedItems.Add(new FireBlastMagic (2.0f,2.5f,7,ItemType.Magic,4,"Weak Fire Blast","fireBlastIcon",-1,false));
-		equippedMagic1 = new FireBlastMagic (3.0f,5,10,ItemType.Magic,11,"Fire Blast","fireBlastIcon",-1,false);
-		//equippedMagic1 = new LightningMagic (5,10,ItemType.Magic,10,"Lightning Attack","lightningIcon",-1,false);
-		equippedMagic2 = new FrostBlastMagic (2.5f,0.5f,10,ItemType.Magic,5,"Frost Blast","iceBlastIcon",-1,false);
-		equippedMeleeWeapon = new MeleeWeapon(10,"Prefabs/SteelSwordPrefab",5,WeaponType.Melee,ItemType.Weapon,6,"Steel Sword","SteelSwordImage",10,true);
-		equippedRangedWeapon = new RangedWeapon(5,3,WeaponType.Ranged,ItemType.Weapon,7,"Wooden Bow","bow",7,true);
-		equippedShield = new Shield(50,"Prefabs/Shield1Prefab",ItemType.Shield,8,"Metal Shield","BigShield",9,true);
-		//Save();
+		unequippedItems.Add (InventoryItemDatabase.Instance.GetItemByID(5));
+		unequippedItems.Add (InventoryItemDatabase.Instance.GetItemByID(6));
+		unequippedItems.Add (InventoryItemDatabase.Instance.GetItemByID(7));
+		unequippedItems.Add (InventoryItemDatabase.Instance.GetItemByID(8));
+		equippedMagic1 = InventoryItemDatabase.Instance.GetItemByID (10) as Magic;
+		equippedMagic2 = InventoryItemDatabase.Instance.GetItemByID (11) as Magic;
+		equippedMeleeWeapon = (MeleeWeapon)InventoryItemDatabase.Instance.GetItemByID (1);
+		equippedRangedWeapon = (RangedWeapon)InventoryItemDatabase.Instance.GetItemByID (2);
+		equippedShield = (Shield)InventoryItemDatabase.Instance.GetItemByID (3);
 	}
 
 	public List<InventoryItem> GetUnequippedItems()
@@ -181,24 +181,42 @@ public class Inventory
 		inventory.Add (equippedShield);
 		inventory.AddRange (unequippedItems);
 
-		StringBuilder result = new StringBuilder(string.Empty);
-		
-		JsonWriterSettings settings = JsonDataWriter.CreateSettings(true);
-		settings.TypeHintName = "__type";//Store the type of the inventoryitem
-		
-		JsonWriter writer = new JsonWriter(result, settings);
-		
-		writer.Write(inventory);
-		
-		Debug.Log(result.ToString());//Print out the resulting Json
+		StringBuilder builder = new StringBuilder();
 
-		//Deserialize as a list of InventoryItems
-		List<InventoryItem> items = JsonReader.Deserialize<List<InventoryItem>> (result.ToString());
+		using (TextWriter textWriter = new StringWriter(builder))
+		{
+			JsonWriterSettings settings = JsonDataWriter.CreateSettings(true);
+			settings.TypeHintName = "__type";//Store the type of the inventoryitem
 
+			JsonWriter writer = new JsonWriter(textWriter,settings);
+			writer.Write(inventory);
+			
+			Debug.Log( builder.ToString());
+		}
+		
+		//JsonWriter writer = new JsonWriter(result, settings);
+		
+		//writer.Write(inventory);
+		
+		//Debug.Log(result.ToString());//Print out the resulting Json
+
+		List<InventoryItem> items = Deserialize<List<InventoryItem>> (builder.ToString ());
+
+		//Debug.Log ("Unequipped Items: " + items.GetUnequippedItems());
+		//FrostBlastMagic items = Deserialize<FrostBlastMagic> (builder.ToString ());
 		//Print out each item
 		for(int i=0;i<items.Count;++i)
 		{
 			Debug.Log(items[i]);
+		}
+	}
+
+	public static T Deserialize<T>(string json)
+	{
+		using (TextReader textReader = new StringReader(json))
+		{
+			var jsonReader = new JsonReader(textReader);
+			return (T)jsonReader.Deserialize(typeof(T));
 		}
 	}
 

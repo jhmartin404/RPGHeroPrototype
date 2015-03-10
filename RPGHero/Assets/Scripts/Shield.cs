@@ -26,6 +26,10 @@ public class Shield : InventoryItem
 	{
 		get
 		{
+			if(shieldPrefab == null)
+			{
+				shieldPrefab = Resources.Load(shieldPrefabPath);
+			}
 			return shieldPrefab;
 		}
 		set
