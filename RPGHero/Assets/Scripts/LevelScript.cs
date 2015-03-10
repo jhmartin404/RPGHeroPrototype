@@ -27,6 +27,27 @@ public class LevelScript : MonoBehaviour
 
 	void Awake()
 	{
+		string section = "Section1";
+		if(Player.Instance.CurrentLevel<=5)
+		{
+			section = "Section1";
+		}
+		else if(Player.Instance.CurrentLevel<=10)
+		{
+			section = "Section2";
+		}
+		else if(Player.Instance.CurrentLevel<=15)
+		{
+			section = "Section3";
+		}
+		else if(Player.Instance.CurrentLevel<=20)
+		{
+			section = "Section4";
+		}
+
+		GameObject.Find ("Sky").GetComponent<SpriteRenderer> ().sprite = Resources.Load<Sprite> (section + "Sky");
+		GameObject.Find ("Ground").GetComponent<SpriteRenderer> ().sprite = Resources.Load<Sprite> (section + "Ground");
+		GameObject.Find ("Background").GetComponent<SpriteRenderer> ().sprite = Resources.Load<Sprite> (section + "Background");
 		weapon = Instantiate(Player.Instance.GetPlayerInventory ().EquippedMeleeWeapon.MeleeWeaponPrefab,transform.position,Quaternion.identity) as GameObject;
 		weapon.name = "Weapon";
 		shield = Instantiate (Player.Instance.GetPlayerInventory ().EquippedShield.ShieldPrefab, transform.position, Quaternion.identity) as GameObject;
