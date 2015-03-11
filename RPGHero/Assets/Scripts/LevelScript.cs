@@ -94,7 +94,7 @@ public class LevelScript : MonoBehaviour
 		Player.Instance.GetPlayerInventory().Coins++;
 	}
 
-	public void GoBack()
+	public static void GoBack()
 	{
 		Application.LoadLevel ("LevelSelectScene");
 	}

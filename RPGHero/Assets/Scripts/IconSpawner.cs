@@ -69,6 +69,14 @@ public class IconSpawner : MonoBehaviour
 		emptySlots.Remove (slot);
 	}
 
+	private void RemoveMethods()
+	{
+		LevelStateManager.OnLevelStartEvent -= OnLevelStart;
+		LevelStateManager.OnLevelRunningEvent -= OnLevelRunning;
+		LevelStateManager.OnLevelWonEvent -= OnLevelWon;
+		LevelStateManager.OnLevelLostEvent -= OnLevelLost;
+	}
+
 	public void OnLevelStart()
 	{
 		Debug.Log ("OnLevelStart IconSpawner");
@@ -82,10 +90,12 @@ public class IconSpawner : MonoBehaviour
 	public void OnLevelWon()
 	{
 		Debug.Log ("OnLevelWon IconSpawner");
+		RemoveMethods ();
 	}
 	
 	public void OnLevelLost()
 	{
 		Debug.Log ("OnLevelLost IconSpawner");
+		RemoveMethods ();
 	}
 }

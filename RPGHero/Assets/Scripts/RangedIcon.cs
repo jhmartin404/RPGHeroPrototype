@@ -73,7 +73,6 @@ public class RangedIcon : Icon
 		}
 		if( Vector2.Distance(actionAreaCenter,transform.position) < actionAreaRadius && iconState == IconState.Grabbed)
 		{
-			Debug.Log("StartTHrow");
 			startThrow = true;
 			startPosition = actionAreaCenter;
 		}
@@ -103,7 +102,6 @@ public class RangedIcon : Icon
 	{
 		if(startThrow)
 		{
-			Debug.Log("Throw Started");
 			Vector2 pos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 			if(Vector2.Distance(startPosition,pos)<2)
 				transform.position = pos;
@@ -116,7 +114,6 @@ public class RangedIcon : Icon
 		}
 		else if(!startThrow)
 		{
-			Debug.Log("Waiting To Start Throw");
 			Vector2 pos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 			transform.position = pos;
 		}

@@ -4,7 +4,8 @@ using System.Collections;
 public class MagicIcon : Icon 
 {
 	private Object fireBlastParticleSystemPrefab;
-	private GameObject fireBlastParticleSystem;
+	private Object frostBlastParticleSystemPrefab;
+	private GameObject particleSystem;
 	private GameObject actionArea;
 	private Magic equippedMagic;
 
@@ -24,7 +25,7 @@ public class MagicIcon : Icon
 	{
 		base.Start ();
 		fireBlastParticleSystemPrefab = Resources.Load ("Prefabs/FireBlastParticles");
-		//equippedMagic = Player.Instance.GetPlayerInventory ().EquippedMagic1;
+		frostBlastParticleSystemPrefab = Resources.Load ("Prefabs/FrostBlastParticles");
 		gameObject.GetComponent<SpriteRenderer> ().sprite = equippedMagic.GetItemImage ();
 		actionArea = GameObject.Find ("ActionArea");
 		iconType = IconType.Magic;
@@ -39,8 +40,17 @@ public class MagicIcon : Icon
 	{
 		base.OnIconTouched ();
 		actionArea.GetComponent<Renderer>().enabled = true;
-		fireBlastParticleSystem = Instantiate(fireBlastParticleSystemPrefab, transform.position, transform.rotation) as GameObject;
-		fireBlastParticleSystem.GetComponent<ParticleSystem>().Play();
+		if(equippedMagic.GetType() == typeof(FireBlastMagic))
+		{
+			particleSystem = Instantiate(fireBlastParticleSystemPrefab, transform.position, transform.rotation) as GameObject;
+			particleSystem.GetComponent<ParticleSystem>().Play();
+		}
+		else if(equippedMagic.GetType() == typeof(FrostBlastMagic))
+		{
+			particleSystem = Instantiate(frostBlastParticleSystemPrefab, transform.position, transform.rotation) as GameObject;
+			particleSystem.GetComponent<ParticleSystem>().Play();
+		}
+
 	}
 	
 	protected override void OnIconLetGo()
@@ -54,12 +64,15 @@ public class MagicIcon : Icon
 	protected override void OnGrabbedState()
 	{
 		base.OnGrabbedState ();
-		fireBlastParticleSystem.transform.position = transform.position;
+		if(particleSystem != null)
+		{
+			particleSystem.transform.position = transform.position;
+		}
 	}
 
 	public override void OnDestroy()
 	{
-		Destroy (fireBlastParticleSystem);
+		Destroy (particleSystem);
 		Destroy (gameObject);
 	}
 }

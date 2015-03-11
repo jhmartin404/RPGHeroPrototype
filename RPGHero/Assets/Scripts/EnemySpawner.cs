@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class EnemySpawner : MonoBehaviour 
@@ -20,11 +21,6 @@ public class EnemySpawner : MonoBehaviour
 	void Start () 
 	{
 		Debug.Log ("Creating Enemy Spawner");
-		levelOverText = GameObject.Find ("LevelOverText");
-		levelOverText.SetActive (false);
-		levelOverButton = GameObject.Find ("LevelOverButton");
-		levelOverButton.SetActive (false);
-		//enemyPrefab = Resources.Load ("Prefabs/SpiderBossPrefab");
 
 		switch(Player.Instance.CurrentLevel)
 		{
@@ -68,15 +64,11 @@ public class EnemySpawner : MonoBehaviour
 	
 	public void NotifyEnemyDied()
 	{
-		//levelOverText.SetActive (true);
-		//levelOverButton.SetActive (true);
 		LevelStateManager.PushState (LevelState.Won);//Switch the level to won state
 	}
 	
 	public void NotifyPlayerDied()
 	{
-		//levelOverText.SetActive (true);
-		//levelOverButton.SetActive (true);
 		LevelStateManager.PushState (LevelState.Lost);//Switch the level to lost state
 	}
 
@@ -93,14 +85,38 @@ public class EnemySpawner : MonoBehaviour
 	public void OnLevelWon()
 	{
 		Debug.Log ("OnLevelWon EnemySpawner");
-		levelOverText.SetActive (true);
-		levelOverButton.SetActive (true);
+		CreateEndGameMenu ();
+		RemoveMethods ();
 	}
 
 	public void OnLevelLost()
 	{
 		Debug.Log ("OnLevelLost EnemySpawner");
-		levelOverText.SetActive (true);
-		levelOverButton.SetActive (true);
+		CreateEndGameMenu ();
+		RemoveMethods ();
+	}
+
+	private void RemoveMethods()
+	{
+		LevelStateManager.OnLevelStartEvent -= OnLevelStart;
+		LevelStateManager.OnLevelRunningEvent -= OnLevelRunning;
+		LevelStateManager.OnLevelWonEvent -= OnLevelWon;
+		LevelStateManager.OnLevelLostEvent -= OnLevelLost;
+	}
+
+	private void CreateEndGameMenu()
+	{
+		Object endGameMenu = Resources.Load ("Prefabs/EndGameMenu");
+		if(this.gameObject != null)
+		{
+			GameObject endGame = Instantiate (endGameMenu, transform.position, transform.rotation) as GameObject;
+			endGame.transform.SetParent (GameObject.Find ("Canvas").transform, false);
+			endGame.transform.position = transform.position;
+			endGame.GetComponentInChildren<Button> ().onClick.AddListener (() => {LevelScript.GoBack ();});
+		}
+		else
+		{
+			Debug.Log ("GameObject is Dead");
+		}
 	}
 }

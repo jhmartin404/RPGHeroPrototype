@@ -16,12 +16,15 @@ public class Boss : Enemy
 	// Update is called once per frame
 	public override void Update () 
 	{
-		specialAttackTimer += Time.deltaTime;
-		if(specialAttackTimer > specialAttackTime && enemyHealth>0 && (fsm.GetCurrentState() != specialAttack ||fsm.GetCurrentState() != attack))
+		if(LevelStateManager.GetCurrentState() == LevelState.Running)
 		{
-			fsm.PushState(specialAttack);//Switch to special attack state
+			specialAttackTimer += Time.deltaTime;
+			if(specialAttackTimer > specialAttackTime && enemyHealth>0 && (fsm.GetCurrentState() != specialAttack ||fsm.GetCurrentState() != attack))
+			{
+				fsm.PushState(specialAttack);//Switch to special attack state
+			}
+			base.Update ();
 		}
-		base.Update ();
 	}
 
 	protected virtual void OnSpecialAttack()
