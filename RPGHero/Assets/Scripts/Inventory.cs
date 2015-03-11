@@ -122,11 +122,11 @@ public class Inventory
 		coins = 0;
 		//TESTING LINES
 		unequippedItems = new List<InventoryItem>();
-		unequippedItems.Add (InventoryItemDatabase.Instance.GetItemByID(11));
+		unequippedItems.Add (InventoryItemDatabase.Instance.GetItemByID(10));
 		unequippedItems.Add (InventoryItemDatabase.Instance.GetItemByID(1));
 		unequippedItems.Add (InventoryItemDatabase.Instance.GetItemByID(7));
 		unequippedItems.Add (InventoryItemDatabase.Instance.GetItemByID(8));
-		equippedMagic1 = InventoryItemDatabase.Instance.GetItemByID (10) as Magic;
+		equippedMagic1 = InventoryItemDatabase.Instance.GetItemByID (11) as Magic;
 		equippedMagic2 = InventoryItemDatabase.Instance.GetItemByID (5) as Magic;
 		equippedMeleeWeapon = (MeleeWeapon)InventoryItemDatabase.Instance.GetItemByID (6);
 		equippedRangedWeapon = (RangedWeapon)InventoryItemDatabase.Instance.GetItemByID (2);
