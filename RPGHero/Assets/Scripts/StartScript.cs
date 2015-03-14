@@ -3,10 +3,9 @@ using System.Collections;
 
 public class StartScript : MonoBehaviour 
 {
-	// Use this for initialization
-	void Start () 
+	void Start()
 	{
-	
+		SoundManager.Instance.PlayBackgroundMusic ("Start_Scene_BackgroundMusic");
 	}
 	
 	// Update is called once per frame
@@ -23,6 +22,7 @@ public class StartScript : MonoBehaviour
 
 	public void ChangeScene()
 	{
+		SoundManager.Instance.PlayUISound ("StartGame");
 		Application.LoadLevel("LevelSelectScene");
 	}
 }

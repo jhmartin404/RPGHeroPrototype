@@ -22,15 +22,11 @@ public class FlyingEnemy : Enemy
 		float step = enemySpeed/2 * Time.deltaTime;
 		if(flyUp)
 		{
-			Debug.Log("Flying Up");
 			transform.position = Vector2.MoveTowards (transform.position, upPosition, step);
-			//transform.position = Vector3.SmoothDamp(transform.position, actionAreaCenter, ref velocity, smoothTime);
 		}
 		else
 		{
-			Debug.Log("Flying Down");
 			transform.position = Vector2.MoveTowards (transform.position, downPosition, step);
-			//transform.position = Vector3.SmoothDamp(transform.position, enemyPosition, ref velocity, smoothTime);
 		}
 		
 		if(Vector2.Distance(transform.position,upPosition)<step && flyUp)

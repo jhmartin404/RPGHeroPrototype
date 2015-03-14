@@ -252,6 +252,23 @@ public class Enemy : MonoBehaviour
 
 	protected virtual void OnTriggerEnter2D(Collider2D other)
 	{
+		onHitEnter (other);
+	}
+
+	protected virtual void onHitEnter(Collider2D col)
+	{
+		if(col.gameObject.tag == "Melee")
+		{
+			WeaponControl control = GameObject.Find("WeaponControl").GetComponent<WeaponControl>();
+			if(control.CntrlState == ControlState.Active)
+			{
+				OnHitByMelee(control);
+			}
+		}
+	}
+
+	protected virtual void OnTriggerStay2D(Collider2D other)
+	{
 		OnHit (other);
 	}
 
@@ -271,14 +288,6 @@ public class Enemy : MonoBehaviour
 			if(rangedIcon.State == IconState.Thrown)
 			{
 				OnHitByRanged(rangedIcon);
-			}
-		}
-		else if(col.gameObject.tag == "Melee")
-		{
-			WeaponControl control = GameObject.Find("WeaponControl").GetComponent<WeaponControl>();
-			if(control.CntrlState == ControlState.Active)
-			{
-				OnHitByMelee(control);
 			}
 		}
 	}

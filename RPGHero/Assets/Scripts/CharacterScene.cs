@@ -12,31 +12,26 @@ public class CharacterScene : MonoBehaviour
 	public Text rangedText;
 	public Text magicText;
 	public Image expBar;
+	//public AudioSource source;
 
 	// Use this for initialization
 	void Start () 
 	{
 		playerStats = Player.Instance.GetPlayerStats ();
-		//levelText = GameObject.Find ("LevelText").GetComponent<Text>();
 		levelText.text = "Level " + playerStats.ExpLevel;
 
-		//healthText = GameObject.Find ("HealthText").GetComponent<Text>();
 		healthText.text = "Health: " + playerStats.HealthStat;
 
-		//luckText = GameObject.Find ("LuckText").GetComponent<Text>();
 		luckText.text = "Luck: " + playerStats.LuckStat;
 
-		//meleeText = GameObject.Find ("MeleeText").GetComponent<Text>();
 		meleeText.text = "Melee: " + playerStats.MeleeStat;
 
-		//rangedText = GameObject.Find ("RangedText").GetComponent<Text>();
 		rangedText.text = "Ranged: " + playerStats.RangedStat;
 
-		//magicText = GameObject.Find ("MagicText").GetComponent<Text>();
 		magicText.text = "Magic: " + playerStats.MagicStat;
 
-		//expBar = GameObject.Find ("Exp").GetComponent<Image> ();
 		expBar.fillAmount = (float)((float)playerStats.CurrentExp / (float)playerStats.NeededExp);
+		SoundManager.Instance.PlayBackgroundMusic ("CharacterScene_BackgroundMusic");
 	}
 	
 	// Update is called once per frame

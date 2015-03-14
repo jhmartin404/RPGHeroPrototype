@@ -10,8 +10,10 @@ public class LevelScript : MonoBehaviour
 	public Image manaBar;
 	private bool iconSelected;
 	private GameObject enemySpawner;
+	private GameObject iconSpawner;
 	private GameObject weapon;
 	private GameObject shield;
+	private bool playerLost;
 
 	public bool IconSelected
 	{
@@ -57,6 +59,7 @@ public class LevelScript : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
+		playerLost = false;
 		playerStats = Player.Instance.GetPlayerStats ();
 
 		healthBar.fillAmount = (float)(Player.Instance.Health/ (float)playerStats.HealthStat);
@@ -66,6 +69,9 @@ public class LevelScript : MonoBehaviour
 		manaBar.fillAmount = (float)(Player.Instance.Mana/ (float)playerStats.MaxMana);
 
 		enemySpawner = GameObject.Find ("EnemySpawner");
+		iconSpawner = GameObject.Find ("IconSpawner");
+		if(SoundManager.Instance != null)
+			SoundManager.Instance.PlayBackgroundMusic ("Level_Scene_BackgroundMusic");
 	}
 
 	// Update is called once per frame
@@ -75,8 +81,9 @@ public class LevelScript : MonoBehaviour
 		staminaBar.fillAmount = (float)(Player.Instance.Stamina/ (float)playerStats.MaxStamina);
 		manaBar.fillAmount = (float)(Player.Instance.Mana/ (float)playerStats.MaxMana);
 
-		if(Player.Instance.Health <= 0  && LevelStateManager.GetCurrentState() != LevelState.Lost)
+		if(Player.Instance.Health <= 0  && !playerLost)
 		{
+			playerLost = true;
 			enemySpawner.GetComponent<EnemySpawner>().NotifyPlayerDied();
 		}
 
@@ -84,6 +91,9 @@ public class LevelScript : MonoBehaviour
 		{
 			if(Input.GetKey(KeyCode.Escape))
 			{
+				//Make sure to remove the methods from the events
+				enemySpawner.GetComponent<EnemySpawner>().RemoveMethods();
+				iconSpawner.GetComponent<IconSpawner>().RemoveMethods();
 				GoBack();
 			}
 		}

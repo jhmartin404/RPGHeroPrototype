@@ -10,6 +10,34 @@ public class IconSlot : MonoBehaviour
 	private bool notified;
 	private GameObject iconSpawner;
 	private Icon icon;
+	private bool isStopped;
+
+	public Icon SlotIcon
+	{
+		get
+		{
+			return icon;
+		}
+		set
+		{
+			icon = value;
+			iconSpawner.GetComponent<IconSpawner> ().NotifyFull (gameObject);
+			isEmpty = false;
+			notified = false;
+		}
+	}
+
+	public bool IsStopped
+	{
+		get
+		{
+			return isStopped;
+		}
+		set
+		{
+			isStopped = value;
+		}
+	}
 
 	public Transform Center
 	{
@@ -49,21 +77,17 @@ public class IconSlot : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		v = Quaternion.AngleAxis (degreesPerSecond * Time.deltaTime, Vector3.forward) * v;
-		transform.position = center.position + v;
-
-		if((icon == null /*|| icon.State == IconState.Thrown*/) && !notified)
+		if(!isStopped)
 		{
-			Debug.Log("Spawn Icon In Slot");
-			iconSpawner.GetComponent<IconSpawner>().NotifyEmpty(gameObject);
-			notified = true;
+			v = Quaternion.AngleAxis (degreesPerSecond * Time.deltaTime, Vector3.forward) * v;
+			transform.position = center.position + v;
+
+			if((icon == null /*|| icon.State == IconState.Thrown*/) && !notified)
+			{
+				Debug.Log("Spawn Icon In Slot");
+				iconSpawner.GetComponent<IconSpawner>().NotifyEmpty(gameObject);
+				notified = true;
+			}
 		}
-	}
-	public void SetIcon(Icon icn)
-	{
-		icon = icn;
-		iconSpawner.GetComponent<IconSpawner> ().NotifyFull (gameObject);
-		isEmpty = false;
-		notified = false;
 	}
 }

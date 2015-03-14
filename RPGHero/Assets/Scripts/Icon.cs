@@ -10,6 +10,7 @@ public enum IconType
 
 public enum IconState
 {
+	Stopped,
 	Rotating,
 	Grabbed,
 	Thrown
@@ -19,38 +20,23 @@ public class Icon : MonoBehaviour
 {
 	protected const float fingerRadius = 0.5f;
 	protected GameObject mainCamera;
-	//private Sprite iconImage;
 	protected IconType iconType;
-	protected Transform center;
-	protected float degreesPerSecond;
+	protected GameObject slot = null;
 	protected IconState iconState;
 	protected float iconSpeed = 5.0f;
 
-	protected Vector2 startPosition;//start position of the fireball
-	protected Vector2 endPosition;//end position of the fireball
-	protected Vector3 v;
+	protected Vector2 startPosition;//start position
+	protected Vector2 endPosition;//end position
 
-	public Transform Center
+	public GameObject Slot
 	{
 		get
 		{
-			return center;
+			return slot;
 		}
 		set
 		{
-			center = value;
-		}
-	}
-
-	public float DegreesPerSecond
-	{
-		get
-		{
-			return degreesPerSecond;
-		}
-		set
-		{
-			degreesPerSecond = value;
+			slot = value;
 		}
 	}
 
@@ -83,45 +69,43 @@ public class Icon : MonoBehaviour
 	{
 		mainCamera = GameObject.Find ("Main Camera");
 		iconState = IconState.Rotating;
-		v = transform.position - center.position;
 	}
 	
 	// Update is called once per frame
 	public virtual void Update () 
 	{
-		if (Input.touchCount > 0 && iconState != IconState.Thrown)
+		if(iconState != IconState.Stopped)
 		{
-			if((Input.GetTouch(0).phase == TouchPhase.Began || Input.GetTouch(0).phase == TouchPhase.Moved) && iconState == IconState.Rotating
-			   && !mainCamera.GetComponent<LevelScript>().IconSelected && OnCheckSelected())
+			if (Input.touchCount > 0 && iconState != IconState.Thrown)
 			{
-				Vector2 touchPos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-				if (GetComponent<Collider2D>() == Physics2D.OverlapCircle(touchPos, fingerRadius))
+				if((Input.GetTouch(0).phase == TouchPhase.Began || Input.GetTouch(0).phase == TouchPhase.Moved) && iconState == IconState.Rotating
+			 	  && !mainCamera.GetComponent<LevelScript>().IconSelected && OnCheckSelected())
 				{
-					OnIconTouched();
+					Vector2 touchPos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
+					if (GetComponent<Collider2D>() == Physics2D.OverlapCircle(touchPos, fingerRadius))
+					{
+						OnIconTouched();
+					}				
 				}
-				
-				
+				else if(Input.GetTouch(0).phase == TouchPhase.Ended && iconState == IconState.Grabbed)
+				{
+					OnIconLetGo();
+				}
 			}
-			else if(Input.GetTouch(0).phase == TouchPhase.Ended && iconState == IconState.Grabbed)
+
+			if(iconState == IconState.Rotating)
 			{
-				OnIconLetGo();
+				OnRotatingState();
+			}
+			else if(iconState == IconState.Grabbed)
+			{
+				OnGrabbedState();
+			}
+			else if(iconState == IconState.Thrown)
+			{
+				OnThrownState();
 			}
 		}
-
-		if(iconState == IconState.Rotating)
-		{
-			OnRotatingState();
-		}
-		else if(iconState == IconState.Grabbed)
-		{
-			OnGrabbedState();
-		}
-		else if(iconState == IconState.Thrown)
-		{
-			OnThrownState();
-		}
-
-
 	}
 
 	protected virtual bool OnCheckSelected()
@@ -131,6 +115,7 @@ public class Icon : MonoBehaviour
 
 	protected virtual void OnIconTouched()
 	{
+		slot = null;
 		iconState = IconState.Grabbed;
 		mainCamera.GetComponent<LevelScript>().IconSelected = true;
 		GetComponent<Rigidbody2D>().isKinematic = true;
@@ -153,8 +138,10 @@ public class Icon : MonoBehaviour
 
 	protected virtual void OnRotatingState()
 	{
-		v = Quaternion.AngleAxis (degreesPerSecond * Time.deltaTime, Vector3.forward) * v;
-		transform.position = center.position + v;
+		if(slot != null)
+		{
+			transform.position = slot.transform.position;
+		}
 	}
 
 	protected virtual void OnGrabbedState()
@@ -169,7 +156,17 @@ public class Icon : MonoBehaviour
 		endPosition = transform.position;
 	}
 
-	protected virtual void OnTriggerEnter2D(Collider2D other)
+	public void StopIcon()
+	{
+		iconState = IconState.Stopped;
+	}
+
+	public void RestartIcon()
+	{
+		iconState = IconState.Rotating;
+	}
+
+	protected virtual void OnTriggerStay2D(Collider2D other)
 	{
 		OnHit (other);
 	}
@@ -203,6 +200,6 @@ public class Icon : MonoBehaviour
 
 	void OnBecameInvisible()
 	{
-		Destroy (gameObject);
+		OnDestroy ();
 	}
 }

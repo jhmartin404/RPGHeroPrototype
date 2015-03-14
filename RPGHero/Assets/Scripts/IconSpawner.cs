@@ -2,12 +2,19 @@
 using System.Collections;
 using System.Collections.Generic;
 
+public enum IconSpawnerState
+{
+	Running,
+	Paused,
+	Stopped
+};
+
 public class IconSpawner : MonoBehaviour 
 {
 	private List<GameObject> emptySlots;
-	private Object coinPrefab;
-	private Object rangedPrefab;
+	public List<GameObject> slots;
 	private int randomNum;
+	private IconSpawnerState spawnerState;
 
 	private List<Object> iconArray;
 
@@ -23,40 +30,34 @@ public class IconSpawner : MonoBehaviour
 		LevelStateManager.OnLevelLostEvent += OnLevelLost;
 	}
 
-	// Use this for initialization
-	void Start () 
+	public void SetState(IconSpawnerState state)
 	{
-		Debug.Log ("Creating Icon Spawner");
-		//coinPrefab =
-		iconArray.Add(Resources.Load ("Prefabs/CoinIconPrefab"));
-		//rangedPrefab = 
-		iconArray.Add(Resources.Load ("Prefabs/RangedIconPrefab"));
-		//magic1Prefab = 
-		iconArray.Add(Resources.Load ("Prefabs/MagicIconPrefab"));
-	}
-	
-	// Update is called once per frame
-	void Update () 
-	{
-		for(int i=0;i<emptySlots.Count;++i)
+		spawnerState = state;
+		if(spawnerState != IconSpawnerState.Running)
 		{
-			randomNum = Random.Range(0,iconArray.Count);
-			Vector3 spawnedIconPosition = emptySlots[i].transform.position;
-			spawnedIconPosition.z -= 0.2f;
-			GameObject spawnedIcon = Instantiate(iconArray[randomNum],spawnedIconPosition,Quaternion.identity) as GameObject;
-			MagicIcon mIcon = spawnedIcon.GetComponent<MagicIcon>();
-			if(mIcon != null)
+			for(int i=0;i<slots.Count;++i)
 			{
-				randomNum = Random.Range(1,3);
-				if(randomNum==1)
-					mIcon.EquippedMagic = Player.Instance.GetPlayerInventory().EquippedMagic1;
-				else
-					mIcon.EquippedMagic = Player.Instance.GetPlayerInventory().EquippedMagic2;
+				IconSlot slot = slots[i].GetComponent<IconSlot>();
+				slot.IsStopped = true;
+				if(slot.SlotIcon != null)
+					slot.SlotIcon.StopIcon();
 			}
-			spawnedIcon.GetComponent<Icon>().Center = emptySlots[i].GetComponent<IconSlot>().Center;
-			spawnedIcon.GetComponent<Icon>().DegreesPerSecond = emptySlots[i].GetComponent<IconSlot>().DegreesPerSecond;
-			emptySlots[i].GetComponent<IconSlot>().SetIcon(spawnedIcon.GetComponent<Icon>());
 		}
+		else if(spawnerState == IconSpawnerState.Running)
+		{
+			for(int i=0;i<slots.Count;++i)
+			{
+				IconSlot slot = slots[i].GetComponent<IconSlot>();
+				slot.IsStopped = false;
+				if(slot.SlotIcon != null)
+					slot.SlotIcon.RestartIcon();
+			}
+		}
+	}
+
+	public IconSpawnerState GetState()
+	{
+		return spawnerState;
 	}
 
 	public void NotifyEmpty(GameObject slot)
@@ -69,7 +70,7 @@ public class IconSpawner : MonoBehaviour
 		emptySlots.Remove (slot);
 	}
 
-	private void RemoveMethods()
+	public void RemoveMethods()
 	{
 		LevelStateManager.OnLevelStartEvent -= OnLevelStart;
 		LevelStateManager.OnLevelRunningEvent -= OnLevelRunning;
@@ -80,22 +81,52 @@ public class IconSpawner : MonoBehaviour
 	public void OnLevelStart()
 	{
 		Debug.Log ("OnLevelStart IconSpawner");
+		Debug.Log ("Creating Icon Spawner");
+		spawnerState = IconSpawnerState.Running;
+		iconArray.Add(Resources.Load ("Prefabs/CoinIconPrefab"));
+		iconArray.Add(Resources.Load ("Prefabs/RangedIconPrefab"));
+		iconArray.Add(Resources.Load ("Prefabs/MagicIconPrefab"));
 	}
 
 	public void OnLevelRunning()
 	{
 		Debug.Log ("OnLevelRunning IconSpawner");
+		if(spawnerState == IconSpawnerState.Running)
+		{
+			for(int i=0;i<emptySlots.Count;++i)
+			{
+				randomNum = Random.Range(0,iconArray.Count);
+				Vector3 spawnedIconPosition = emptySlots[i].transform.position;
+				spawnedIconPosition.z -= 0.2f;
+				GameObject spawnedIcon = Instantiate(iconArray[randomNum],spawnedIconPosition,Quaternion.identity) as GameObject;
+				MagicIcon mIcon = spawnedIcon.GetComponent<MagicIcon>();
+				if(mIcon != null)
+				{
+					randomNum = Random.Range(1,3);
+					if(randomNum==1)
+						mIcon.EquippedMagic = Player.Instance.GetPlayerInventory().EquippedMagic1;
+					else
+						mIcon.EquippedMagic = Player.Instance.GetPlayerInventory().EquippedMagic2;
+				}
+				spawnedIcon.GetComponent<Icon>().Slot = emptySlots[i];
+				emptySlots[i].GetComponent<IconSlot>().SlotIcon = spawnedIcon.GetComponent<Icon>();
+			}
+		}
 	}
 	
 	public void OnLevelWon()
 	{
 		Debug.Log ("OnLevelWon IconSpawner");
+		//spawnerState = IconSpawnerState.Stopped;
+		SetState (IconSpawnerState.Stopped);
 		RemoveMethods ();
 	}
 	
 	public void OnLevelLost()
 	{
 		Debug.Log ("OnLevelLost IconSpawner");
+		//spawnerState = IconSpawnerState.Stopped;
+		SetState (IconSpawnerState.Stopped);
 		RemoveMethods ();
 	}
 }

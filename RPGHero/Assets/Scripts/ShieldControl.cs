@@ -13,6 +13,7 @@ public class ShieldControl : MonoBehaviour
 	private float fingerRadius = 0.5f;
 	private GameObject shieldDefence;
 	private Text shieldDefenceText;
+	private bool shieldTrigger;
 
 	public ControlState CntrlState
 	{
@@ -31,6 +32,7 @@ public class ShieldControl : MonoBehaviour
 	{
 		controlState = ControlState.Stationary;
 		shield = GameObject.Find ("Shield");
+		shieldTrigger = shield.GetComponent<PolygonCollider2D> ().isTrigger;
 		equippedShield = Player.Instance.GetPlayerInventory ().EquippedShield;
 		//shield.GetComponent<SpriteRenderer> ().sprite = equippedShield.GetItemImage ();
 		controlPosition = transform.position;
@@ -54,7 +56,8 @@ public class ShieldControl : MonoBehaviour
 				{
 					controlState = ControlState.Active;
 					shield.GetComponent<Renderer>().enabled = true;//render the shield
-					shield.GetComponent<PolygonCollider2D>().isTrigger = true;
+					//shield.GetComponent<PolygonCollider2D>().isTrigger = true;
+					shieldTrigger = true;
 					Vector3 pos = transform.position;
 					pos.z += 0.5f;
 					shield.transform.position = pos;
@@ -76,7 +79,8 @@ public class ShieldControl : MonoBehaviour
 			{
 				controlState = ControlState.Stationary;
 				shield.GetComponent<Renderer>().enabled = false;//disable the renderer for the shield
-				shield.GetComponent<PolygonCollider2D>().isTrigger = false;
+				//shield.GetComponent<PolygonCollider2D>().isTrigger = false;
+				shieldTrigger = false;
 				transform.position = controlPosition;
 				Vector3 shieldPos = controlPosition;
 				shieldPos.z += 0.5f;
@@ -94,7 +98,7 @@ public class ShieldControl : MonoBehaviour
 
 	protected virtual void OnTriggerEnter2D(Collider2D other)
 	{
-		if(other.CompareTag ("Enemy"))
+		if(other.CompareTag ("Enemy") && shieldTrigger)
 		{
 			Player.Instance.IsDefending = true;
 		}

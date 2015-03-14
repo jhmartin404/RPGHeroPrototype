@@ -40,42 +40,16 @@ public class RangedIcon : Icon
 	// Update is called once per frame
 	public override void Update () 
 	{
+		base.Update ();
 		if (Input.touchCount > 0 && iconState != IconState.Thrown)
 		{
-			if((Input.GetTouch(0).phase == TouchPhase.Began || Input.GetTouch(0).phase == TouchPhase.Moved) && iconState == IconState.Rotating
-			   && !mainCamera.GetComponent<LevelScript>().IconSelected && OnCheckSelected())
+			if( Vector2.Distance(actionAreaCenter,transform.position) < actionAreaRadius && iconState == IconState.Grabbed)
 			{
-				Vector2 touchPos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-				if (GetComponent<Collider2D>() == Physics2D.OverlapCircle(touchPos, fingerRadius))
-				{
-					OnIconTouched();
-				}
-				
-				
-			}
-			else if(Input.GetTouch(0).phase == TouchPhase.Ended && iconState == IconState.Grabbed)
-			{
-				OnIconLetGo();
+				startThrow = true;
+				startPosition = actionAreaCenter;
 			}
 		}
-		
-		if(iconState == IconState.Rotating)
-		{
-			OnRotatingState();
-		}
-		else if(iconState == IconState.Grabbed)
-		{
-			OnGrabbedState();
-		}
-		else if(iconState == IconState.Thrown)
-		{
-			OnThrownState();
-		}
-		if( Vector2.Distance(actionAreaCenter,transform.position) < actionAreaRadius && iconState == IconState.Grabbed)
-		{
-			startThrow = true;
-			startPosition = actionAreaCenter;
-		}
+
 	}
 
 	protected override bool OnCheckSelected()
@@ -126,9 +100,13 @@ public class RangedIcon : Icon
 
 	public override void LateUpdate()
 	{
-		if(iconState == IconState.Thrown)
+		if(iconState == IconState.Thrown && startThrow)
 		{
 			GetComponent<Rigidbody2D>().velocity = (startPosition - endPosition).normalized*iconSpeed;
+		}
+		else if(iconState == IconState.Thrown && !startThrow)
+		{
+			OnDestroy();
 		}
 	}
 }

@@ -17,11 +17,21 @@ public class EnemySpawner : MonoBehaviour
 		LevelStateManager.OnLevelLostEvent += OnLevelLost;
 	}
 
-	// Use this for initialization
-	void Start () 
+	public void NotifyEnemyDied()
 	{
-		Debug.Log ("Creating Enemy Spawner");
+		LevelStateManager.PushState (LevelState.Won);//Switch the level to won state
+	}
+	
+	public void NotifyPlayerDied()
+	{
+		LevelStateManager.PushState (LevelState.Lost);//Switch the level to lost state
+	}
 
+	public void OnLevelStart()
+	{
+		Debug.Log ("OnLevelStart EnemySpawner");
+		Debug.Log ("Creating Enemy Spawner");
+		
 		switch(Player.Instance.CurrentLevel)
 		{
 		case 1:
@@ -52,29 +62,8 @@ public class EnemySpawner : MonoBehaviour
 			enemyPrefab = Resources.Load("Prefabs/BanditPrefab");
 			break;
 		}
-
-		GameObject enemy = Instantiate(enemyPrefab,transform.position,Quaternion.identity) as GameObject;
-	}
-	
-	// Update is called once per frame
-	void Update () 
-	{
-
-	}
-	
-	public void NotifyEnemyDied()
-	{
-		LevelStateManager.PushState (LevelState.Won);//Switch the level to won state
-	}
-	
-	public void NotifyPlayerDied()
-	{
-		LevelStateManager.PushState (LevelState.Lost);//Switch the level to lost state
-	}
-
-	public void OnLevelStart()
-	{
-		Debug.Log ("OnLevelStart EnemySpawner");
+		
+		Instantiate(enemyPrefab,transform.position,Quaternion.identity);
 	}
 
 	public void OnLevelRunning()
@@ -96,7 +85,7 @@ public class EnemySpawner : MonoBehaviour
 		RemoveMethods ();
 	}
 
-	private void RemoveMethods()
+	public void RemoveMethods()
 	{
 		LevelStateManager.OnLevelStartEvent -= OnLevelStart;
 		LevelStateManager.OnLevelRunningEvent -= OnLevelRunning;

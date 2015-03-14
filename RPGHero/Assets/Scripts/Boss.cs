@@ -22,6 +22,7 @@ public class Boss : Enemy
 			if(specialAttackTimer > specialAttackTime && enemyHealth>0 && (fsm.GetCurrentState() != specialAttack ||fsm.GetCurrentState() != attack))
 			{
 				fsm.PushState(specialAttack);//Switch to special attack state
+				fsm.DoState();
 			}
 			base.Update ();
 		}

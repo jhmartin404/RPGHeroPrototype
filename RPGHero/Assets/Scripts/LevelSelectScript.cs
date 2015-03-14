@@ -5,12 +5,12 @@ using UnityEngine.UI;
 public class LevelSelectScript : MonoBehaviour 
 {
 	private Button levelButton;
-	// Use this for initialization
-	void Start () 
-	{
 
+	void Start()
+	{
+		SoundManager.Instance.PlayBackgroundMusic ("Level_Select_Scene_BackgroundMusic");
 	}
-	
+
 	// Update is called once per frame
 	void Update () 
 	{
@@ -25,23 +25,26 @@ public class LevelSelectScript : MonoBehaviour
 	
 	public void SelectStoreScene()
 	{
+		SoundManager.Instance.PlayUISound ("Store_Select");
 		Application.LoadLevel("StoreScene");
 	}
 
 	public void SelectCharacterScene()
 	{
+		SoundManager.Instance.PlayUISound ("Character_Select");
 		Application.LoadLevel("CharacterScene");
 	}
 
 	public void SelectInventoryScene()
 	{
+		SoundManager.Instance.PlayUISound ("Inventory_Select");
 		Application.LoadLevel("InventoryScene");
 	}
 
 	public void SelectLevelScene(Button level)
 	{
+		SoundManager.Instance.PlayUISound ("Level_Start");
 		Player.Instance.CurrentLevel = int.Parse(level.name);
-		Debug.Log (Player.Instance.CurrentLevel);
 		Application.LoadLevel("LevelScene");
 	}
 }

@@ -38,6 +38,7 @@ public class LevelStateManager : MonoBehaviour
 	
 	public static void PushState (LevelState state)
 	{
+		Debug.Log ("Push State " + state);
 		switch(state)
 		{
 		case LevelState.Lost:

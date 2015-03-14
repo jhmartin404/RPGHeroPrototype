@@ -2538,6 +2538,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71e6c870c55c5cf489e813560c623cb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slots:
+  - {fileID: 275111607}
+  - {fileID: 1975577899}
+  - {fileID: 1947933268}
+  - {fileID: 62423633}
+  - {fileID: 1683435544}
+  - {fileID: 958098884}
+  - {fileID: 378286092}
+  - {fileID: 418050638}
+  - {fileID: 711587533}
+  - {fileID: 665739556}
+  - {fileID: 776233429}
+  - {fileID: 245049364}
+  - {fileID: 1451115801}
+  - {fileID: 575046693}
 --- !u!4 &1833513220
 Transform:
   m_ObjectHideFlags: 0
