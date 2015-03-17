@@ -58,15 +58,4 @@ public class SelectedItem : MonoBehaviour
 		}
 		GameObject.Find ("Main Camera").GetComponent<InventoryScript> ().ResetBoard ();
 	}
-	// Use this for initialization
-	void Start () 
-	{
-	
-	}
-	
-	// Update is called once per frame
-	void Update () 
-	{
-	
-	}
 }

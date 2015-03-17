@@ -77,6 +77,11 @@ public class ShieldControl : MonoBehaviour
 			}
 			else if((Input.GetTouch(0).phase == TouchPhase.Ended && controlState == ControlState.Active))
 			{
+				//Insure that the Player is not defending when they drop the shield
+				if(Player.Instance.IsDefending)
+				{
+					Player.Instance.IsDefending = false;
+				}
 				controlState = ControlState.Stationary;
 				shield.GetComponent<Renderer>().enabled = false;//disable the renderer for the shield
 				//shield.GetComponent<PolygonCollider2D>().isTrigger = false;
@@ -101,6 +106,11 @@ public class ShieldControl : MonoBehaviour
 		if(other.CompareTag ("Enemy") && shieldTrigger)
 		{
 			Player.Instance.IsDefending = true;
+		}
+		else if(other.CompareTag("Projectile") && shieldTrigger)
+		{
+			Player.Instance.IsDefending = true;
+			other.GetComponent<Projectile>().OnPlayerBlockedProjectile();
 		}
 	}
 

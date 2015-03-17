@@ -55,8 +55,7 @@ public class InventoryItemDatabase
 		JsonWriter wr = new JsonWriter(output,settings);
 		wr.Write(data);
 		
-		string json = output.ToString();
-		Debug.Log("FirstPass");         
+		string json = output.ToString();     
 		Debug.Log(json);
 	}
 	

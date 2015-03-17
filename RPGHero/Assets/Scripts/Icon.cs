@@ -132,6 +132,11 @@ public class Icon : MonoBehaviour
 	{
 		if(iconState == IconState.Thrown)
 		{
+			if(endPosition-startPosition == Vector2.zero)
+			{
+				startPosition.x -=1;
+				startPosition.y -=1;
+			}
 			GetComponent<Rigidbody2D>().velocity = (endPosition - startPosition).normalized*iconSpeed;
 		}
 	}
@@ -140,7 +145,9 @@ public class Icon : MonoBehaviour
 	{
 		if(slot != null)
 		{
-			transform.position = slot.transform.position;
+			Vector3 iconPos = slot.transform.position;
+			iconPos.z -= 0.1f;
+			transform.position = iconPos;
 		}
 	}
 

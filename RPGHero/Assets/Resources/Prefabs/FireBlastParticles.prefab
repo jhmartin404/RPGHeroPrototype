@@ -35,7 +35,7 @@ ParticleSystem:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 152186}
-  lengthInSec: 25
+  lengthInSec: 100
   startDelay: 0
   speed: 1
   randomSeed: 0
@@ -292,7 +292,7 @@ ParticleSystem:
     enabled: 1
     m_Type: 1
     rate:
-      scalar: 10
+      scalar: 100
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -334,7 +334,7 @@ ParticleSystem:
     time3: 0
     m_BurstCount: 0
   SizeModule:
-    enabled: 0
+    enabled: 1
     curve:
       scalar: 1
       maxCurve:
@@ -1104,7 +1104,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: .5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
+  m_SortingLayerID: 1806717379
   m_SortingOrder: 0
   m_RenderMode: 0
   m_MaxParticleSize: .5

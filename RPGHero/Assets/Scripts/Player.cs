@@ -1,14 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using MiniJSON;
+using Pathfinding.Serialization.JsonFx;
 
 public class Player 
 {
 	private static Player instance;
 
 	private float health;
-	//private int coins;
 	private float stamina;
 	private float mana;
 	private bool isDefending;
@@ -105,36 +104,35 @@ public class Player
 
 	private void Load()
 	{
-		//PlayerPrefs.DeleteAll ();//For testing purposes
 		if(PlayerPrefs.HasKey("Player"))
 		{
 			Debug.Log("Loading Player");
+			//just to initialize the Database *TEMPORARY*
+			InventoryItemDatabase.Instance.GetItemByID(1);
 
 			string player = PlayerPrefs.GetString("Player");
 			Debug.Log("Load: " + player);
 
-			//Dictionary<string, object> dict = new Dictionary<string, object>();
-			//dict = Json.Deserialize(player) as Dictionary<string, object>;
+			Dictionary<string,float> dict = new Dictionary<string, float>();
 
-			//object obj = dict["health"];
-			//health = (float)(double)obj;
+			JsonReader reader = new JsonReader(player);           
+			dict = (Dictionary<string,float>)reader.Deserialize(typeof(Dictionary<string,float>));
 
-			//object obj = dict["coins"];
-			//coins = (int)(long)obj;
+			health = dict["health"];
 
-			//obj = dict["stamina"];
-			//stamina = (float)(double)obj;
+			stamina = dict["stamina"];
 
-			//obj = dict["mana"];
-			//mana = (float)(double)obj;
+			mana = dict["mana"];
 
+			currentLevel = 0;
+			playerStats = new PlayerStats ();
+			playerInventory = new Inventory ();
 
-			//playerStats = new PlayerStats ();
-			//playerInventory = new Inventory ();
-
-			//health = 50;//playerStats.GetHealthStat();
-			//stamina = playerStats.GetMaxStamina();
-			//mana = 50;//playerStats.GetMaxMana();
+			//--------------------------------------------------------------------------------------------------------------------------------------------
+			//HERE FOR TESTING, REMOVE WHEN NOT TESTING VERY IMPORTANT TO REMEMBER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			//--------------------------------------------------------------------------------------------------------------------------------------------
+			//health = playerStats.HealthStat;
+			//mana = playerStats.MaxMana;
 		}
 		else
 		{
@@ -166,6 +164,23 @@ public class Player
 				Health -= enemy.enemyAttackDamage;
 			}
 		}
+		Save ();
+	}
+
+	public void TakeDamageAmount(float damage)
+	{
+		if(!IsDefending)
+		{
+			Health -= damage;
+		}
+		else if(IsDefending)
+		{
+			bool blocked = playerInventory.EquippedShield.BlockDamage(damage);
+			if(!blocked)
+			{
+				Health -= damage;
+			}
+		}
 	}
 
 	public void AddExperience(int exp)
@@ -174,19 +189,24 @@ public class Player
 		playerStats.CheckLevelUp();
 	}
 
-	//public void Save()
-	//{
-	//	Dictionary<string, object> dictionary = new Dictionary<string, object>();
-	//
-	//	//dictionary.Add ("health", health);
-	//	dictionary.Add ("coins", coins);
-		//dictionary.Add ("stamina", stamina);
-		//dictionary.Add ("mana", mana);
+	public void Save()
+	{
+		Dictionary<string, float> dictionary = new Dictionary<string, float>();
+	
+		dictionary.Add ("health", health);
+		dictionary.Add ("stamina", stamina);
+		dictionary.Add ("mana", mana);
+		
+		//create and print a json string
+		System.Text.StringBuilder output = new System.Text.StringBuilder();
+		JsonWriter wr = new JsonWriter(output);
+		wr.Write(dictionary);
+		
+		string json = output.ToString();     
+		Debug.Log("SavedPlayer: " + json);
+		PlayerPrefs.SetString ("Player", json);
 
-	//	string saveJSON = Json.Serialize (dictionary);
-	//	Debug.Log ("Save: " + saveJSON);
-	//	PlayerPrefs.SetString ("Player", saveJSON);
-
-	//	playerStats.Save ();
-	//}
+		playerStats.Save ();
+		playerInventory.Save ();
+	}
 }

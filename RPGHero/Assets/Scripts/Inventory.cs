@@ -115,22 +115,29 @@ public class Inventory
 
 	public Inventory()
 	{
-		Debug.Log ("Creating Inventory");
+		if(PlayerPrefs.HasKey("PlayerInventory"))
+		{
+			Load();
+		}
+		else
+		{
+			Debug.Log ("Creating Inventory");
 
-		healthPotions = 2;
-		manaPotions = 2;
-		coins = 0;
-		//TESTING LINES
-		unequippedItems = new List<InventoryItem>();
-		unequippedItems.Add (InventoryItemDatabase.Instance.GetItemByID(10));
-		unequippedItems.Add (InventoryItemDatabase.Instance.GetItemByID(1));
-		unequippedItems.Add (InventoryItemDatabase.Instance.GetItemByID(7));
-		unequippedItems.Add (InventoryItemDatabase.Instance.GetItemByID(8));
-		equippedMagic1 = InventoryItemDatabase.Instance.GetItemByID (11) as Magic;
-		equippedMagic2 = InventoryItemDatabase.Instance.GetItemByID (5) as Magic;
-		equippedMeleeWeapon = (MeleeWeapon)InventoryItemDatabase.Instance.GetItemByID (6);
-		equippedRangedWeapon = (RangedWeapon)InventoryItemDatabase.Instance.GetItemByID (2);
-		equippedShield = (Shield)InventoryItemDatabase.Instance.GetItemByID (3);
+			healthPotions = 2;
+			manaPotions = 2;
+			coins = 0;
+			//Default Items
+			unequippedItems = new List<InventoryItem>();
+			unequippedItems.Add (InventoryItemDatabase.Instance.GetItemByID(10));
+			unequippedItems.Add (InventoryItemDatabase.Instance.GetItemByID(1));
+			unequippedItems.Add (InventoryItemDatabase.Instance.GetItemByID(7));
+			unequippedItems.Add (InventoryItemDatabase.Instance.GetItemByID(8));
+			equippedMagic1 = InventoryItemDatabase.Instance.GetItemByID (11) as Magic;
+			equippedMagic2 = InventoryItemDatabase.Instance.GetItemByID (5) as Magic;
+			equippedMeleeWeapon = (MeleeWeapon)InventoryItemDatabase.Instance.GetItemByID (6);
+			equippedRangedWeapon = (RangedWeapon)InventoryItemDatabase.Instance.GetItemByID (2);
+			equippedShield = (Shield)InventoryItemDatabase.Instance.GetItemByID (3);
+		}
 	}
 
 	public List<InventoryItem> GetUnequippedItems()
@@ -153,33 +160,85 @@ public class Inventory
 		unequippedItems.RemoveAt(index);
 	}
 
-	//public void Load()
-	//{
-	//
-	//}
+	public void Load()
+	{
+		string playerInventory = PlayerPrefs.GetString("PlayerInventory");
+		Debug.Log("Load PlayerInventory: " + playerInventory);
+		
+		Dictionary<string, int> dict = new Dictionary<string, int>();
+		JsonReader reader = new JsonReader(playerInventory);           
+		dict = (Dictionary<string,int>)reader.Deserialize(typeof(Dictionary<string,int>));
 
-	//public void Save()
-	//{
-	//	int[] items = new int[unequippedItemsCount];
-	//
-	//	for(int i = 0; i<unequippedItemsCount; ++i)
-	//	{
-	//		items[i] = unequippedItems[i].GetItemID();
-	//	}
-	//
-	//	Dictionary<string, object> dictionary = new Dictionary<string, object>();
-	//
-	//	dictionary.Add ("MeleeWeapon", equippedMeleeWeapon.GetItemID());
-	//	dictionary.Add ("RangedWeapon", equippedRangedWeapon.GetItemID());
-	//	dictionary.Add ("Shield", equippedShield.GetItemID());
-	//	dictionary.Add ("Magic1", equippedMagic1.GetItemID());
-	//	dictionary.Add ("Magic2", equippedMagic2.GetItemID());
-	//	dictionary.Add ("UnequippedItems", items);
-	//	dictionary.Add ("HealthPotions", healthPotions);
-	//	dictionary.Add ("ManaPotions", manaPotions);
-	//	
-	//	string saveJSON = Json.Serialize (dictionary);
-	//	Debug.Log ("Save: " + saveJSON);
-	//	//PlayerPrefs.SetString ("PlayerInventory", saveJSON);
-	//}
+		EquippedMeleeWeapon = InventoryItemDatabase.Instance.GetItemByID(dict["MeleeWeapon"]) as MeleeWeapon;
+
+		EquippedRangedWeapon = InventoryItemDatabase.Instance.GetItemByID(dict["RangedWeapon"]) as RangedWeapon;
+
+		EquippedShield = InventoryItemDatabase.Instance.GetItemByID(dict["Shield"]) as Shield;
+		equippedShield.Defence = dict ["ShieldDefence"];
+
+		EquippedMagic1 = InventoryItemDatabase.Instance.GetItemByID(dict["Magic1"]) as Magic;
+
+		EquippedMagic2 = InventoryItemDatabase.Instance.GetItemByID(dict["Magic2"]) as Magic;
+
+		healthPotions = dict["HealthPotions"];
+
+		manaPotions = dict["ManaPotions"];
+
+		coins = dict["Coins"];
+
+		int itemCount = dict["UnequippedItemCount"];
+		unequippedItems = new List<InventoryItem>();
+
+		for(int i = 0; i<itemCount; ++i)
+		{
+			InventoryItem item = InventoryItemDatabase.Instance.GetItemByID(dict["unequippedItem"+i]);
+			if(item.GetType() == typeof(Shield))//if a shield then set the defence value
+			{
+				Shield shield = item as Shield;
+				shield.Defence = dict["unequippedItem" + i + "Defence"];
+				unequippedItems.Add(shield);
+			}
+			else
+			{
+				unequippedItems.Add(item);
+			}
+		}
+	}
+
+	public void Save()
+	{
+	
+		Dictionary<string, int> dictionary = new Dictionary<string, int>();
+	
+		dictionary.Add ("MeleeWeapon", equippedMeleeWeapon.GetItemID());
+		dictionary.Add ("RangedWeapon", equippedRangedWeapon.GetItemID());
+		dictionary.Add ("Shield", equippedShield.GetItemID());
+		dictionary.Add ("ShieldDefence", (int)equippedShield.Defence);
+		dictionary.Add ("Magic1", equippedMagic1.GetItemID());
+		dictionary.Add ("Magic2", equippedMagic2.GetItemID());
+		dictionary.Add ("UnequippedItemCount", unequippedItems.Count);
+		dictionary.Add ("HealthPotions", healthPotions);
+		dictionary.Add ("ManaPotions", manaPotions);
+		dictionary.Add ("Coins", coins);
+
+		
+		for(int i = 0; i<unequippedItems.Count; ++i)
+		{
+			dictionary.Add("unequippedItem" + i,unequippedItems[i].GetItemID());
+			if(unequippedItems[i].GetType() == typeof(Shield))//if a shield then save the defence value
+			{
+				Shield shield = unequippedItems[i] as Shield;
+				dictionary.Add("unequippedItem" + i + "Defence",(int)shield.Defence);
+			}
+		}
+
+		//create and print a json string
+		System.Text.StringBuilder output = new System.Text.StringBuilder();
+		JsonWriter wr = new JsonWriter(output);
+		wr.Write(dictionary);
+		
+		string json = output.ToString();     
+		Debug.Log("SavedPlayerInventory: " + json);
+		PlayerPrefs.SetString ("PlayerInventory", json);
+	}
 }

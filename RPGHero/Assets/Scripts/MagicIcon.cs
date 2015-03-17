@@ -5,7 +5,7 @@ public class MagicIcon : Icon
 {
 	private Object fireBlastParticleSystemPrefab;
 	private Object frostBlastParticleSystemPrefab;
-	private GameObject particleSystem;
+	private GameObject magicParticleSystem;
 	private GameObject actionArea;
 	private Magic equippedMagic;
 
@@ -42,13 +42,15 @@ public class MagicIcon : Icon
 		actionArea.GetComponent<Renderer>().enabled = true;
 		if(equippedMagic.GetType() == typeof(FireBlastMagic))
 		{
-			particleSystem = Instantiate(fireBlastParticleSystemPrefab, transform.position, transform.rotation) as GameObject;
-			particleSystem.GetComponent<ParticleSystem>().Play();
+			magicParticleSystem = Instantiate(fireBlastParticleSystemPrefab, transform.position, transform.rotation) as GameObject;
+			if(!magicParticleSystem.GetComponent<ParticleSystem>().isPlaying)
+				magicParticleSystem.GetComponent<ParticleSystem>().Play();
 		}
 		else if(equippedMagic.GetType() == typeof(FrostBlastMagic))
 		{
-			particleSystem = Instantiate(frostBlastParticleSystemPrefab, transform.position, transform.rotation) as GameObject;
-			particleSystem.GetComponent<ParticleSystem>().Play();
+			magicParticleSystem = Instantiate(frostBlastParticleSystemPrefab, transform.position, transform.rotation) as GameObject;
+			if(!magicParticleSystem.GetComponent<ParticleSystem>().isPlaying)
+				magicParticleSystem.GetComponent<ParticleSystem>().Play();
 		}
 
 	}
@@ -64,15 +66,19 @@ public class MagicIcon : Icon
 	protected override void OnGrabbedState()
 	{
 		base.OnGrabbedState ();
-		if(particleSystem != null)
+		if(magicParticleSystem != null)
 		{
-			particleSystem.transform.position = transform.position;
+			//Vector3 particleSystemPos = transform.position;
+			//particleSystemPos.z -= 0.1f;
+			//magicParticleSystem.transform.rotation = transform.rotation;
+			//magicParticleSystem.transform.position = particleSystemPos;
+			magicParticleSystem.transform.position = transform.position;
 		}
 	}
 
 	public override void OnDestroy()
 	{
-		Destroy (particleSystem);
+		Destroy (magicParticleSystem);
 		Destroy (gameObject);
 	}
 }

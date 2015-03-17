@@ -106,6 +106,7 @@ public class LevelScript : MonoBehaviour
 
 	public static void GoBack()
 	{
+		Player.Instance.Save();
 		Application.LoadLevel ("LevelSelectScene");
 	}
 }

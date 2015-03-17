@@ -35,9 +35,15 @@ public class InventoryScript : MonoBehaviour
 		{
 			if(Input.GetKey(KeyCode.Escape))
 			{
-				Application.LoadLevel("LevelSelectScene");
+				GoBack();
 			}
 		}
+	}
+
+	public void GoBack()
+	{
+		Player.Instance.Save();
+		Application.LoadLevel("LevelSelectScene");
 	}
 
 	public void SetFilterToWeapon()

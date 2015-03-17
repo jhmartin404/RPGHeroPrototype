@@ -14,7 +14,7 @@ GameObject:
   - 114: {fileID: 11429848}
   m_Layer: 0
   m_Name: ArcherShotPrefab
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -77,9 +77,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b840327e8d647494596cb46b50498005, type: 3}
+  m_Script: {fileID: 11500000, guid: fa94034a1d3f69349bfbffba8e833fbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 10
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1

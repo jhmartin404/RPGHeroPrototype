@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using MiniJSON;
+using Pathfinding.Serialization.JsonFx;
 
 public class PlayerStats 
 {
@@ -153,7 +153,7 @@ public class PlayerStats
 	{
 		if(PlayerPrefs.HasKey("PlayerStats"))
 		{
-			//Load();
+			Load();
 		}
 		else
 		{
@@ -186,68 +186,61 @@ public class PlayerStats
 		}
 	}
 
-	//public void Load()
-	//{
-	//	Debug.Log("Loading PlayerStats");
-	//	
-	//	string playerStats = PlayerPrefs.GetString("PlayerStats");
-	//	Debug.Log("Load: " + playerStats);
-	//	
-	//	Dictionary<string, object> dict = new Dictionary<string, object>();
-	//	dict = Json.Deserialize(playerStats) as Dictionary<string, object>;
-	//	
-	//	object obj = dict["gameLevel"];
-	//	gameLevel = (int)(long)obj;
-	//	
-	//	obj = dict["expLevel"];
-	//	expLevel = (int)(long)obj;
-	//	
-	//	obj = dict["currentExp"];
-	//	currentExp = (int)(long)obj;
-	//	
-	//	obj = dict["neededExp"];
-	//	neededExp = (int)(long)obj;
-	//
-	//	obj = dict["maxStamina"];
-	//	maxStamina = (int)(long)obj;
-	//
-	//	obj = dict["maxMana"];
-	//	maxMana = (int)(long)obj;
-	//
-	//	obj = dict["healthStat"];
-	//	healthStat = (int)(long)obj;
-	//
-	//	obj = dict["luckStat"];
-	//	luckStat = (int)(long)obj;
-	//
-	//	obj = dict["meleeStat"];
-	//	meleeStat = (int)(long)obj;
-	//
-	//	obj = dict["rangedStat"];
-	//	rangedStat = (int)(long)obj;
-	//
-	//	obj = dict["magicStat"];
-	//	magicStat = (int)(long)obj;
-	//}
+	public void Load()
+	{
+		string playerStats = PlayerPrefs.GetString("PlayerStats");
+		Debug.Log("Load PlayerStats: " + playerStats);
 
-	//public void Save()
-	//{
-	//	Dictionary<string, object> dictionary = new Dictionary<string, object>();
-	//	
-	//	dictionary.Add ("gameLevel", gameLevel);
-	//	dictionary.Add ("expLevel", expLevel);
-	//	dictionary.Add ("currentExp", currentExp);
-	//	dictionary.Add ("neededExp", neededExp);
-	//	dictionary.Add ("maxStamina", maxStamina);
-	//	dictionary.Add ("maxMana", maxMana);
-	//	dictionary.Add ("healthStat", healthStat);
-	//	dictionary.Add ("luckStat", luckStat);
-	//	dictionary.Add ("meleeStat", meleeStat);
-	//	dictionary.Add ("rangedStat", rangedStat);
-	//	dictionary.Add ("magicStat", magicStat);
-	//	
-	//	string saveJSON = Json.Serialize (dictionary);
-	//	Debug.Log ("Save PlayerStats: " + saveJSON);
-	//	PlayerPrefs.SetString ("PlayerStats", saveJSON);
-	//}
+		Dictionary<string, int> dict = new Dictionary<string, int>();
+		JsonReader reader = new JsonReader(playerStats);           
+		dict = (Dictionary<string,int>)reader.Deserialize(typeof(Dictionary<string,int>));
+
+		gameLevel = dict["gameLevel"];
+
+		expLevel = dict["expLevel"];
+
+		currentExp = dict["currentExp"];
+
+		neededExp = dict["neededExp"];
+	
+		maxStamina = dict["maxStamina"];
+	
+		maxMana = dict["maxMana"];
+	
+		healthStat = dict["healthStat"];
+
+		luckStat = dict["luckStat"];
+	
+		meleeStat = dict["meleeStat"];
+	
+		rangedStat = dict["rangedStat"];
+	
+		magicStat = dict["magicStat"];
+	}
+
+	public void Save()
+	{
+		Dictionary<string, int> dictionary = new Dictionary<string, int>();
+
+		dictionary.Add ("gameLevel", gameLevel);
+		dictionary.Add ("expLevel", expLevel);
+		dictionary.Add ("currentExp", currentExp);
+		dictionary.Add ("neededExp", neededExp);
+		dictionary.Add ("maxStamina", maxStamina);
+		dictionary.Add ("maxMana", maxMana);
+		dictionary.Add ("healthStat", healthStat);
+		dictionary.Add ("luckStat", luckStat);
+		dictionary.Add ("meleeStat", meleeStat);
+		dictionary.Add ("rangedStat", rangedStat);
+		dictionary.Add ("magicStat", magicStat);
+
+		//create and print a json string
+		System.Text.StringBuilder output = new System.Text.StringBuilder();
+		JsonWriter wr = new JsonWriter(output);
+		wr.Write(dictionary);
+		
+		string json = output.ToString();     
+		Debug.Log("SavedPlayerStats: " + json);
+		PlayerPrefs.SetString ("PlayerStats", json);
+	}
 }

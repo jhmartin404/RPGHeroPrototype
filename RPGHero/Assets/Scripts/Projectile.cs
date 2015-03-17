@@ -4,34 +4,44 @@ using System.Collections;
 public class Projectile : MonoBehaviour 
 {
 	protected Vector3 playerPosition;
+	private Camera mainCamera;
 
 	// Use this for initialization
-	void Start () 
+	public virtual void Start () 
 	{
 		playerPosition = GameObject.Find ("ActionArea").transform.position;
+		mainCamera = Camera.main;
 	}
 	
 	// Update is called once per frame
-	void Update () 
+	public virtual void Update () 
 	{
 	
 	}
 
 	void OnBecameInvisible()
 	{
-		if(transform.position.y < playerPosition.y && transform.position.x <= playerPosition.x + Camera.main.orthographicSize  && transform.position.x >= playerPosition.x - Camera.main.orthographicSize)
+		if(mainCamera != null)
 		{
-			OnPlayerHitWithProjectile();
-		}
-		else
-		{
-			OnDestroy ();
+			if(transform.position.y < playerPosition.y && transform.position.x <= playerPosition.x + mainCamera.orthographicSize  && transform.position.x >= playerPosition.x - mainCamera.orthographicSize)
+			{
+				OnPlayerHitWithProjectile();
+			}
+			else
+			{
+				OnDestroy ();
+			}
 		}
 	}
 
 	public virtual void OnPlayerHitWithProjectile()
 	{
-		Destroy (gameObject);
+		OnDestroy ();
+	}
+
+	public virtual void OnPlayerBlockedProjectile()
+	{
+		OnDestroy ();
 	}
 
 	public virtual void OnDestroy()

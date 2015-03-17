@@ -20,7 +20,13 @@ public class StartScript : MonoBehaviour
 		}
 	}
 
-	public void ChangeScene()
+	public void NewGame()
+	{
+		PlayerPrefs.DeleteAll ();
+		ContinueGame ();
+	}
+
+	public void ContinueGame()
 	{
 		SoundManager.Instance.PlayUISound ("StartGame");
 		Application.LoadLevel("LevelSelectScene");
