@@ -38,7 +38,8 @@ public class CoinBag : MonoBehaviour
 
 	void AddCoin()
 	{
-		Player.Instance.GetPlayerInventory ().Coins++;
+		Player.Instance.TemporaryCoins++;
+		//Player.Instance.GetPlayerInventory ().Coins++;
 	}
 
 	void OnTriggerEnter2D(Collider2D col)

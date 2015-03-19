@@ -50,16 +50,18 @@ public class Shield : InventoryItem
 		shieldPrefab = Resources.Load(shieldPrefabPath);
 	}
 
-	public bool BlockDamage(float damage)
+	public float BlockDamage(float damage)
 	{
 		if(defence >= damage)
 		{
 			defence -= damage;
-			return true;
+			return 0;
 		}
 		else
 		{
-			return false;
+			damage -= defence;
+			defence = 0;
+			return damage;
 		}
 	}
 

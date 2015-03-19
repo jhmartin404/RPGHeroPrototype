@@ -10,6 +10,7 @@ public class Player
 	private float health;
 	private float stamina;
 	private float mana;
+	private int temporaryCoins;
 	private bool isDefending;
 	private int currentLevel;
 	private PlayerStats playerStats;
@@ -48,6 +49,18 @@ public class Player
 		set
 		{
 			mana = value;
+		}
+	}
+
+	public int TemporaryCoins
+	{
+		get
+		{
+			return temporaryCoins;
+		}
+		set
+		{
+			temporaryCoins = value;
 		}
 	}
 
@@ -158,11 +171,8 @@ public class Player
 		}
 		else if(IsDefending)
 		{
-			bool blocked = playerInventory.EquippedShield.BlockDamage(enemy.enemyAttackDamage);
-			if(!blocked)
-			{
-				Health -= enemy.enemyAttackDamage;
-			}
+			float unblockedDamage = playerInventory.EquippedShield.BlockDamage(enemy.enemyAttackDamage);
+			Health -= unblockedDamage;
 		}
 		Save ();
 	}
@@ -175,11 +185,8 @@ public class Player
 		}
 		else if(IsDefending)
 		{
-			bool blocked = playerInventory.EquippedShield.BlockDamage(damage);
-			if(!blocked)
-			{
-				Health -= damage;
-			}
+			float unblockedDamage = playerInventory.EquippedShield.BlockDamage(damage);
+			Health -= unblockedDamage;
 		}
 	}
 

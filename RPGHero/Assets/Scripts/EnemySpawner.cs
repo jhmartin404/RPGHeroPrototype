@@ -101,7 +101,7 @@ public class EnemySpawner : MonoBehaviour
 			GameObject endGame = Instantiate (endGameMenu, transform.position, transform.rotation) as GameObject;
 			endGame.transform.SetParent (GameObject.Find ("Canvas").transform, false);
 			endGame.transform.position = transform.position;
-			endGame.GetComponentInChildren<Button> ().onClick.AddListener (() => {LevelScript.GoBack ();});
+			endGame.GetComponentInChildren<Button> ().onClick.AddListener (() => {GameObject.Find("Main Camera").GetComponent<LevelScript>().GoBack ();});
 		}
 		else
 		{

@@ -92,8 +92,7 @@ public class LevelScript : MonoBehaviour
 			if(Input.GetKey(KeyCode.Escape))
 			{
 				//Make sure to remove the methods from the events
-				enemySpawner.GetComponent<EnemySpawner>().RemoveMethods();
-				iconSpawner.GetComponent<IconSpawner>().RemoveMethods();
+
 				GoBack();
 			}
 		}
@@ -101,11 +100,20 @@ public class LevelScript : MonoBehaviour
 
 	public void addCoin()
 	{
-		Player.Instance.GetPlayerInventory().Coins++;
+		//Player.Instance.GetPlayerInventory().Coins++;
+		Player.Instance.TemporaryCoins++;
 	}
 
-	public static void GoBack()
+	public void GoBack()
 	{
+		if(!playerLost)
+		//if(LevelStateManager.GetCurrentState() == LevelState.Won)
+		{
+			Player.Instance.GetPlayerInventory().Coins += Player.Instance.TemporaryCoins++;
+		}
+		enemySpawner.GetComponent<EnemySpawner>().RemoveMethods();
+		iconSpawner.GetComponent<IconSpawner>().RemoveMethods();
+		Player.Instance.TemporaryCoins = 0;
 		Player.Instance.Save();
 		Application.LoadLevel ("LevelSelectScene");
 	}
