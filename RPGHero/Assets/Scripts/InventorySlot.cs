@@ -54,7 +54,8 @@ public class InventorySlot : MonoBehaviour
 							equipButton = Instantiate(equipButtonPrefab,position,Quaternion.identity) as GameObject;
 							equipButton.transform.SetParent(GameObject.Find ("SelectedItemPanel").transform, false);
 							equipButton.name = "EquipButton";
-							equipButton.GetComponentInChildren<Button> ().onClick.AddListener (() => {EquipItem(equipButton.name);});
+							//equipButton.GetComponentInChildren<Button> ().onClick.AddListener (() => {EquipItem(equipButton.name);});
+							equipButton.GetComponentInChildren<Button>().onClick.AddListener(() => {BuyItem();});
 						}
 						if(item.GetItemType() == ItemType.Magic)
 						{
@@ -131,6 +132,96 @@ public class InventorySlot : MonoBehaviour
 		}
 	}
 
+	private void EquipMelee(InventoryItem item)
+	{
+		InventoryItem prevEquipped = Player.Instance.GetPlayerInventory ().EquippedMeleeWeapon;
+		Player.Instance.GetPlayerInventory ().AddUnequippedItem (prevEquipped);
+		Player.Instance.GetPlayerInventory ().RemoveUnequippedItem(item);
+		Player.Instance.GetPlayerInventory ().EquippedMeleeWeapon = (MeleeWeapon)item;
+	}
+
+	private void EquipRanged(InventoryItem item)
+	{
+		InventoryItem prevEquipped = Player.Instance.GetPlayerInventory ().EquippedRangedWeapon;
+		Player.Instance.GetPlayerInventory ().AddUnequippedItem (prevEquipped);
+		Player.Instance.GetPlayerInventory ().RemoveUnequippedItem(item);
+		Player.Instance.GetPlayerInventory ().EquippedRangedWeapon = (RangedWeapon)item;
+	}
+
+	private void EquipShield(InventoryItem item)
+	{
+		InventoryItem prevShield = Player.Instance.GetPlayerInventory ().EquippedShield;
+		Player.Instance.GetPlayerInventory ().AddUnequippedItem (prevShield);
+		Player.Instance.GetPlayerInventory ().RemoveUnequippedItem(item);
+		Player.Instance.GetPlayerInventory ().EquippedShield = (Shield)item;
+	}
+
+	private void EquipMagic1(InventoryItem item)
+	{
+		InventoryItem prevMagic1 = Player.Instance.GetPlayerInventory ().EquippedMagic1;
+		Player.Instance.GetPlayerInventory ().AddUnequippedItem (prevMagic1);
+		Player.Instance.GetPlayerInventory ().RemoveUnequippedItem(item);
+		Player.Instance.GetPlayerInventory ().EquippedMagic1 = (Magic)item;
+	}
+
+	private void EquipMagic2(InventoryItem item)
+	{
+		InventoryItem prevMagic2 = Player.Instance.GetPlayerInventory ().EquippedMagic2;
+		Player.Instance.GetPlayerInventory ().AddUnequippedItem (prevMagic2);
+		Player.Instance.GetPlayerInventory ().RemoveUnequippedItem(item);
+		Player.Instance.GetPlayerInventory ().EquippedMagic2 = (Magic)item;
+	}
+
+	public void BuyItem()
+	{
+		InventoryItem selectedItem = GameObject.Find("SelectedItem").GetComponent<InventoryItemDetails>().Item;
+		if(selectedItem.GetItemCost()<= Player.Instance.GetPlayerInventory().Coins)
+		{
+			Player.Instance.GetPlayerInventory().Coins -= selectedItem.GetItemCost();
+			switch(selectedItem.GetItemType())
+			{
+			case ItemType.Weapon:
+				Weapon item = selectedItem as Weapon;
+				if(item.WpnType == WeaponType.Melee)
+				{
+					EquipMelee(selectedItem);
+					GameObject.Find("ComparedItem").GetComponent<InventoryItemDetails>().SetItem(selectedItem);
+					//GameObject.Find("SelectedItem").GetComponent<InventoryItemDetails>().SetItem(prevEquipped);
+				}
+				else if(item.WpnType == WeaponType.Ranged)
+				{
+					EquipRanged(selectedItem);
+					GameObject.Find("ComparedItem").GetComponent<InventoryItemDetails>().SetItem(selectedItem);
+					//GameObject.Find("SelectedItem").GetComponent<InventoryItemDetails>().SetItem(prevEquipped);
+				}
+				break;
+			case ItemType.Shield:
+				EquipShield(selectedItem);
+				GameObject.Find("ComparedItem").GetComponent<InventoryItemDetails>().SetItem(selectedItem);
+				//GameObject.Find("SelectedItem").GetComponent<InventoryItemDetails>().SetItem(prevShield);
+				break;
+			case ItemType.Misc:
+				if(selectedItem.GetType() == typeof(HealthPotion))
+				{
+					HealthPotion hp = selectedItem as HealthPotion;
+					Player.Instance.GetPlayerInventory().HealthPotions++;
+				}
+				else if(selectedItem.GetType() == typeof(ManaPotion))
+				{
+					ManaPotion hp = selectedItem as ManaPotion;
+					Player.Instance.GetPlayerInventory().ManaPotions++;
+				}
+				else if(selectedItem.GetType() == typeof(RepairHammer))
+				{
+					RepairHammer hammer = selectedItem as RepairHammer;
+					Player.Instance.GetPlayerInventory().EquippedShield.HealShield();
+				}
+				break;
+			}
+		}
+		GameObject.Find("Main Camera").GetComponent<StoreScript>().ResetBoard ();
+	}
+
 	public void EquipItem(string button)
 	{
 		InventoryItem selectedItem = GameObject.Find("SelectedItem").GetComponent<InventoryItemDetails>().Item;
@@ -141,9 +232,7 @@ public class InventorySlot : MonoBehaviour
 			if(item.WpnType == WeaponType.Melee)
 			{
 				InventoryItem prevEquipped = Player.Instance.GetPlayerInventory ().EquippedMeleeWeapon;
-				Player.Instance.GetPlayerInventory ().AddUnequippedItem (prevEquipped);
-				Player.Instance.GetPlayerInventory ().RemoveUnequippedItem(selectedItem);
-				Player.Instance.GetPlayerInventory ().EquippedMeleeWeapon = (MeleeWeapon)selectedItem;
+				EquipMelee(selectedItem);
 				GameObject.Find("ComparedItem").GetComponent<InventoryItemDetails>().SetItem(selectedItem);
 				GameObject.Find("SelectedItem").GetComponent<InventoryItemDetails>().SetItem(prevEquipped);
 				//selectedItem = prevEquipped;
@@ -151,18 +240,14 @@ public class InventorySlot : MonoBehaviour
 			else if(item.WpnType == WeaponType.Ranged)
 			{
 				InventoryItem prevEquipped = Player.Instance.GetPlayerInventory ().EquippedRangedWeapon;
-				Player.Instance.GetPlayerInventory ().AddUnequippedItem (prevEquipped);
-				Player.Instance.GetPlayerInventory ().RemoveUnequippedItem(selectedItem);
-				Player.Instance.GetPlayerInventory ().EquippedRangedWeapon = (RangedWeapon)selectedItem;
+				EquipRanged(selectedItem);
 				GameObject.Find("ComparedItem").GetComponent<InventoryItemDetails>().SetItem(selectedItem);
 				GameObject.Find("SelectedItem").GetComponent<InventoryItemDetails>().SetItem(prevEquipped);
 			}
 			break;
 		case ItemType.Shield:
 			InventoryItem prevShield = Player.Instance.GetPlayerInventory ().EquippedShield;
-			Player.Instance.GetPlayerInventory ().AddUnequippedItem (prevShield);
-			Player.Instance.GetPlayerInventory ().RemoveUnequippedItem(selectedItem);
-			Player.Instance.GetPlayerInventory ().EquippedShield = (Shield)selectedItem;
+			EquipShield(selectedItem);
 			GameObject.Find("ComparedItem").GetComponent<InventoryItemDetails>().SetItem(selectedItem);
 			GameObject.Find("SelectedItem").GetComponent<InventoryItemDetails>().SetItem(prevShield);
 			break;
@@ -170,18 +255,14 @@ public class InventorySlot : MonoBehaviour
 			if(button == "EquipButton")
 			{
 				InventoryItem prevMagic1 = Player.Instance.GetPlayerInventory ().EquippedMagic1;
-				Player.Instance.GetPlayerInventory ().AddUnequippedItem (prevMagic1);
-				Player.Instance.GetPlayerInventory ().RemoveUnequippedItem(selectedItem);
-				Player.Instance.GetPlayerInventory ().EquippedMagic1 = (Magic)selectedItem;
+				EquipMagic1(selectedItem);
 				GameObject.Find("ComparedItem").GetComponent<InventoryItemDetails>().SetItem(selectedItem);
 				GameObject.Find("SelectedItem").GetComponent<InventoryItemDetails>().SetItem(prevMagic1);
 			}
 			else if(button == "EquipButton2")
 			{
 				InventoryItem prevMagic2 = Player.Instance.GetPlayerInventory ().EquippedMagic2;
-				Player.Instance.GetPlayerInventory ().AddUnequippedItem (prevMagic2);
-				Player.Instance.GetPlayerInventory ().RemoveUnequippedItem(selectedItem);
-				Player.Instance.GetPlayerInventory ().EquippedMagic2 = (Magic)selectedItem;
+				EquipMagic2(selectedItem);
 				GameObject.Find("ComparedItem2").GetComponent<InventoryItemDetails>().SetItem(selectedItem);
 				GameObject.Find("SelectedItem").GetComponent<InventoryItemDetails>().SetItem(prevMagic2);
 			}

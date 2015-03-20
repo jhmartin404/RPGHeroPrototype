@@ -32,7 +32,7 @@ public class InventoryItem
 
 	public InventoryItem()
 	{
-		//itemImage = Resources.Load<Sprite>(itemImagePath);
+
 	}
 
 	public InventoryItem(ItemType item, int id, string name, string imagePath, int cost, bool purchase)
@@ -68,6 +68,11 @@ public class InventoryItem
 	public ItemType GetItemType()
 	{
 		return itemType;
+	}
+
+	public int GetItemCost()
+	{
+		return itemCost;
 	}
 
 	public override string ToString()

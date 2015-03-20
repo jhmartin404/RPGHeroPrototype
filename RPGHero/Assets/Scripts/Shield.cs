@@ -5,6 +5,7 @@ using Pathfinding.Serialization.JsonFx;
 public class Shield : InventoryItem 
 {
 	private float defence;
+	private float maxDefence;
 	[JsonMember]
 	private string shieldPrefabPath;
 	private Object shieldPrefab;
@@ -46,8 +47,14 @@ public class Shield : InventoryItem
 	public Shield(float def, string prefabPath, ItemType item, int id, string name, string imagePath, int cost, bool purchase) : base(item, id, name, imagePath, cost, purchase)
 	{
 		defence = def;
+		maxDefence = defence;
 		shieldPrefabPath = prefabPath;
 		shieldPrefab = Resources.Load(shieldPrefabPath);
+	}
+
+	public void HealShield()
+	{
+		defence = maxDefence;
 	}
 
 	public float BlockDamage(float damage)
