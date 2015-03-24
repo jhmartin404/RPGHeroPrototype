@@ -8,6 +8,7 @@ public class MagicIcon : Icon
 	private GameObject magicParticleSystem;
 	private GameObject actionArea;
 	private Magic equippedMagic;
+	private float magicManaCost;
 
 	public Magic EquippedMagic
 	{
@@ -29,11 +30,12 @@ public class MagicIcon : Icon
 		gameObject.GetComponent<SpriteRenderer> ().sprite = equippedMagic.GetItemImage ();
 		actionArea = GameObject.Find ("ActionArea");
 		iconType = IconType.Magic;
+		magicManaCost = equippedMagic.GetManaCost();
 	}
 
 	protected override bool OnCheckSelected()
 	{
-		return Player.Instance.Mana >= equippedMagic.ManaCost;
+		return Player.Instance.Mana >= magicManaCost;//equippedMagic.ManaCost;
 	}
 
 	protected override void OnIconTouched()
@@ -60,7 +62,7 @@ public class MagicIcon : Icon
 		base.OnIconLetGo ();
 		actionArea.GetComponent<Renderer>().enabled = false;
 		endPosition = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-		Player.Instance.Mana -= equippedMagic.ManaCost;
+		Player.Instance.Mana -= magicManaCost;//equippedMagic.ManaCost;
 	}
 
 	protected override void OnGrabbedState()
@@ -68,10 +70,6 @@ public class MagicIcon : Icon
 		base.OnGrabbedState ();
 		if(magicParticleSystem != null)
 		{
-			//Vector3 particleSystemPos = transform.position;
-			//particleSystemPos.z -= 0.1f;
-			//magicParticleSystem.transform.rotation = transform.rotation;
-			//magicParticleSystem.transform.position = particleSystemPos;
 			magicParticleSystem.transform.position = transform.position;
 		}
 	}

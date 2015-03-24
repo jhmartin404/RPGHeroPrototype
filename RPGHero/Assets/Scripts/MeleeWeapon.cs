@@ -4,19 +4,17 @@ using Pathfinding.Serialization.JsonFx;
 
 public class MeleeWeapon : Weapon
 {
-	private int meleeCost;
+	[JsonMember]
+	private float meleeCost;
 	private string meleeWeaponPrefabPath;
 	private Object meleeWeaponPrefab;
 
-	public int MeleeCost
+
+	public float MeleeCost
 	{
 		get
 		{
 			return meleeCost;
-		}
-		set
-		{
-			meleeCost = value;
 		}
 	}
 
@@ -37,7 +35,6 @@ public class MeleeWeapon : Weapon
 	{
 		get
 		{
-			//return meleeWeaponPrefab;
 			if(meleeWeaponPrefab == null)
 			{
 				meleeWeaponPrefab = Resources.Load (meleeWeaponPrefabPath);
@@ -52,20 +49,29 @@ public class MeleeWeapon : Weapon
 
 	public MeleeWeapon()
 	{
-		//meleeWeaponPrefab = Resources.Load (meleeWeaponPrefabPath);
+
 	}
 
-	public MeleeWeapon(int stamCost,string prefabPath, int damage, WeaponType weap, ItemType item, int id, string name, string imagePath, int cost, bool purchase) : base(damage, weap, item, id, name, imagePath, cost, purchase)
+	public MeleeWeapon(float stamCost,string prefabPath, int damage, WeaponType weap, ItemType item, int id, string name, string imagePath, int cost, bool purchase) : base(damage, weap, item, id, name, imagePath, cost, purchase)
 	{
 		meleeWeaponPrefabPath = prefabPath;
 		meleeWeaponPrefab = Resources.Load (meleeWeaponPrefabPath);
 		meleeCost = stamCost;
 	}
 
+	public float GetMeleeCost()
+	{
+		int amount = (Player.Instance.GetPlayerStats ().MeleeStat - 50);
+		float amountTakenOff = amount/200.0f;
+		return (meleeCost - amountTakenOff);
+	}
+
 	public override string ToString()
 	{
+		//int amount = (Player.Instance.GetPlayerStats ().MeleeStat - 50);
+		//float amountTakenOff = amount/200.0f;
 		string result = base.ToString ();
-		result += "Stamina Cost: " +meleeCost + "\n";
+		result += "Stamina Cost: " + GetMeleeCost() + "\n";
 		return result;
 	}
 }

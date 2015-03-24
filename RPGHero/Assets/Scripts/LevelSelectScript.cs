@@ -5,15 +5,23 @@ using UnityEngine.UI;
 public class LevelSelectScript : MonoBehaviour 
 {
 	private Button levelButton;
+	private bool notified;
 
 	void Start()
 	{
+		notified = false;
 		SoundManager.Instance.PlayBackgroundMusic ("Level_Select_Scene_BackgroundMusic");
 	}
 
 	// Update is called once per frame
 	void Update () 
 	{
+		if(Player.Instance.GetPlayerStats().LeveledUp() > 0 && !notified)
+		{
+			notified = true;
+			Text characterButton = GameObject.Find("CharacterButton").GetComponentInChildren<Text>();
+			characterButton.text = "Level Up";
+		}
 		if(Application.platform == RuntimePlatform.Android)
 		{
 			if(Input.GetKey(KeyCode.Escape))

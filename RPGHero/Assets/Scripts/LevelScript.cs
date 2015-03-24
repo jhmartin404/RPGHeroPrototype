@@ -61,12 +61,15 @@ public class LevelScript : MonoBehaviour
 	{
 		playerLost = false;
 		playerStats = Player.Instance.GetPlayerStats ();
+		Player.Instance.Health = playerStats.HealthStat;
+		Player.Instance.Mana = playerStats.MaxMana;
+		Player.Instance.Stamina = playerStats.MaxStamina;
 
-		healthBar.fillAmount = (float)(Player.Instance.Health/ (float)playerStats.HealthStat);
+		healthBar.fillAmount = (float)(Player.Instance.Health / (float)playerStats.HealthStat);
 
 		staminaBar.fillAmount = (float)(Player.Instance.Stamina/ (float)playerStats.MaxStamina);
 
-		manaBar.fillAmount = (float)(Player.Instance.Mana/ (float)playerStats.MaxMana);
+		manaBar.fillAmount = (float)(Player.Instance.Mana / (float)playerStats.MaxMana);
 
 		enemySpawner = GameObject.Find ("EnemySpawner");
 		iconSpawner = GameObject.Find ("IconSpawner");

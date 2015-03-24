@@ -16,6 +16,7 @@ public class PlayerStats
 	private int meleeStat;
 	private int rangedStat;
 	private int magicStat;
+	private int leveledUp;
 
 	public int GameLevel
 	{
@@ -161,6 +162,7 @@ public class PlayerStats
 			expLevel = 1;
 			currentExp = 0;
 			neededExp = 100;
+			leveledUp = 0;
 			maxStamina = 100;
 			maxMana = 100;
 			healthStat = 100;
@@ -178,6 +180,7 @@ public class PlayerStats
 			expLevel++;
 			currentExp = currentExp - neededExp;
 			neededExp *=expLevel;
+			leveledUp++;
 			return true;
 		}
 		else
@@ -186,7 +189,17 @@ public class PlayerStats
 		}
 	}
 
-	public void Load()
+	public int LeveledUp()
+	{
+		return leveledUp;
+	}
+
+	public void ResetLeveledUp()
+	{
+		leveledUp = 0;
+	}
+
+	private void Load()
 	{
 		string playerStats = PlayerPrefs.GetString("PlayerStats");
 		Debug.Log("Load PlayerStats: " + playerStats);
@@ -202,6 +215,8 @@ public class PlayerStats
 		currentExp = dict["currentExp"];
 
 		neededExp = dict["neededExp"];
+
+		leveledUp = dict ["leveledUp"];
 	
 		maxStamina = dict["maxStamina"];
 	
@@ -226,6 +241,7 @@ public class PlayerStats
 		dictionary.Add ("expLevel", expLevel);
 		dictionary.Add ("currentExp", currentExp);
 		dictionary.Add ("neededExp", neededExp);
+		dictionary.Add ("leveledUp", leveledUp);
 		dictionary.Add ("maxStamina", maxStamina);
 		dictionary.Add ("maxMana", maxMana);
 		dictionary.Add ("healthStat", healthStat);

@@ -3,9 +3,9 @@ using System.Collections;
 
 public class RangedWeapon : Weapon 
 {
-	private int rangedCost;
+	private float rangedCost;
 	
-	public int RangedCost
+	public float RangedCost
 	{
 		get
 		{
@@ -27,10 +27,19 @@ public class RangedWeapon : Weapon
 		rangedCost = stamCost;
 	}
 
+	public float GetRangedCost()
+	{
+		int amount = (Player.Instance.GetPlayerStats ().MeleeStat - 50);
+		float amountTakenOff = amount/200.0f;
+		return (rangedCost - amountTakenOff);
+	}
+
 	public override string ToString()
 	{
+		//int amount = (Player.Instance.GetPlayerStats ().MeleeStat - 50);
+		//float amountTakenOff = amount/200.0f;
 		string result = base.ToString ();
-		result += "Stamina Cost: " +rangedCost + "\n";
+		result += "Stamina Cost: " +GetRangedCost() + "\n";
 		return result;
 	}
 }

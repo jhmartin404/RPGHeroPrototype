@@ -11,6 +11,7 @@ public class RangedIcon : Icon
 	private Vector3 leftSide = new Vector3(-0.9f,-1.8f,0);
 	private Vector3 rightSide = new Vector3 (0.9f,-1.8f,0);
 	private bool startThrow;
+	private float rangedStaminaCost;
 
 	public RangedWeapon EquippedRanged
 	{
@@ -35,6 +36,7 @@ public class RangedIcon : Icon
 		actionArea = GameObject.Find ("ActionArea");
 		actionAreaCenter = actionArea.GetComponent<Renderer>().bounds.center;
 		actionAreaRadius = actionArea.GetComponent<CircleCollider2D>().radius;
+		rangedStaminaCost = equippedRanged.GetRangedCost();
 	}
 	
 	// Update is called once per frame
@@ -54,7 +56,7 @@ public class RangedIcon : Icon
 
 	protected override bool OnCheckSelected()
 	{
-		return Player.Instance.Stamina >= equippedRanged.RangedCost;
+		return Player.Instance.Stamina >= rangedStaminaCost;/*equippedRanged.RangedCost;*/
 	}
 	
 	protected override void OnIconTouched()
@@ -69,7 +71,7 @@ public class RangedIcon : Icon
 		lineRenderer.enabled = false;
 		actionArea.GetComponent<Renderer>().enabled = false;
 		endPosition = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-		Player.Instance.Stamina -= equippedRanged.RangedCost;
+		Player.Instance.Stamina -= rangedStaminaCost;//equippedRanged.RangedCost;
 	}
 
 	protected override void OnGrabbedState()

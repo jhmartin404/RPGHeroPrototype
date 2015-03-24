@@ -6,7 +6,7 @@ public class InventoryItemDetails : MonoBehaviour
 {
 	private InventoryItem item;
 	private Text itemText;
-	private Sprite itemImage;
+	//private Sprite itemImage;
 	
 	public InventoryItem Item
 	{
@@ -20,7 +20,7 @@ public class InventoryItemDetails : MonoBehaviour
 	void Start () 
 	{
 		itemText = gameObject.GetComponentInChildren<Text>();
-		itemImage = gameObject.GetComponentsInChildren<Image> () [1].sprite;
+		//itemImage = gameObject.GetComponentsInChildren<Image> () [1].sprite;
 	}
 	
 	public void SetItem(InventoryItem itm)
@@ -31,6 +31,13 @@ public class InventoryItemDetails : MonoBehaviour
 			itemText = gameObject.GetComponentInChildren<Text>();
 			gameObject.GetComponentsInChildren<Image> () [1].sprite = item.GetItemImage ();
 			itemText.text = item.ToString();
+		}
+		else
+		{
+			itemText = gameObject.GetComponentInChildren<Text>();
+			gameObject.GetComponentsInChildren<Image> () [1].sprite = null;
+			itemText.text = "No Item";
+
 		}
 	}
 }

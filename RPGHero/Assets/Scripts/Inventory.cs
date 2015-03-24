@@ -150,9 +150,9 @@ public class Inventory
 		unequippedItems.Add(itm);
 	}
 
-	public void RemoveUnequippedItem(InventoryItem itm)
+	public bool RemoveUnequippedItem(InventoryItem itm)
 	{
-		unequippedItems.Remove (itm);
+		return unequippedItems.Remove (itm);
 	}
 
 	public void RemoveUnequippedItem(int index)

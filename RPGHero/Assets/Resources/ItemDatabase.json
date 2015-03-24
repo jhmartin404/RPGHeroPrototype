@@ -4,10 +4,10 @@
 		[
 			{
 				"__type": "MeleeWeapon, Assembly-CSharp",
-				"MeleeCost": 8,
 				"MeleeWeaponPrefabPath": "Prefabs/AxePrefab",
 				"Damage": 4,
 				"WpnType": "Melee",
+				"meleeCost": 8,
 				"itemType": "Weapon",
 				"itemID": 1,
 				"itemName": "Steel Axe",
@@ -30,6 +30,7 @@
 			{
 				"__type": "Shield, Assembly-CSharp",
 				"Defence": 30,
+				"maxDefence": 30,
 				"shieldPrefabPath": "Prefabs/Shield1Prefab",
 				"itemType": "Shield",
 				"itemID": 3,
@@ -75,10 +76,10 @@
 			},
 			{
 				"__type": "MeleeWeapon, Assembly-CSharp",
-				"MeleeCost": 10,
 				"MeleeWeaponPrefabPath": "Prefabs/SteelSwordPrefab",
 				"Damage": 5,
 				"WpnType": "Melee",
+				"meleeCost": 10,
 				"itemType": "Weapon",
 				"itemID": 6,
 				"itemName": "Steel Sword",
@@ -101,6 +102,7 @@
 			{
 				"__type": "Shield, Assembly-CSharp",
 				"Defence": 50,
+				"maxDefence": 50,
 				"shieldPrefabPath": "Prefabs/Shield1Prefab",
 				"itemType": "Shield",
 				"itemID": 8,

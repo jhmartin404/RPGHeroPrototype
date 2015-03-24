@@ -3,9 +3,9 @@ using System.Collections;
 
 public class Magic : InventoryItem 
 {
-	protected int manaCost;
+	protected float manaCost;
 
-	public int ManaCost
+	public float ManaCost
 	{
 		get
 		{
@@ -22,7 +22,7 @@ public class Magic : InventoryItem
 
 	}
 
-	public Magic(int costMana, ItemType item, int id, string name, string imagePath, int cost, bool purchase) : base(item, id, name, imagePath, cost, purchase)
+	public Magic(float costMana, ItemType item, int id, string name, string imagePath, int cost, bool purchase) : base(item, id, name, imagePath, cost, purchase)
 	{
 		manaCost = costMana;
 	}
@@ -32,10 +32,19 @@ public class Magic : InventoryItem
 		//enemy.EnemyHealth -= damage;
 	}
 
+	public float GetManaCost()
+	{
+		int amount = (Player.Instance.GetPlayerStats ().MagicStat - 50);
+		float amountTakenOff = amount/200.0f;
+		return (manaCost - amountTakenOff);
+	}
+
 	public override string ToString()
 	{
+		//int amount = (Player.Instance.GetPlayerStats ().MagicStat - 50);
+		//float amountTakenOff = amount/200.0f;
 		string result = base.ToString ();
-		result += "Mana Cost: " +manaCost + "\n";
+		result += "Mana Cost: " + GetManaCost() + "\n";
 		return result;
 	}
 }

@@ -14,7 +14,7 @@ public class Clerk
 			itemsForSale.Add(new List<InventoryItem>());
 			itemsForSale[i].Add(new HealthPotion(20,ItemType.Misc,12,"Health Potion","healthPotionUI",5,true));
 			itemsForSale[i].Add(new ManaPotion(20, ItemType.Misc,13,"Mana Potion","manaPotionUI",5,true));
-			itemsForSale[i].Add(new RepairHammer(ItemType.Misc,14,"Repair Hammer","RepairHammer",5,true));
+			itemsForSale[i].Add(new RepairHammer(15, ItemType.Misc,14,"Repair Hammer","RepairHammer",5,true));
 		}
 	}
 
@@ -25,5 +25,18 @@ public class Clerk
 			level = 10;
 		}
 		return itemsForSale[level-1];
+	}
+
+	public bool AddItem(InventoryItem item)
+	{
+		if(itemsForSale[Player.Instance.GetPlayerStats().ExpLevel-1] != null)
+		{
+			itemsForSale[Player.Instance.GetPlayerStats().ExpLevel-1].Add(item);
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 }

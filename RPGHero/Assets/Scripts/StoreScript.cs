@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
-enum StoreMode
+public enum StoreMode
 {
 	Buy,
 	Sell
@@ -20,6 +20,22 @@ public class StoreScript : MonoBehaviour
 	private Clerk clerk;
 	private StoreMode mode;
 
+	public Clerk StoreClerk
+	{
+		get
+		{
+			return clerk;
+		}
+	}
+
+	public StoreMode Mode
+	{
+		get
+		{
+			return mode;
+		}
+	}
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -27,7 +43,6 @@ public class StoreScript : MonoBehaviour
 		mode = StoreMode.Buy;
 		SoundManager.Instance.PlayBackgroundMusic ("Store_Scene_BackgroundMusic");
 		filter = ItemType.Misc;
-		//playerInventory = Player.Instance.GetPlayerInventory ();
 		unequippedItems = Player.Instance.GetPlayerInventory().GetUnequippedItems ();
 		coinsText.text = "" + Player.Instance.GetPlayerInventory().Coins;
 		ResetBoard ();
@@ -54,20 +69,59 @@ public class StoreScript : MonoBehaviour
 
 	public void SetFilterToWeapon()
 	{
+		SoundManager.Instance.PlayUISound ("Filter_Mode_Select");
 		filter = ItemType.Weapon;
 		ResetBoard ();
+		ResetComparedAndSelected ();
 	}
 	
 	public void SetFilterToShield()
 	{
+		SoundManager.Instance.PlayUISound ("Filter_Mode_Select");
 		filter = ItemType.Shield;
 		ResetBoard ();
+		ResetComparedAndSelected ();
 	}
 
 	public void SetFilterToMisc()
 	{
+		SoundManager.Instance.PlayUISound ("Filter_Mode_Select");
 		filter = ItemType.Misc;
 		ResetBoard ();
+		ResetComparedAndSelected ();
+	}
+
+	public void SetToBuy()
+	{
+		SoundManager.Instance.PlayUISound ("Filter_Mode_Select");
+		mode = StoreMode.Buy;
+		ResetBoard ();
+		ResetComparedAndSelected ();
+	}
+
+	public void SetToSell()
+	{
+		SoundManager.Instance.PlayUISound ("Filter_Mode_Select");
+		mode = StoreMode.Sell;
+		ResetBoard ();
+		ResetComparedAndSelected ();
+	}
+
+	public void ResetComparedAndSelected()
+	{
+		GameObject selected = GameObject.Find ("SelectedItem");
+		if(selected != null)
+		{
+			selected.GetComponent<InventoryItemDetails> ().SetItem (null);
+		}
+
+		GameObject compared = GameObject.Find ("ComparedItem");
+		if(compared != null)
+		{
+			compared.GetComponent<InventoryItemDetails> ().SetItem (null);
+		}
+		Destroy(GameObject.Find ("ItemButton"));
+		Destroy(GameObject.Find ("ItemButton2"));
 	}
 
 	public void ResetBoard()

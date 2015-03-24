@@ -46,10 +46,13 @@ public class CoinBag : MonoBehaviour
 	{
 		if(col.gameObject.tag == "Coin")
 		{
-			AddCoin();
-			coinCollected = true;
 			CoinIcon icon = col.GetComponent<CoinIcon>();
-			icon.OnDestroy();
+			if(icon.State == IconState.Thrown)
+			{
+				AddCoin();
+				coinCollected = true;
+				icon.OnDestroy();
+			}
 		}
 	}
 }

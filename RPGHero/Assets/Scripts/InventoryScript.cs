@@ -48,20 +48,48 @@ public class InventoryScript : MonoBehaviour
 
 	public void SetFilterToWeapon()
 	{
+		SoundManager.Instance.PlayUISound ("Filter_Mode_Select");
 		filter = ItemType.Weapon;
 		ResetBoard ();
+		ResetComparedAndSelected ();
 	}
 
 	public void SetFilterToShield()
 	{
+		SoundManager.Instance.PlayUISound ("Filter_Mode_Select");
 		filter = ItemType.Shield;
 		ResetBoard ();
+		ResetComparedAndSelected ();
 	}
 
 	public void SetFilterToMagic()
 	{
+		SoundManager.Instance.PlayUISound ("Filter_Mode_Select");
 		filter = ItemType.Magic;
 		ResetBoard ();
+		ResetComparedAndSelected ();
+	}
+
+	public void ResetComparedAndSelected()
+	{
+		GameObject selected = GameObject.Find ("SelectedItem");
+		if(selected != null)
+		{
+			selected.GetComponent<InventoryItemDetails> ().SetItem (null);
+		}
+		
+		GameObject compared = GameObject.Find ("ComparedItem");
+		if(compared != null)
+		{
+			compared.GetComponent<InventoryItemDetails> ().SetItem (null);
+		}
+		GameObject compared2 = GameObject.Find ("ComparedItem2");
+		if(compared2 != null)
+		{
+			Destroy(compared2);
+		}
+		Destroy(GameObject.Find ("ItemButton"));
+		Destroy(GameObject.Find ("ItemButton2"));
 	}
 
 	public void ResetBoard()

@@ -185,6 +185,11 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 45c4a86818372994eb9c67db35b8d6f4, type: 3}
   - {fileID: 8300000, guid: 405ef6ffab093964cac4557a11d06ed7, type: 3}
   - {fileID: 8300000, guid: c4602303cc12c3f4eab791c2add0bfc4, type: 3}
+  - {fileID: 8300000, guid: 225971cc4b4700440b542d21077c4c2b, type: 3}
+  - {fileID: 8300000, guid: bbd6e2797d368f74297e3b3f1666ce65, type: 3}
+  - {fileID: 8300000, guid: d54fb3f4de4bd2d4b925f7440469f6cc, type: 3}
+  - {fileID: 8300000, guid: 2d98fc6289ea9884ca952f559d4bd6f8, type: 3}
+  - {fileID: 8300000, guid: a7333f6af7dbbdc458240e97e1bb69c7, type: 3}
   backgroundMusic:
   - {fileID: 8300000, guid: 2c3dbf74b78c2d54a8b4656a7be9ec4e, type: 3}
   - {fileID: 8300000, guid: 7a71eb2820cdfb540bd622424797b7d7, type: 3}

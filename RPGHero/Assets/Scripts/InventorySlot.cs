@@ -8,6 +8,7 @@ public class InventorySlot : MonoBehaviour
 	private float fingerRadius = 0.5f;
 	private Object inventoryItemDetailsPrefab;
 	private Object equipButtonPrefab;
+	private float saleRatio = 0.8f;
 
 	public InventoryItem Item
 	{
@@ -40,38 +41,46 @@ public class InventorySlot : MonoBehaviour
 				{
 					if(item != null)
 					{
+						SoundManager.Instance.PlayUISound("Item_Select");
 						Vector3 position = new Vector3(0,0,0);
 						GameObject selected = GameObject.Find("SelectedItem");
 						GameObject compared = GameObject.Find("ComparedItem");
 						GameObject compared2 = GameObject.Find("ComparedItem2");
-						GameObject equipButton = GameObject.Find("EquipButton");
-						GameObject equipButton2 = GameObject.Find("EquipButton2");
+						GameObject itemButton = GameObject.Find("ItemButton");
+						GameObject itemButton2 = GameObject.Find("ItemButton2");
 						if(selected == null)
 						{
 							selected = Instantiate(inventoryItemDetailsPrefab,position,Quaternion.identity) as GameObject;
 							selected.name = "SelectedItem";
 							selected.transform.SetParent(GameObject.Find ("SelectedItemPanel").transform, false);
-							equipButton = Instantiate(equipButtonPrefab,position,Quaternion.identity) as GameObject;
-							equipButton.transform.SetParent(GameObject.Find ("SelectedItemPanel").transform, false);
-							equipButton.name = "EquipButton";
-							//equipButton.GetComponentInChildren<Button> ().onClick.AddListener (() => {EquipItem(equipButton.name);});
-							equipButton.GetComponentInChildren<Button>().onClick.AddListener(() => {BuyItem();});
+							itemButton = Instantiate(equipButtonPrefab,position,Quaternion.identity) as GameObject;
+							itemButton.transform.SetParent(GameObject.Find ("SelectedItemPanel").transform, false);
+							itemButton.name = "ItemButton";
+							SetButtonListener(itemButton.GetComponentInChildren<Button>());
+						}
+						else if(selected != null)
+						{
+							if(itemButton == null)
+							{
+								itemButton = Instantiate(equipButtonPrefab,position,Quaternion.identity) as GameObject;
+								itemButton.transform.SetParent(GameObject.Find ("SelectedItemPanel").transform, false);
+								itemButton.name = "ItemButton";
+								SetButtonListener(itemButton.GetComponentInChildren<Button>());
+							}
 						}
 						if(item.GetItemType() == ItemType.Magic)
 						{
-							if(equipButton2 == null)
+							if(itemButton2 == null)
 							{
-								//equipButton.GetComponentInChildren<Text>().text = "Equip Slot 1";
-								equipButton2 = Instantiate(equipButtonPrefab,position,Quaternion.identity) as GameObject;
-								equipButton2.transform.SetParent(GameObject.Find ("SelectedItemPanel").transform, false);
-								equipButton2.name = "EquipButton2";
-								equipButton2.GetComponentInChildren<Button> ().onClick.AddListener (() => {EquipItem(equipButton2.name);});
-								//equipButton2.GetComponentInChildren<Text>().text = "Equip Slot 2";
+								itemButton2 = Instantiate(equipButtonPrefab,position,Quaternion.identity) as GameObject;
+								itemButton2.transform.SetParent(GameObject.Find ("SelectedItemPanel").transform, false);
+								itemButton2.name = "ItemButton2";
+								SetButtonListener(itemButton2.GetComponentInChildren<Button>());
 							}
 						}
-						else if(equipButton2 != null)
+						else if(itemButton2 != null)
 						{
-							Destroy(equipButton2);
+							Destroy(itemButton2);
 						}
 						
 						selected.GetComponent<InventoryItemDetails>().SetItem(item);
@@ -82,6 +91,8 @@ public class InventorySlot : MonoBehaviour
 							compared.name = "ComparedItem";
 							compared.transform.SetParent(GameObject.Find ("ComparedItemPanel").transform, false);
 						}
+
+
 
 						InventoryItem comparedItem = null;
 						InventoryItem comparedItem2 = null;
@@ -132,52 +143,13 @@ public class InventorySlot : MonoBehaviour
 		}
 	}
 
-	private void EquipMelee(InventoryItem item)
-	{
-		InventoryItem prevEquipped = Player.Instance.GetPlayerInventory ().EquippedMeleeWeapon;
-		Player.Instance.GetPlayerInventory ().AddUnequippedItem (prevEquipped);
-		Player.Instance.GetPlayerInventory ().RemoveUnequippedItem(item);
-		Player.Instance.GetPlayerInventory ().EquippedMeleeWeapon = (MeleeWeapon)item;
-	}
-
-	private void EquipRanged(InventoryItem item)
-	{
-		InventoryItem prevEquipped = Player.Instance.GetPlayerInventory ().EquippedRangedWeapon;
-		Player.Instance.GetPlayerInventory ().AddUnequippedItem (prevEquipped);
-		Player.Instance.GetPlayerInventory ().RemoveUnequippedItem(item);
-		Player.Instance.GetPlayerInventory ().EquippedRangedWeapon = (RangedWeapon)item;
-	}
-
-	private void EquipShield(InventoryItem item)
-	{
-		InventoryItem prevShield = Player.Instance.GetPlayerInventory ().EquippedShield;
-		Player.Instance.GetPlayerInventory ().AddUnequippedItem (prevShield);
-		Player.Instance.GetPlayerInventory ().RemoveUnequippedItem(item);
-		Player.Instance.GetPlayerInventory ().EquippedShield = (Shield)item;
-	}
-
-	private void EquipMagic1(InventoryItem item)
-	{
-		InventoryItem prevMagic1 = Player.Instance.GetPlayerInventory ().EquippedMagic1;
-		Player.Instance.GetPlayerInventory ().AddUnequippedItem (prevMagic1);
-		Player.Instance.GetPlayerInventory ().RemoveUnequippedItem(item);
-		Player.Instance.GetPlayerInventory ().EquippedMagic1 = (Magic)item;
-	}
-
-	private void EquipMagic2(InventoryItem item)
-	{
-		InventoryItem prevMagic2 = Player.Instance.GetPlayerInventory ().EquippedMagic2;
-		Player.Instance.GetPlayerInventory ().AddUnequippedItem (prevMagic2);
-		Player.Instance.GetPlayerInventory ().RemoveUnequippedItem(item);
-		Player.Instance.GetPlayerInventory ().EquippedMagic2 = (Magic)item;
-	}
-
-	public void BuyItem()
+	private void BuyItem()
 	{
 		InventoryItem selectedItem = GameObject.Find("SelectedItem").GetComponent<InventoryItemDetails>().Item;
 		if(selectedItem.GetItemCost()<= Player.Instance.GetPlayerInventory().Coins)
 		{
 			Player.Instance.GetPlayerInventory().Coins -= selectedItem.GetItemCost();
+			SoundManager.Instance.PlayUISound("Purchase_Sell_Item");
 			switch(selectedItem.GetItemType())
 			{
 			case ItemType.Weapon:
@@ -185,44 +157,60 @@ public class InventorySlot : MonoBehaviour
 				if(item.WpnType == WeaponType.Melee)
 				{
 					EquipMelee(selectedItem);
-					GameObject.Find("ComparedItem").GetComponent<InventoryItemDetails>().SetItem(selectedItem);
-					//GameObject.Find("SelectedItem").GetComponent<InventoryItemDetails>().SetItem(prevEquipped);
+					SetCompared(selectedItem);
 				}
 				else if(item.WpnType == WeaponType.Ranged)
 				{
 					EquipRanged(selectedItem);
-					GameObject.Find("ComparedItem").GetComponent<InventoryItemDetails>().SetItem(selectedItem);
-					//GameObject.Find("SelectedItem").GetComponent<InventoryItemDetails>().SetItem(prevEquipped);
+					SetCompared(selectedItem);
 				}
 				break;
 			case ItemType.Shield:
 				EquipShield(selectedItem);
-				GameObject.Find("ComparedItem").GetComponent<InventoryItemDetails>().SetItem(selectedItem);
-				//GameObject.Find("SelectedItem").GetComponent<InventoryItemDetails>().SetItem(prevShield);
+				SetCompared(selectedItem);
 				break;
 			case ItemType.Misc:
 				if(selectedItem.GetType() == typeof(HealthPotion))
 				{
-					HealthPotion hp = selectedItem as HealthPotion;
+					//HealthPotion hp = selectedItem as HealthPotion;
 					Player.Instance.GetPlayerInventory().HealthPotions++;
 				}
 				else if(selectedItem.GetType() == typeof(ManaPotion))
 				{
-					ManaPotion hp = selectedItem as ManaPotion;
+					//ManaPotion hp = selectedItem as ManaPotion;
 					Player.Instance.GetPlayerInventory().ManaPotions++;
 				}
 				else if(selectedItem.GetType() == typeof(RepairHammer))
 				{
 					RepairHammer hammer = selectedItem as RepairHammer;
-					Player.Instance.GetPlayerInventory().EquippedShield.HealShield();
+					Player.Instance.GetPlayerInventory().EquippedShield.RepairShield(hammer.GetRepairAmount());
 				}
 				break;
 			}
 		}
+		else
+		{
+			SoundManager.Instance.PlayUISound("Locked_Sound");
+		}
 		GameObject.Find("Main Camera").GetComponent<StoreScript>().ResetBoard ();
 	}
 
-	public void EquipItem(string button)
+
+	private void SellItem()
+	{
+		InventoryItem selectedItem = GameObject.Find("SelectedItem").GetComponent<InventoryItemDetails>().Item;
+		bool removed = Player.Instance.GetPlayerInventory ().RemoveUnequippedItem (selectedItem);
+		if(removed)
+		{
+			SoundManager.Instance.PlayUISound("Purchase_Sell_Item");
+			GameObject.Find("Main Camera").GetComponent<StoreScript>().StoreClerk.AddItem(selectedItem);
+			Player.Instance.GetPlayerInventory().Coins += (int)((float)selectedItem.GetItemCost()*saleRatio);
+			SetComparedAndSelected(null,null);
+		}
+		GameObject.Find("Main Camera").GetComponent<StoreScript>().ResetBoard ();
+	}
+
+	private void EquipItem(string button)
 	{
 		InventoryItem selectedItem = GameObject.Find("SelectedItem").GetComponent<InventoryItemDetails>().Item;
 		switch(selectedItem.GetItemType())
@@ -233,42 +221,118 @@ public class InventorySlot : MonoBehaviour
 			{
 				InventoryItem prevEquipped = Player.Instance.GetPlayerInventory ().EquippedMeleeWeapon;
 				EquipMelee(selectedItem);
-				GameObject.Find("ComparedItem").GetComponent<InventoryItemDetails>().SetItem(selectedItem);
-				GameObject.Find("SelectedItem").GetComponent<InventoryItemDetails>().SetItem(prevEquipped);
-				//selectedItem = prevEquipped;
+				SetComparedAndSelected(selectedItem,prevEquipped);
 			}
 			else if(item.WpnType == WeaponType.Ranged)
 			{
 				InventoryItem prevEquipped = Player.Instance.GetPlayerInventory ().EquippedRangedWeapon;
 				EquipRanged(selectedItem);
-				GameObject.Find("ComparedItem").GetComponent<InventoryItemDetails>().SetItem(selectedItem);
-				GameObject.Find("SelectedItem").GetComponent<InventoryItemDetails>().SetItem(prevEquipped);
+				SetComparedAndSelected(selectedItem,prevEquipped);
 			}
 			break;
 		case ItemType.Shield:
 			InventoryItem prevShield = Player.Instance.GetPlayerInventory ().EquippedShield;
 			EquipShield(selectedItem);
-			GameObject.Find("ComparedItem").GetComponent<InventoryItemDetails>().SetItem(selectedItem);
-			GameObject.Find("SelectedItem").GetComponent<InventoryItemDetails>().SetItem(prevShield);
+			SetComparedAndSelected(selectedItem,prevShield);
 			break;
 		case ItemType.Magic:
-			if(button == "EquipButton")
+			if(button == "ItemButton")
 			{
 				InventoryItem prevMagic1 = Player.Instance.GetPlayerInventory ().EquippedMagic1;
 				EquipMagic1(selectedItem);
-				GameObject.Find("ComparedItem").GetComponent<InventoryItemDetails>().SetItem(selectedItem);
-				GameObject.Find("SelectedItem").GetComponent<InventoryItemDetails>().SetItem(prevMagic1);
+				SetComparedAndSelected(selectedItem,prevMagic1);
 			}
-			else if(button == "EquipButton2")
+			else if(button == "ItemButton2")
 			{
 				InventoryItem prevMagic2 = Player.Instance.GetPlayerInventory ().EquippedMagic2;
 				EquipMagic2(selectedItem);
 				GameObject.Find("ComparedItem2").GetComponent<InventoryItemDetails>().SetItem(selectedItem);
 				GameObject.Find("SelectedItem").GetComponent<InventoryItemDetails>().SetItem(prevMagic2);
+				//SetComparedAndSelected(selectedItem,prevMagic2);
 			}
 			break;
 		}
 		GameObject.Find("Main Camera").GetComponent<InventoryScript>().ResetBoard ();
+	}
+
+	private void EquipMelee(InventoryItem item)
+	{
+		SoundManager.Instance.PlayUISound ("Equip_Shield");
+		InventoryItem prevEquipped = Player.Instance.GetPlayerInventory ().EquippedMeleeWeapon;
+		Player.Instance.GetPlayerInventory ().AddUnequippedItem (prevEquipped);
+		Player.Instance.GetPlayerInventory ().RemoveUnequippedItem(item);
+		Player.Instance.GetPlayerInventory ().EquippedMeleeWeapon = (MeleeWeapon)item;
+	}
+	
+	private void EquipRanged(InventoryItem item)
+	{
+		SoundManager.Instance.PlayUISound ("Equip_Shield");
+		InventoryItem prevEquipped = Player.Instance.GetPlayerInventory ().EquippedRangedWeapon;
+		Player.Instance.GetPlayerInventory ().AddUnequippedItem (prevEquipped);
+		Player.Instance.GetPlayerInventory ().RemoveUnequippedItem(item);
+		Player.Instance.GetPlayerInventory ().EquippedRangedWeapon = (RangedWeapon)item;
+	}
+	
+	private void EquipShield(InventoryItem item)
+	{
+		SoundManager.Instance.PlayUISound ("Equip_Shield");
+		InventoryItem prevShield = Player.Instance.GetPlayerInventory ().EquippedShield;
+		Player.Instance.GetPlayerInventory ().AddUnequippedItem (prevShield);
+		Player.Instance.GetPlayerInventory ().RemoveUnequippedItem(item);
+		Player.Instance.GetPlayerInventory ().EquippedShield = (Shield)item;
+	}
+	
+	private void EquipMagic1(InventoryItem item)
+	{
+		InventoryItem prevMagic1 = Player.Instance.GetPlayerInventory ().EquippedMagic1;
+		Player.Instance.GetPlayerInventory ().AddUnequippedItem (prevMagic1);
+		Player.Instance.GetPlayerInventory ().RemoveUnequippedItem(item);
+		Player.Instance.GetPlayerInventory ().EquippedMagic1 = (Magic)item;
+	}
+	
+	private void EquipMagic2(InventoryItem item)
+	{
+		InventoryItem prevMagic2 = Player.Instance.GetPlayerInventory ().EquippedMagic2;
+		Player.Instance.GetPlayerInventory ().AddUnequippedItem (prevMagic2);
+		Player.Instance.GetPlayerInventory ().RemoveUnequippedItem(item);
+		Player.Instance.GetPlayerInventory ().EquippedMagic2 = (Magic)item;
+	}
+
+	private void SetButtonListener (Button button)
+	{
+		StoreScript store = GameObject.Find ("Main Camera").GetComponent<StoreScript> ();
+		if(GameObject.Find("Main Camera").GetComponent<InventoryScript>() != null)
+		{
+			button.onClick.AddListener(() => {EquipItem(button.name);});
+			Text buttonText = button.GetComponentInChildren<Text>();
+			buttonText.text = "Equip";
+		}
+		else if(store != null)
+		{
+			if(store.Mode == StoreMode.Buy)
+			{
+				button.onClick.AddListener(() => {BuyItem();});
+				Text buttonText = button.GetComponentInChildren<Text>();
+				buttonText.text = "Buy";
+			}
+			else if(store.Mode == StoreMode.Sell)
+			{
+				button.onClick.AddListener(() => {SellItem();});
+				Text buttonText = button.GetComponentInChildren<Text>();
+				buttonText.text = "Sell";
+			}
+		}
+	}
+
+	private void SetCompared (InventoryItem compared)
+	{
+		GameObject.Find("ComparedItem").GetComponent<InventoryItemDetails>().SetItem(compared);
+	}
+
+	private void SetComparedAndSelected (InventoryItem compared, InventoryItem selected)
+	{
+		GameObject.Find("ComparedItem").GetComponent<InventoryItemDetails>().SetItem(compared);
+		GameObject.Find("SelectedItem").GetComponent<InventoryItemDetails>().SetItem(selected);
 	}
 
 	public void SetItem(InventoryItem itm)
