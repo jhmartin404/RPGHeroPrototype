@@ -284,6 +284,7 @@ public class InventorySlot : MonoBehaviour
 	
 	private void EquipMagic1(InventoryItem item)
 	{
+		SoundManager.Instance.PlayUISound ("Equip_Magic");
 		InventoryItem prevMagic1 = Player.Instance.GetPlayerInventory ().EquippedMagic1;
 		Player.Instance.GetPlayerInventory ().AddUnequippedItem (prevMagic1);
 		Player.Instance.GetPlayerInventory ().RemoveUnequippedItem(item);
@@ -292,6 +293,7 @@ public class InventorySlot : MonoBehaviour
 	
 	private void EquipMagic2(InventoryItem item)
 	{
+		SoundManager.Instance.PlayUISound ("Equip_Magic");
 		InventoryItem prevMagic2 = Player.Instance.GetPlayerInventory ().EquippedMagic2;
 		Player.Instance.GetPlayerInventory ().AddUnequippedItem (prevMagic2);
 		Player.Instance.GetPlayerInventory ().RemoveUnequippedItem(item);

@@ -19,6 +19,7 @@ public class RangedEnemy : Enemy
 		Rigidbody2D shotRigidBody = shot.GetComponent<Rigidbody2D> ();
 		if(shotRigidBody != null)
 		{
+			PlayEnemySoundEffect((int)EnemySoundEffect.EnemyAttack);
 			shotRigidBody.AddForce(Vector2.up * -rangedShotSpeed);
 		}
 		attackTimer = 0;

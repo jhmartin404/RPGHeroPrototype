@@ -68,7 +68,7 @@ public class EnemySpawner : MonoBehaviour
 
 	public void OnLevelRunning()
 	{
-		Debug.Log ("OnLevelRunning EnemySpawner");
+		//Debug.Log ("OnLevelRunning EnemySpawner");
 	}
 
 	public void OnLevelWon()

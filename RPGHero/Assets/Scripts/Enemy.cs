@@ -1,7 +1,16 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
+
+/// <summary>
+/// Sound Effect Order
+/// Index 0 is Hit Sound Effect
+/// Index 1 is Move Sound Effect
+/// Index 2 is Attack Sound Effect
+/// Index 3 is Death Sound Effect
+/// </summary>
 public enum EnemyType
 {
 	Bandit,
@@ -15,8 +24,19 @@ public enum EnemyType
 	Spider
 };
 
+public enum EnemySoundEffect
+{
+	EnemyHit = 0,
+	EnemyStand = 1,
+	EnemyAttack = 2,
+	EnemyDeath = 3,
+	EnemySpecialAttack = 4
+};
+
 public class Enemy : MonoBehaviour
 {
+	public AudioSource soundSource;
+	public List<AudioClip> enemySoundEffects;
 	private const float MOVE_RIGHT = 1.0f;
 	private const float MOVE_LEFT = -1.0f;
 	protected OnState move;//delegate for moving state
@@ -37,8 +57,8 @@ public class Enemy : MonoBehaviour
 	public float attackTime = 5.0f;
 	protected float attackTimer = 0.0f;
 	private float magicTimer = 0.0f; //timer used to manage magic effects
-	private float moveTimer; //Timer for handling enemy movement
-	private float standTimer; //Timer for enemy standing
+	protected float moveTimer; //Timer for handling enemy movement
+	protected float standTimer; //Timer for enemy standing
 	private float damageOverTimeAmount;
 	protected Vector3 enemyPosition;//Store y position before an attack
 	protected GameObject enemyHealthBar;
@@ -50,6 +70,7 @@ public class Enemy : MonoBehaviour
 	protected GameObject enemySpawner;
 	protected bool isSlowed;
 	protected bool isDamageOverTime;
+	protected bool isLowHealth;
 	protected Vector3 actionAreaCenter;
 	protected Vector3 size;
 	protected Color normalColor;
@@ -75,6 +96,7 @@ public class Enemy : MonoBehaviour
 		lowHealth = OnLowHealth;
 		die = OnDie;
 		fsm = new FiniteStateMachine ();
+		soundSource = GetComponent<AudioSource> ();
 		lowEnemyHealth = enemyHealth * 0.25f;
 		GetComponent<Rigidbody2D>().isKinematic = true;
 		actionAreaCenter = GameObject.Find ("ActionArea").transform.GetComponent<Renderer>().bounds.center;
@@ -85,6 +107,9 @@ public class Enemy : MonoBehaviour
 		fullEnemyHealth = enemyHealth;
 		moveTimer = Random.Range (2, 5);
 		standTimer = Random.Range (1, 3);
+		isSlowed = false;
+		isDamageOverTime = false;
+		isLowHealth = false;
 		Object healthBar = Resources.Load ("Prefabs/EnemyHealthBar");
 		enemyHealthBar = Instantiate (healthBar, transform.position, transform.rotation) as GameObject;
 		enemyHealthBar.transform.SetParent (GameObject.Find ("Canvas").transform, false);
@@ -105,11 +130,12 @@ public class Enemy : MonoBehaviour
 				fsm.PushState(move);//Player should always at least be moving if they have no state
 			}
 
-			//if(enemyHealth <= lowEnemyHealth)
-			//{
-			//	fsm.PushState(lowHealth);
-				//OnLowHealth();
-			//}
+			if(enemyHealth <= lowEnemyHealth && !isLowHealth)
+			{
+				fsm.PushState(lowHealth);
+				fsm.DoState();
+				isLowHealth = true;
+			}
 
 			if(attackTimer > attackTime && enemyHealth>0 && fsm.GetCurrentState() == move)
 			{
@@ -125,6 +151,7 @@ public class Enemy : MonoBehaviour
 
 			if(isDamageOverTime)
 			{
+				PlayEnemySoundEffect ((int)EnemySoundEffect.EnemyHit);
 				Color collideColor = new Color (255, 0, 0, 255);
 				StartCoroutine(Flash(collideColor));
 				magicTimer -= Time.deltaTime;
@@ -145,7 +172,11 @@ public class Enemy : MonoBehaviour
 
 			if(moveTimer <= 0)
 			{
-				fsm.PushState(stand);
+				if(fsm.GetCurrentState() != stand)
+				{
+					PlayEnemySoundEffect((int)EnemySoundEffect.EnemyStand);
+					fsm.PushState(stand);
+				}
 			}
 
 			Debug.Log("State: " +fsm.GetCurrentState ().Method.Name);//used for testing
@@ -225,7 +256,10 @@ public class Enemy : MonoBehaviour
 		{
 			yDirection = 1.0f;
 			sizeChangeSpeed = -1.0f;
-			Player.Instance.TakeDamage(this);
+			if(Player.Instance.TakeDamage(this))
+			{
+				PlayEnemySoundEffect((int)EnemySoundEffect.EnemyAttack);
+			}
 		}
 		else if(Vector2.Distance(transform.position,enemyPosition)<step)
 		{
@@ -244,10 +278,53 @@ public class Enemy : MonoBehaviour
 	protected virtual void OnDie()
 	{
 		Player.Instance.AddExperience(expGiven);
+		AudioSource.PlayClipAtPoint(GetSoundEffect((int)EnemySoundEffect.EnemyDeath), transform.position);
 		enemySpawner.GetComponent<EnemySpawner> ().NotifyEnemyDied ();
 		fsm.PopState ();
 		Destroy (enemyHealthBar);
 		Destroy (gameObject);
+	}
+
+	protected void PlayEnemySoundEffect(int index)
+	{
+		if(soundSource != null)
+		{
+			AudioClip sound = GetSoundEffect (index);
+			if(sound != null && soundSource.clip != null && soundSource.clip.name == sound.name)
+			{
+				if(!soundSource.isPlaying)
+					soundSource.Play();
+			}
+			else
+			{
+				//AudioClip sound = GetSoundEffect (index);
+				if(sound != null)
+				{
+					soundSource.clip = sound;
+					soundSource.Play();
+				}
+				else
+				{
+					Debug.LogError("Sound was not found");
+				}
+			}
+		}
+		else
+		{
+			Debug.Log("AudioSource does not exist");
+		}
+	}
+
+	protected AudioClip GetSoundEffect(int index)
+	{
+		if(index < enemySoundEffects.Count && index >= 0)
+		{
+			return enemySoundEffects[index];
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	protected virtual void OnTriggerEnter2D(Collider2D other)
@@ -294,11 +371,13 @@ public class Enemy : MonoBehaviour
 
 	public virtual void TakeDamage(float damageAmount)
 	{
+		PlayEnemySoundEffect ((int)EnemySoundEffect.EnemyHit);
 		enemyHealth -= damageAmount;
 	}
 
 	public virtual void SlowDown(float speedDecrease, float timeOver)
 	{
+		PlayEnemySoundEffect ((int)EnemySoundEffect.EnemyHit);
 		float resetEnemySpeed = enemySpeed;
 		enemySpeed *= speedDecrease;
 		StartCoroutine (BackToFullSpeed(resetEnemySpeed,timeOver));

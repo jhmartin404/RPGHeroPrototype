@@ -90,7 +90,7 @@ public class IconSpawner : MonoBehaviour
 
 	public void OnLevelRunning()
 	{
-		Debug.Log ("OnLevelRunning IconSpawner");
+		//Debug.Log ("OnLevelRunning IconSpawner");
 		if(spawnerState == IconSpawnerState.Running)
 		{
 			for(int i=0;i<emptySlots.Count;++i)

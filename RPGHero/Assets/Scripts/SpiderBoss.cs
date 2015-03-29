@@ -12,6 +12,8 @@ public class SpiderBoss : Boss
 	}
 	protected override void OnSpecialAttack()
 	{
+		//PlayEnemySoundEffect ((int)EnemySoundEffect.EnemySpecialAttack);
+		AudioSource.PlayClipAtPoint (GetSoundEffect ((int)EnemySoundEffect.EnemySpecialAttack), transform.position);
 		GameObject shot = Instantiate (spiderShot, transform.position, transform.rotation) as GameObject;
 		Rigidbody2D shotRigidBody = shot.GetComponent<Rigidbody2D> ();
 		if(shotRigidBody != null)

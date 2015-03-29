@@ -163,18 +163,32 @@ public class Player
 		}
 	}
 
-	public void TakeDamage(Enemy enemy)
+	public bool TakeDamage(Enemy enemy)
 	{
 		if(!IsDefending)
 		{
+			Save();
 			Health -= enemy.enemyAttackDamage;
+			return true;
 		}
 		else if(IsDefending)
 		{
 			float unblockedDamage = playerInventory.EquippedShield.BlockDamage(enemy.enemyAttackDamage);
-			Health -= unblockedDamage;
+			if(unblockedDamage > 0)
+			{
+				Save();
+				Health -= unblockedDamage;
+				return true;
+			}
+			else
+			{
+				Save();
+				return false;
+			}
 		}
-		Save ();
+		Debug.LogError ("Something is wrong");
+		return false;
+		//Save ();
 	}
 
 	public void TakeDamageAmount(float damage)

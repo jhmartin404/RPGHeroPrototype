@@ -6,6 +6,7 @@ public class StandingEnemy : Enemy
 	protected override void OnMove()
 	{
 		movement.y = 0;
+		moveTimer -= Time.deltaTime;
 		//movement.x = xDirection * enemySpeed * Time.deltaTime;
 		
 		//if (Camera.main.WorldToViewportPoint (this.transform.position).x < 0.15) 
