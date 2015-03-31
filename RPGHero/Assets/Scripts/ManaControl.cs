@@ -6,11 +6,15 @@ public class ManaControl : MonoBehaviour
 {
 	private Text manaPotions;
 	private float disableTime;
+	private int manaReplenishAmount;
+	private AudioClip potionDrink;
 	// Use this for initialization
 	void Start () 
 	{
 		manaPotions = gameObject.GetComponentInChildren<Text> ();
 		disableTime = 2.0f;
+		manaReplenishAmount = 20;
+		potionDrink = Resources.Load<AudioClip> ("PotionDrinkSound");
 	}
 	
 	// Update is called once per frame
@@ -23,7 +27,8 @@ public class ManaControl : MonoBehaviour
 	{
 		if(Player.Instance.GetPlayerInventory ().ManaPotions > 0)
 		{
-			Player.Instance.Mana += 20;
+			AudioSource.PlayClipAtPoint(potionDrink,transform.position);
+			Player.Instance.Mana += manaReplenishAmount;
 			Player.Instance.GetPlayerInventory().ManaPotions -= 1;
 			gameObject.GetComponent<Button>().interactable = false;
 			Invoke("ReactivateControl",disableTime);

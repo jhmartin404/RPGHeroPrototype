@@ -8,12 +8,14 @@ public class CoinBag : MonoBehaviour
 	private Vector3 maxSize = new Vector3(1.0f,1.0f,0);
 	private Vector3 minSize;
 	private float sizeChangeSpeed = 0.2f;
+	private AudioClip coinCollectedSound;
 	// Use this for initialization
 	void Start () 
 	{
 		coinCollected = false;
 		minSize = transform.localScale;
 		size = minSize;
+		coinCollectedSound = Resources.Load<AudioClip> ("CoinCollectedSound");
 	}
 	
 	// Update is called once per frame
@@ -49,6 +51,7 @@ public class CoinBag : MonoBehaviour
 			CoinIcon icon = col.GetComponent<CoinIcon>();
 			if(icon.State == IconState.Thrown)
 			{
+				AudioSource.PlayClipAtPoint(coinCollectedSound,transform.position);
 				AddCoin();
 				coinCollected = true;
 				icon.OnDestroy();

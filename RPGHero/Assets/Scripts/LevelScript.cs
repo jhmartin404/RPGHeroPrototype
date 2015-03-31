@@ -61,6 +61,7 @@ public class LevelScript : MonoBehaviour
 	{
 		playerLost = false;
 		playerStats = Player.Instance.GetPlayerStats ();
+		//To make the game tougher change these to saved values instead of player stat values
 		Player.Instance.Health = playerStats.HealthStat;
 		Player.Instance.Mana = playerStats.MaxMana;
 		Player.Instance.Stamina = playerStats.MaxStamina;
@@ -99,12 +100,6 @@ public class LevelScript : MonoBehaviour
 				GoBack();
 			}
 		}
-	}
-
-	public void addCoin()
-	{
-		//Player.Instance.GetPlayerInventory().Coins++;
-		Player.Instance.TemporaryCoins++;
 	}
 
 	public void GoBack()

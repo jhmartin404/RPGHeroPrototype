@@ -29,7 +29,7 @@ public class Magic : InventoryItem
 
 	public virtual void DealDamage(Enemy enemy)
 	{
-		//enemy.EnemyHealth -= damage;
+
 	}
 
 	public float GetManaCost()
@@ -41,8 +41,6 @@ public class Magic : InventoryItem
 
 	public override string ToString()
 	{
-		//int amount = (Player.Instance.GetPlayerStats ().MagicStat - 50);
-		//float amountTakenOff = amount/200.0f;
 		string result = base.ToString ();
 		result += "Mana Cost: " + GetManaCost() + "\n";
 		return result;

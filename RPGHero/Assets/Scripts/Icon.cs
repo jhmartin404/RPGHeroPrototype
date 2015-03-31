@@ -134,7 +134,7 @@ public class Icon : MonoBehaviour
 		{
 			if(endPosition-startPosition == Vector2.zero)
 			{
-				startPosition.x -=1;
+				//startPosition.x -=1;
 				startPosition.y -=1;
 			}
 			GetComponent<Rigidbody2D>().velocity = (endPosition - startPosition).normalized*iconSpeed;

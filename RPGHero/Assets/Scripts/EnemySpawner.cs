@@ -19,7 +19,9 @@ public class EnemySpawner : MonoBehaviour
 
 	public void NotifyEnemyDied()
 	{
-		LevelStateManager.PushState (LevelState.Won);//Switch the level to won state
+		Enemy[] remainingEnemies = GetComponents<Enemy> ();
+		if(remainingEnemies.Length<=0)
+			LevelStateManager.PushState (LevelState.Won);//Switch the level to won state
 	}
 	
 	public void NotifyPlayerDied()

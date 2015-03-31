@@ -68,12 +68,20 @@ public class Enemy : MonoBehaviour
 	
 	public int expGiven = 50;
 	protected GameObject enemySpawner;
-	protected bool isSlowed;
-	protected bool isDamageOverTime;
-	protected bool isLowHealth;
+	private bool isSlowed;
+	private bool isDamageOverTime;
+	private bool isLowHealth;
 	protected Vector3 actionAreaCenter;
 	protected Vector3 size;
 	protected Color normalColor;
+	private Object iceEffectPrefab;
+	private GameObject iceEffectGameObject;
+	private AudioClip iceEffectSound;
+	private Object fireEffectPrefab;
+	private GameObject fireEffectGameObject;
+	private AudioClip fireEffectSound;
+	private GameObject electrocutedGameObject;
+	private AudioClip electrocutedSound;
 
 	public float EnemyHealth
 	{
@@ -98,6 +106,11 @@ public class Enemy : MonoBehaviour
 		fsm = new FiniteStateMachine ();
 		soundSource = GetComponent<AudioSource> ();
 		lowEnemyHealth = enemyHealth * 0.25f;
+		iceEffectPrefab = Resources.Load("Prefabs/IceBlock");
+		iceEffectSound = Resources.Load<AudioClip> ("IceEffectSound");
+		fireEffectPrefab = Resources.Load ("Prefabs/FireEffect");
+		fireEffectSound = Resources.Load<AudioClip> ("FireEffectSound");
+		electrocutedSound = Resources.Load<AudioClip> ("ElectrocutedSound");
 		GetComponent<Rigidbody2D>().isKinematic = true;
 		actionAreaCenter = GameObject.Find ("ActionArea").transform.GetComponent<Renderer>().bounds.center;
 		enemySpawner = GameObject.Find ("EnemySpawner");
@@ -151,15 +164,23 @@ public class Enemy : MonoBehaviour
 
 			if(isDamageOverTime)
 			{
-				PlayEnemySoundEffect ((int)EnemySoundEffect.EnemyHit);
-				Color collideColor = new Color (255, 0, 0, 255);
-				StartCoroutine(Flash(collideColor));
+				fireEffectGameObject.transform.position = transform.position;
+				soundSource.clip = fireEffectSound;
+				if(!soundSource.isPlaying)
+					soundSource.Play();
 				magicTimer -= Time.deltaTime;
 				enemyHealth -= damageOverTimeAmount*Time.deltaTime;
 				if(magicTimer<=0)
 				{
+					Destroy(fireEffectGameObject);
+					soundSource.Stop();
 					isDamageOverTime = false;
 				}
+			}
+
+			if(isSlowed)
+			{
+				iceEffectGameObject.transform.position = transform.position;
 			}
 
 			if(enemyHealth<=0)
@@ -180,7 +201,7 @@ public class Enemy : MonoBehaviour
 			}
 
 			Debug.Log("State: " +fsm.GetCurrentState ().Method.Name);//used for testing
-			fsm.DoState ();//Run the method associate with the current state the enemy is in
+			fsm.DoState ();//Run the method associated with the current state the enemy is in
 			if(enemyHealth>0)
 			{
 				UpdateEnemyHealthBar();
@@ -282,6 +303,8 @@ public class Enemy : MonoBehaviour
 		enemySpawner.GetComponent<EnemySpawner> ().NotifyEnemyDied ();
 		fsm.PopState ();
 		Destroy (enemyHealthBar);
+		Destroy (iceEffectGameObject);
+		Destroy (fireEffectGameObject);
 		Destroy (gameObject);
 	}
 
@@ -297,7 +320,6 @@ public class Enemy : MonoBehaviour
 			}
 			else
 			{
-				//AudioClip sound = GetSoundEffect (index);
 				if(sound != null)
 				{
 					soundSource.clip = sound;
@@ -377,20 +399,34 @@ public class Enemy : MonoBehaviour
 
 	public virtual void SlowDown(float speedDecrease, float timeOver)
 	{
-		PlayEnemySoundEffect ((int)EnemySoundEffect.EnemyHit);
+		soundSource.clip = iceEffectSound;
+		soundSource.Play ();
 		float resetEnemySpeed = enemySpeed;
 		enemySpeed *= speedDecrease;
-		StartCoroutine (BackToFullSpeed(resetEnemySpeed,timeOver));
+		if(iceEffectGameObject != null)
+		{
+			Destroy(iceEffectGameObject);
+		}
+		iceEffectGameObject = Instantiate (iceEffectPrefab, transform.position, transform.rotation) as GameObject;
+		isSlowed = true;
+		StartCoroutine (BackToFullSpeed(resetEnemySpeed,timeOver, iceEffectGameObject));
 	}
 
-	IEnumerator BackToFullSpeed (float resetEnemySpeed, float timeOver)
+	IEnumerator BackToFullSpeed (float resetEnemySpeed, float timeOver, GameObject iceSprite)
 	{
 		yield return new WaitForSeconds (timeOver);
+		isSlowed = false;
+		Destroy (iceSprite);
 		enemySpeed = resetEnemySpeed;
 	}
 
 	public virtual void TakeDamageOverTime(float damageAmount, float timeOver)
 	{
+		if(fireEffectGameObject != null)
+		{
+			Destroy(fireEffectGameObject);
+		}
+		fireEffectGameObject = Instantiate (fireEffectPrefab, transform.position, transform.rotation) as GameObject;
 		isDamageOverTime = true;
 		magicTimer = timeOver;
 		damageOverTimeAmount = damageAmount;
@@ -404,6 +440,10 @@ public class Enemy : MonoBehaviour
 
 	protected virtual void OnHitByMagic(MagicIcon magicIcon)
 	{
+		if(magicIcon.EquippedMagic.GetType() == typeof(LightningMagic))
+		{
+			AudioSource.PlayClipAtPoint(electrocutedSound,transform.position);
+		}
 		magicIcon.EquippedMagic.DealDamage(this);
 		magicIcon.OnDestroy ();
 	}

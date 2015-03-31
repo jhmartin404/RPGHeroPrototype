@@ -7,15 +7,5 @@ public class StandingEnemy : Enemy
 	{
 		movement.y = 0;
 		moveTimer -= Time.deltaTime;
-		//movement.x = xDirection * enemySpeed * Time.deltaTime;
-		
-		//if (Camera.main.WorldToViewportPoint (this.transform.position).x < 0.15) 
-		//{
-		//	xDirection = 1;
-		//}
-		//else if(Camera.main.WorldToViewportPoint (this.transform.position).x > 0.85)
-		//{
-		//	xDirection = -1;
-		//}
 	}
 }

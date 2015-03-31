@@ -6,9 +6,13 @@ public class HealthControl : MonoBehaviour
 {
 	private Text healthPotions;
 	private float disableTime;
+	private int healAmount;
+	private AudioClip potionDrink;
 	// Use this for initialization
 	void Start () 
 	{
+		potionDrink = Resources.Load<AudioClip> ("PotionDrinkSound");
+		healAmount = 20;
 		healthPotions = gameObject.GetComponentInChildren<Text> ();
 		disableTime = 2.0f;
 	}
@@ -23,7 +27,8 @@ public class HealthControl : MonoBehaviour
 	{
 		if(Player.Instance.GetPlayerInventory ().HealthPotions > 0)
 		{
-			Player.Instance.Health += 20;
+			AudioSource.PlayClipAtPoint(potionDrink,transform.position);
+			Player.Instance.Health += healAmount;
 			Player.Instance.GetPlayerInventory().HealthPotions -= 1;
 			gameObject.GetComponent<Button>().interactable = false;
 			Invoke("ReactivateControl",disableTime);

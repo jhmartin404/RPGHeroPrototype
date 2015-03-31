@@ -12,7 +12,7 @@ public class PlayerStats
 	private int maxStamina;
 	private int maxMana;
 	private int healthStat;
-	private int luckStat;
+	private int wisdomStat;
 	private int meleeStat;
 	private int rangedStat;
 	private int magicStat;
@@ -102,15 +102,15 @@ public class PlayerStats
 		}
 	}
 
-	public int LuckStat
+	public int WisdomStat
 	{
 		get
 		{
-			return luckStat;
+			return wisdomStat;
 		}
 		set
 		{
-			luckStat = value;
+			wisdomStat = value;
 		}
 	}
 
@@ -166,7 +166,7 @@ public class PlayerStats
 			maxStamina = 100;
 			maxMana = 100;
 			healthStat = 100;
-			luckStat = 50;
+			wisdomStat = 50;
 			meleeStat = 50;
 			rangedStat = 50;
 			magicStat = 50;
@@ -224,7 +224,7 @@ public class PlayerStats
 	
 		healthStat = dict["healthStat"];
 
-		luckStat = dict["luckStat"];
+		wisdomStat = dict["wisdomStat"];
 	
 		meleeStat = dict["meleeStat"];
 	
@@ -245,7 +245,7 @@ public class PlayerStats
 		dictionary.Add ("maxStamina", maxStamina);
 		dictionary.Add ("maxMana", maxMana);
 		dictionary.Add ("healthStat", healthStat);
-		dictionary.Add ("luckStat", luckStat);
+		dictionary.Add ("wisdomStat", wisdomStat);
 		dictionary.Add ("meleeStat", meleeStat);
 		dictionary.Add ("rangedStat", rangedStat);
 		dictionary.Add ("magicStat", magicStat);

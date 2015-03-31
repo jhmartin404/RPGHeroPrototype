@@ -6,7 +6,7 @@ public class CharacterScene : MonoBehaviour
 {
 	public Text levelText;
 	public Text healthText;
-	public Text luckText;
+	public Text wisdomText;
 	public Text meleeText;
 	public Text rangedText;
 	public Text magicText;
@@ -21,7 +21,7 @@ public class CharacterScene : MonoBehaviour
 	private Object minusButton;
 	private Object remainingSkillPoints;
 	private int startingHealth;
-	private int startingLuck;
+	private int startingWisdom;
 	private int startingMelee;
 	private int startingRanged;
 	private int startingMagic;
@@ -41,11 +41,11 @@ public class CharacterScene : MonoBehaviour
 		healthText.text = "Health: " + playerStats.HealthStat;
 		startingHealth = playerStats.HealthStat;
 
-		luckText.text = "Luck: " + playerStats.LuckStat;
-		startingLuck = playerStats.LuckStat;
+		wisdomText.text = "Wisdom: " + playerStats.WisdomStat;
+		startingWisdom = playerStats.WisdomStat;
 
 		meleeText.text = "Melee: " + playerStats.MeleeStat;
-		startingMelee = playerStats.LuckStat;
+		startingMelee = playerStats.MeleeStat;
 
 		rangedText.text = "Ranged: " + playerStats.RangedStat;
 		startingRanged = playerStats.RangedStat;
@@ -65,9 +65,7 @@ public class CharacterScene : MonoBehaviour
 			Vector3 plusPosition = new Vector3(80,5,0);
 			Vector3 minusPosition = new Vector3(100,5,0);
 			levelingUp = true;
-			//UNCOMMENT LATER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			skillPoints = defaultPointsAmount*Player.Instance.GetPlayerStats().LeveledUp();
-			//skillPoints = 10;
 
 			GameObject healthPlusButton = Instantiate(plusButton, plusPosition,Quaternion.identity) as GameObject;
 			healthPlusButton.transform.SetParent(GameObject.Find ("HealthText").transform, false);
@@ -77,13 +75,13 @@ public class CharacterScene : MonoBehaviour
 			healthMinusButton.transform.SetParent(GameObject.Find ("HealthText").transform, false);
 			healthMinusButton.GetComponent<Button>().onClick.AddListener(() => {DecreaseHealth();});
 
-			GameObject luckPlusButton = Instantiate(plusButton, plusPosition,Quaternion.identity) as GameObject;
-			luckPlusButton.transform.SetParent(GameObject.Find ("LuckText").transform, false);
-			luckPlusButton.GetComponent<Button>().onClick.AddListener(() => {IncreaseLuck();});
+			GameObject wisdomPlusButton = Instantiate(plusButton, plusPosition,Quaternion.identity) as GameObject;
+			wisdomPlusButton.transform.SetParent(GameObject.Find ("WisdomText").transform, false);
+			wisdomPlusButton.GetComponent<Button>().onClick.AddListener(() => {IncreaseWisdom();});
 			
-			GameObject luckMinusButton = Instantiate(minusButton, minusPosition,Quaternion.identity) as GameObject;
-			luckMinusButton.transform.SetParent(GameObject.Find ("LuckText").transform, false);
-			luckMinusButton.GetComponent<Button>().onClick.AddListener(() => {DecreaseLuck();});
+			GameObject wisdomMinusButton = Instantiate(minusButton, minusPosition,Quaternion.identity) as GameObject;
+			wisdomMinusButton.transform.SetParent(GameObject.Find ("WisdomText").transform, false);
+			wisdomMinusButton.GetComponent<Button>().onClick.AddListener(() => {DecreaseWisdom();});
 
 			GameObject meleePlusButton = Instantiate(plusButton, plusPosition,Quaternion.identity) as GameObject;
 			meleePlusButton.transform.SetParent(GameObject.Find ("MeleeText").transform, false);
@@ -154,7 +152,7 @@ public class CharacterScene : MonoBehaviour
 	{		
 		healthText.text = "Health: " + playerStats.HealthStat;
 		
-		luckText.text = "Luck: " + playerStats.LuckStat;
+		wisdomText.text = "Wisdom: " + playerStats.WisdomStat;
 		
 		meleeText.text = "Melee: " + playerStats.MeleeStat;
 		
@@ -178,12 +176,12 @@ public class CharacterScene : MonoBehaviour
 		}
 	}
 
-	public void IncreaseLuck()
+	public void IncreaseWisdom()
 	{
 		if(skillPoints>0)
 		{
 			playerStats = Player.Instance.GetPlayerStats ();
-			playerStats.LuckStat++;
+			playerStats.WisdomStat++;
 			skillPoints--;
 			UpdateLabels ();
 		}
@@ -236,14 +234,14 @@ public class CharacterScene : MonoBehaviour
 		}
 	}
 	
-	public void DecreaseLuck()
+	public void DecreaseWisdom()
 	{
 		if(skillPoints < defaultPointsAmount*Player.Instance.GetPlayerStats().LeveledUp())
 		{
 			playerStats = Player.Instance.GetPlayerStats ();
-			if(playerStats.LuckStat > startingLuck)
+			if(playerStats.WisdomStat > startingWisdom)
 			{
-				playerStats.LuckStat--;
+				playerStats.WisdomStat--;
 				skillPoints++;
 				UpdateLabels ();
 			}

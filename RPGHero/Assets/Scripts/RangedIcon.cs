@@ -12,6 +12,7 @@ public class RangedIcon : Icon
 	private Vector3 rightSide = new Vector3 (0.9f,-1.8f,0);
 	private bool startThrow;
 	private float rangedStaminaCost;
+	private AudioClip rangedIconSound;
 
 	public RangedWeapon EquippedRanged
 	{
@@ -37,6 +38,7 @@ public class RangedIcon : Icon
 		actionAreaCenter = actionArea.GetComponent<Renderer>().bounds.center;
 		actionAreaRadius = actionArea.GetComponent<CircleCollider2D>().radius;
 		rangedStaminaCost = equippedRanged.GetRangedCost();
+		rangedIconSound = Resources.Load<AudioClip> ("RangedIconSound");
 	}
 	
 	// Update is called once per frame
@@ -72,6 +74,7 @@ public class RangedIcon : Icon
 		actionArea.GetComponent<Renderer>().enabled = false;
 		endPosition = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 		Player.Instance.Stamina -= rangedStaminaCost;//equippedRanged.RangedCost;
+		AudioSource.PlayClipAtPoint (rangedIconSound, transform.position);
 	}
 
 	protected override void OnGrabbedState()

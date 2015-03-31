@@ -777,7 +777,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelText: {fileID: 2092763770}
   healthText: {fileID: 1145489674}
-  luckText: {fileID: 2004531181}
+  wisdomText: {fileID: 2004531181}
   meleeText: {fileID: 926376750}
   rangedText: {fileID: 1979101056}
   magicText: {fileID: 1162601487}
@@ -945,7 +945,7 @@ GameObject:
   - 222: {fileID: 2004531182}
   - 114: {fileID: 2004531181}
   m_Layer: 5
-  m_Name: LuckText
+  m_Name: WisdomText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -993,7 +993,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Luck:'
+  m_Text: 'Wisdom:'
 --- !u!222 &2004531182
 CanvasRenderer:
   m_ObjectHideFlags: 0

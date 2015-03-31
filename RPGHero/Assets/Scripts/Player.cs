@@ -188,7 +188,6 @@ public class Player
 		}
 		Debug.LogError ("Something is wrong");
 		return false;
-		//Save ();
 	}
 
 	public void TakeDamageAmount(float damage)
@@ -206,7 +205,9 @@ public class Player
 
 	public void AddExperience(int exp)
 	{
-		playerStats.CurrentExp += exp;
+		int statIncreased = Player.Instance.GetPlayerStats ().WisdomStat - 50;
+		int amountAdded = (int)(statIncreased * 0.2);
+		playerStats.CurrentExp += exp + amountAdded;
 		playerStats.CheckLevelUp();
 	}
 
