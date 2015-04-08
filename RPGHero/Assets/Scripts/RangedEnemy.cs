@@ -15,7 +15,9 @@ public class RangedEnemy : Enemy
 
 	protected override void OnAttack()
 	{
-		GameObject shot = Instantiate (rangedShot, transform.position, transform.rotation) as GameObject;
+		Vector3 shotPosition = transform.position;
+		shotPosition.z = -2.0f;
+		GameObject shot = Instantiate (rangedShot, shotPosition, transform.rotation) as GameObject;
 		Rigidbody2D shotRigidBody = shot.GetComponent<Rigidbody2D> ();
 		if(shotRigidBody != null)
 		{

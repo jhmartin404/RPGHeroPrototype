@@ -40,7 +40,10 @@ public class IconSpawner : MonoBehaviour
 				IconSlot slot = slots[i].GetComponent<IconSlot>();
 				slot.IsStopped = true;
 				if(slot.SlotIcon != null)
-					slot.SlotIcon.StopIcon();
+				{
+					if(slot.SlotIcon.State == IconState.Rotating)
+						slot.SlotIcon.StopIcon();
+				}
 			}
 		}
 		else if(spawnerState == IconSpawnerState.Running)
@@ -50,7 +53,10 @@ public class IconSpawner : MonoBehaviour
 				IconSlot slot = slots[i].GetComponent<IconSlot>();
 				slot.IsStopped = false;
 				if(slot.SlotIcon != null)
-					slot.SlotIcon.RestartIcon();
+				{
+					if(slot.SlotIcon.State == IconState.Stopped)
+						slot.SlotIcon.RestartIcon();
+				}
 			}
 		}
 	}
@@ -90,7 +96,6 @@ public class IconSpawner : MonoBehaviour
 
 	public void OnLevelRunning()
 	{
-		//Debug.Log ("OnLevelRunning IconSpawner");
 		if(spawnerState == IconSpawnerState.Running)
 		{
 			for(int i=0;i<emptySlots.Count;++i)
@@ -117,7 +122,6 @@ public class IconSpawner : MonoBehaviour
 	public void OnLevelWon()
 	{
 		Debug.Log ("OnLevelWon IconSpawner");
-		//spawnerState = IconSpawnerState.Stopped;
 		SetState (IconSpawnerState.Stopped);
 		RemoveMethods ();
 	}
@@ -125,7 +129,6 @@ public class IconSpawner : MonoBehaviour
 	public void OnLevelLost()
 	{
 		Debug.Log ("OnLevelLost IconSpawner");
-		//spawnerState = IconSpawnerState.Stopped;
 		SetState (IconSpawnerState.Stopped);
 		RemoveMethods ();
 	}

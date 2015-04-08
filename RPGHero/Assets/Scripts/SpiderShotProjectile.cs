@@ -22,10 +22,12 @@ public class SpiderShotProjectile : Projectile
 
 	IEnumerator SpiderSpecialAttack()
 	{
-		iconSpawner.SetState (IconSpawnerState.Paused);
+		if(iconSpawner.GetState()== IconSpawnerState.Running)
+			iconSpawner.SetState (IconSpawnerState.Paused);
 		GameObject web = Instantiate (spiderBossWebPrefab, spiderBossWebSpawnPoint, Quaternion.identity) as GameObject;
 		yield return new WaitForSeconds (effectDuration);
-		iconSpawner.SetState (IconSpawnerState.Running);
+		if(iconSpawner.GetState() != IconSpawnerState.Stopped)
+			iconSpawner.SetState (IconSpawnerState.Running);
 		Destroy (web);
 		OnDestroy ();
 	}
