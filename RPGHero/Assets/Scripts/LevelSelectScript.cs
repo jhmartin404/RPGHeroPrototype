@@ -51,8 +51,15 @@ public class LevelSelectScript : MonoBehaviour
 
 	public void SelectLevelScene(Button level)
 	{
-		SoundManager.Instance.PlayUISound ("Level_Start");
-		Player.Instance.CurrentLevel = int.Parse(level.name);
-		Application.LoadLevel("LevelScene");
+		if(Player.Instance.GetPlayerStats().GameLevel >= int.Parse(level.name))
+		{
+			SoundManager.Instance.PlayUISound ("Level_Start");
+			Player.Instance.CurrentLevel = int.Parse(level.name);
+			Application.LoadLevel("LevelScene");
+		}
+		else
+		{
+			SoundManager.Instance.PlayUISound("Locked_Sound");
+		}
 	}
 }

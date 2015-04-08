@@ -14,6 +14,7 @@ public class LevelScript : MonoBehaviour
 	private GameObject weapon;
 	private GameObject shield;
 	private bool playerLost;
+	private bool playerWon;
 
 	public bool IconSelected
 	{
@@ -24,6 +25,18 @@ public class LevelScript : MonoBehaviour
 		set
 		{
 			iconSelected = value;
+		}
+	}
+
+	public bool PlayerWon
+	{
+		get
+		{
+			return playerWon;
+		}
+		set
+		{
+			playerWon = value;
 		}
 	}
 
@@ -60,6 +73,7 @@ public class LevelScript : MonoBehaviour
 	void Start () 
 	{
 		playerLost = false;
+		playerWon = false;
 		playerStats = Player.Instance.GetPlayerStats ();
 		//To make the game tougher change these to saved values instead of player stat values
 		Player.Instance.Health = playerStats.HealthStat;
@@ -95,8 +109,6 @@ public class LevelScript : MonoBehaviour
 		{
 			if(Input.GetKey(KeyCode.Escape))
 			{
-				//Make sure to remove the methods from the events
-
 				GoBack();
 			}
 		}
@@ -104,10 +116,13 @@ public class LevelScript : MonoBehaviour
 
 	public void GoBack()
 	{
-		if(!playerLost)
-		//if(LevelStateManager.GetCurrentState() == LevelState.Won)
+		if(!playerLost && playerWon)
 		{
 			Player.Instance.GetPlayerInventory().Coins += Player.Instance.TemporaryCoins++;
+			if(playerStats.GameLevel == Player.Instance.CurrentLevel)
+			{
+				playerStats.GameLevel++;
+			}
 		}
 		enemySpawner.GetComponent<EnemySpawner>().RemoveMethods();
 		iconSpawner.GetComponent<IconSpawner>().RemoveMethods();

@@ -26,6 +26,7 @@ public class Icon : MonoBehaviour
 	protected float iconSpeed = 5.0f;
 
 	protected Vector2 startPosition;//start position
+	protected Vector2 prevPostiton;
 	protected Vector2 endPosition;//end position
 
 	public GameObject Slot
@@ -134,7 +135,7 @@ public class Icon : MonoBehaviour
 		{
 			if(endPosition-startPosition == Vector2.zero)
 			{
-				//startPosition.x -=1;
+				Debug.LogWarning("ZERO VECTOR");
 				startPosition.y -=1;
 			}
 			GetComponent<Rigidbody2D>().velocity = (endPosition - startPosition).normalized*iconSpeed;
@@ -153,9 +154,13 @@ public class Icon : MonoBehaviour
 
 	protected virtual void OnGrabbedState()
 	{
-		startPosition = transform.position;
+		Vector2 tempPostion = transform.position;
 		Vector2 pos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-		transform.position = pos;
+		if(tempPostion-pos != Vector2.zero)
+		{
+			startPosition = tempPostion;
+			transform.position = pos;
+		}
 	}
 
 	protected virtual void OnThrownState()
@@ -173,32 +178,32 @@ public class Icon : MonoBehaviour
 		iconState = IconState.Rotating;
 	}
 
-	protected virtual void OnTriggerStay2D(Collider2D other)
-	{
-		OnHit (other);
-	}
+	//protected virtual void OnTriggerStay2D(Collider2D other)
+	//{
+	//	OnHit (other);
+	//}
 
-	protected virtual void OnHit(Collider2D col)
-	{
-		if(col.gameObject.tag == "Enemy")
-		{
-			OnHitEnemy(col);
-		}
-		else if(col.gameObject.tag == "Player")
-		{
-			OnHitPlayer(col);
-		}
-	}
+	//protected virtual void OnHit(Collider2D col)
+	//{
+	//	if(col.gameObject.tag == "Enemy")
+	//	{
+	//		OnHitEnemy(col);
+	//	}
+	//	else if(col.gameObject.tag == "Player")
+	//	{
+	//		OnHitPlayer(col);
+	//	}
+	//}
 
-	protected virtual void OnHitEnemy(Collider2D col)
-	{
-
-	}
+	//protected virtual void OnHitEnemy(Collider2D col)
+	//{
+	//
+	//}
 	
-	protected virtual void OnHitPlayer(Collider2D col)
-	{
-
-	}
+	//protected virtual void OnHitPlayer(Collider2D col)
+	//{
+	//
+	//}
 
 	public virtual void OnDestroy()
 	{

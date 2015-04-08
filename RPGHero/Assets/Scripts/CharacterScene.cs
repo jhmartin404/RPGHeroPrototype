@@ -130,11 +130,13 @@ public class CharacterScene : MonoBehaviour
 	{
 		if(skillPoints>0)
 		{
+			SoundManager.Instance.PlayUISound("Locked_Sound");
 			Text points = GameObject.Find("RemainingSkillPoints").GetComponentInChildren<Text>();
 			points.text = "Please assign \nremaining points.";
 		}
 		else
 		{
+			SoundManager.Instance.PlayUISound("Character_Select");
 			levelingUp = false;
 			Player.Instance.GetPlayerStats().ResetLeveledUp();
 			Player.Instance.Save();
@@ -149,7 +151,8 @@ public class CharacterScene : MonoBehaviour
 	}
 
 	public void UpdateLabels()
-	{		
+	{
+		SoundManager.Instance.PlayUISound ("Item_Select");
 		healthText.text = "Health: " + playerStats.HealthStat;
 		
 		wisdomText.text = "Wisdom: " + playerStats.WisdomStat;

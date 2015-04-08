@@ -12,9 +12,9 @@ public class Clerk
 		for(int i = 0; i<10; i++)
 		{
 			itemsForSale.Add(new List<InventoryItem>());
-			itemsForSale[i].Add(new HealthPotion(20,ItemType.Misc,12,"Health Potion","healthPotionUI",5,true));
-			itemsForSale[i].Add(new ManaPotion(20, ItemType.Misc,13,"Mana Potion","manaPotionUI",5,true));
-			itemsForSale[i].Add(new RepairHammer(15, ItemType.Misc,14,"Repair Hammer","RepairHammer",5,true));
+			itemsForSale[i].Add(new HealthPotion(20,ItemType.Misc,12,"Health Potion","healthPotionUI",3,true));
+			itemsForSale[i].Add(new ManaPotion(20, ItemType.Misc,13,"Mana Potion","manaPotionUI",3,true));
+			itemsForSale[i].Add(new RepairHammer(15, ItemType.Misc,14,"Repair Hammer","RepairHammer",3,true));
 		}
 	}
 

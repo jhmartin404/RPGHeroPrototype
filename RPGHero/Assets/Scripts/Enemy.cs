@@ -37,43 +37,56 @@ public class Enemy : MonoBehaviour
 {
 	public AudioSource soundSource;
 	public List<AudioClip> enemySoundEffects;
-	private const float MOVE_RIGHT = 1.0f;
-	private const float MOVE_LEFT = -1.0f;
-	protected OnState move;//delegate for moving state
-	protected OnState stand;//delegate for standing state
-	protected OnState attack;//delegate for attack state
-	protected OnState lowHealth;//delegate for lowHealth state
-	protected OnState die;//delegate for die state
-	protected FiniteStateMachine fsm;//fsm to keep track of the enemy's state
-	protected float xDirection = MOVE_RIGHT;
-	protected float yDirection = 0.0f;
-	protected float sizeChangeSpeed = 1.0f;
+
 	public float enemySpeed = 5.0f;
+
 	public EnemyType enemyType;
 	public float enemyHealth = 50.0f;
 	private float fullEnemyHealth;
 	private float lowEnemyHealth;
 	public float enemyAttackDamage = 10.0f;
 	public float attackTime = 5.0f;
+	public int expGiven = 50;
+
+	private Vector3 Layer1 = new Vector3(2.0f,1.1f,1.0f);
+	private Vector3 Layer2 = new Vector3(2.2f,1.2f,0.8f);
+	private Vector3 Layer3 = new Vector3(2.4f,1.3f,0.7f);
+	private Vector3 Layer4 = new Vector3(2.6f,1.35f,0.6f);
+	private Vector3 Layer5 = new Vector3(2.8f,1.4f,0.5f);
+	private Vector3 Layer6 = new Vector3(3.0f,1.45f,0.4f);
+
+	protected OnState move;//delegate for moving state
+	protected OnState stand;//delegate for standing state
+	protected OnState attack;//delegate for attack state
+	protected OnState lowHealth;//delegate for lowHealth state
+	protected OnState die;//delegate for die state
+	protected FiniteStateMachine fsm;//fsm to keep track of the enemy's state
+
+	private Renderer enemyRenderer;
+
+	protected float xDirection = MOVE_RIGHT;
+	private float enemySizeChange;
 	protected float attackTimer = 0.0f;
 	private float magicTimer = 0.0f; //timer used to manage magic effects
 	protected float moveTimer; //Timer for handling enemy movement
 	protected float standTimer; //Timer for enemy standing
 	private float damageOverTimeAmount;
 	protected Vector3 enemyPosition;//Store y position before an attack
-	protected GameObject enemyHealthBar;
-	protected Image enemyHealthBarImage;
+	private GameObject enemyHealthBar;
+	private Image enemyHealthBarImage;
+	private Object damageTextPrefab;
+	private GameObject damageText;
+	private float damageOverTimeAccumulator;
 
 	protected Vector2 movement;
-	
-	public int expGiven = 50;
+
 	protected GameObject enemySpawner;
-	private bool isSlowed;
-	private bool isDamageOverTime;
-	private bool isLowHealth;
 	protected Vector3 actionAreaCenter;
 	protected Vector3 size;
+	protected Vector3 minSize;
+	protected Vector3 maxSize;
 	protected Color normalColor;
+
 	private Object iceEffectPrefab;
 	private GameObject iceEffectGameObject;
 	private AudioClip iceEffectSound;
@@ -82,6 +95,20 @@ public class Enemy : MonoBehaviour
 	private AudioClip fireEffectSound;
 	private GameObject electrocutedGameObject;
 	private AudioClip electrocutedSound;
+
+	private float startTime;
+	private float sizeLength;
+	private Vector3 stoppedSize;
+
+	private bool isSlowed;
+	private bool isDamageOverTime;
+	private bool isLowHealth;
+	private bool movingIn;
+
+	private List<Vector3> layers = new List<Vector3>();
+
+	private const float MOVE_RIGHT = 1.0f;
+	private const float MOVE_LEFT = -1.0f;
 
 	public float EnemyHealth
 	{
@@ -94,6 +121,17 @@ public class Enemy : MonoBehaviour
 			enemyHealth = value;
 		}
 	}
+
+	public void Awake()
+	{
+		layers.Add (Layer1);
+		layers.Add (Layer2);
+		layers.Add (Layer3);
+		layers.Add (Layer4);
+		layers.Add (Layer5);
+		layers.Add (Layer6);
+	}
+
 	// Use this for initialization
 	public virtual void Start () 
 	{
@@ -104,30 +142,47 @@ public class Enemy : MonoBehaviour
 		lowHealth = OnLowHealth;
 		die = OnDie;
 		fsm = new FiniteStateMachine ();
+
+		enemyRenderer = GetComponent<Renderer> ();
+
 		soundSource = GetComponent<AudioSource> ();
+
 		lowEnemyHealth = enemyHealth * 0.25f;
+
 		iceEffectPrefab = Resources.Load("Prefabs/IceBlock");
 		iceEffectSound = Resources.Load<AudioClip> ("IceEffectSound");
 		fireEffectPrefab = Resources.Load ("Prefabs/FireEffect");
 		fireEffectSound = Resources.Load<AudioClip> ("FireEffectSound");
 		electrocutedSound = Resources.Load<AudioClip> ("ElectrocutedSound");
+
 		GetComponent<Rigidbody2D>().isKinematic = true;
 		actionAreaCenter = GameObject.Find ("ActionArea").transform.GetComponent<Renderer>().bounds.center;
 		enemySpawner = GameObject.Find ("EnemySpawner");
+
 		size = transform.localScale;
+		enemySizeChange = 2.5f;
+		//minSize = size * 0.5f;
+		//minSize = size;
+		//maxSize = size * 1.5f;
+		movingIn = true;
+
 		enemyPosition = transform.position;
-		normalColor = GetComponent<Renderer>().material.color;
+
+		normalColor = enemyRenderer.material.color;
 		fullEnemyHealth = enemyHealth;
+
 		moveTimer = Random.Range (2, 5);
 		standTimer = Random.Range (1, 3);
 		isSlowed = false;
 		isDamageOverTime = false;
 		isLowHealth = false;
+
 		Object healthBar = Resources.Load ("Prefabs/EnemyHealthBar");
 		enemyHealthBar = Instantiate (healthBar, transform.position, transform.rotation) as GameObject;
 		enemyHealthBar.transform.SetParent (GameObject.Find ("Canvas").transform, false);
 		enemyHealthBar.transform.position = transform.position;
 		enemyHealthBarImage = enemyHealthBar.GetComponentsInChildren<Image> ()[1];
+		damageTextPrefab = Resources.Load ("Prefabs/DamageText");
 	}
 	
 	// Update is called once per frame
@@ -152,9 +207,10 @@ public class Enemy : MonoBehaviour
 
 			if(attackTimer > attackTime && enemyHealth>0 && fsm.GetCurrentState() == move)
 			{
+				startTime = Time.time;
+				sizeLength = Vector3.Distance (minSize, maxSize);
 				enemyPosition = transform.position;
 				fsm.PushState(attack);//Switch to attack state
-				yDirection = -1.0f;
 			}
 
 			if(fsm.GetCurrentState() != attack)
@@ -170,8 +226,15 @@ public class Enemy : MonoBehaviour
 					soundSource.Play();
 				magicTimer -= Time.deltaTime;
 				enemyHealth -= damageOverTimeAmount*Time.deltaTime;
+				damageOverTimeAccumulator += damageOverTimeAmount*Time.deltaTime;
+				if(damageOverTimeAccumulator >= 1.0f)
+				{
+					SpawnDamageText((int)-damageOverTimeAccumulator);
+					damageOverTimeAccumulator = 0;
+				}
 				if(magicTimer<=0)
 				{
+					damageOverTimeAccumulator = 0;
 					Destroy(fireEffectGameObject);
 					soundSource.Stop();
 					isDamageOverTime = false;
@@ -206,23 +269,48 @@ public class Enemy : MonoBehaviour
 			{
 				UpdateEnemyHealthBar();
 			}
+			if(damageText != null)
+			{
+				Vector3 pos = transform.position;
+				pos.y += enemyRenderer.bounds.extents.y;
+				damageText.transform.position = pos;
+			}
 		}
+	}
+
+	private void SpawnDamageText(float damage)
+	{
+		damageText = Instantiate (damageTextPrefab, transform.position,Quaternion.identity)as GameObject;
+		damageText.GetComponent<Text> ().text = damage.ToString ();
+		damageText.transform.SetParent (GameObject.Find ("Canvas").transform, false);
+		Vector3 pos = transform.position;
+		pos.y += enemyRenderer.bounds.extents.y;
+		damageText.transform.position = pos;
 	}
 
 	private void UpdateEnemyHealthBar()
 	{
 		Vector3 pos = transform.position;
-		pos.y += GetComponent<Renderer>().bounds.extents.y;
+		pos.y += enemyRenderer.bounds.extents.y;
 		enemyHealthBar.transform.position = pos; 
 		enemyHealthBarImage.fillAmount = enemyHealth / fullEnemyHealth;
+	}
+
+	public void SetLayer(float xVal,int layer)
+	{
+		Vector3 vec = layers [layer - 1];
+		transform.position = new Vector3(xVal,vec.x,vec.y);
+		maxSize = transform.localScale * 1.5f;
+		transform.localScale *= vec.z;
+		minSize = transform.localScale;
 	}
 
 	//Flash enemy's color, used to show when enemy is hit
 	protected IEnumerator Flash(Color collideColor)
 	{
-		GetComponent<Renderer>().material.color = collideColor;
+		enemyRenderer.material.color = collideColor;
 		yield return new WaitForSeconds(0.1f);
-		GetComponent<Renderer>().material.color = normalColor;
+		enemyRenderer.material.color = normalColor;
 	}
 
 	protected virtual void OnMove()
@@ -258,33 +346,40 @@ public class Enemy : MonoBehaviour
 
 	protected virtual void OnAttack()
 	{
-		//Vector3 velocity = Vector3.zero;
-		//float smoothTime = 0.3f;
-		float step = enemySpeed * Time.deltaTime;
-		transform.localScale += size*sizeChangeSpeed*Time.deltaTime;
-		if(sizeChangeSpeed>0)
+		float attackLength = Vector3.Distance (enemyPosition, actionAreaCenter);
+		//float sizeLength = Vector3.Distance (minSize, maxSize);
+
+		float attackLengthCovered = (Time.time - startTime) * enemySpeed;
+		float sizeLengthCovered = (Time.time - startTime) * enemySizeChange;
+
+		float attackFraction = attackLengthCovered / attackLength;
+		float sizeFraction = sizeLengthCovered / sizeLength;
+		if(movingIn)
 		{
-			transform.position = Vector2.MoveTowards (transform.position, actionAreaCenter, step);
-			//transform.position = Vector3.SmoothDamp(transform.position, actionAreaCenter, ref velocity, smoothTime);
+			transform.localScale = Vector3.Lerp(minSize,maxSize,sizeFraction);
+			transform.position = Vector3.Lerp(enemyPosition,actionAreaCenter,attackFraction);
 		}
 		else
 		{
-			transform.position = Vector2.MoveTowards (transform.position, enemyPosition, step);
-			//transform.position = Vector3.SmoothDamp(transform.position, enemyPosition, ref velocity, smoothTime);
+			transform.localScale = Vector3.Lerp(stoppedSize,minSize,sizeFraction);
+			transform.position = Vector3.Lerp(actionAreaCenter,enemyPosition,attackFraction);
 		}
 
-		if(Vector2.Distance(transform.position,actionAreaCenter)<step)
+		if(Vector2.Distance(transform.position,actionAreaCenter) <= 0 && movingIn)
 		{
-			yDirection = 1.0f;
-			sizeChangeSpeed = -1.0f;
+			movingIn = false;
+			startTime = Time.time;
 			if(Player.Instance.TakeDamage(this))
 			{
 				PlayEnemySoundEffect((int)EnemySoundEffect.EnemyAttack);
 			}
+			sizeLength = Vector3.Distance (transform.localScale, minSize);
+			stoppedSize = transform.localScale;
 		}
-		else if(Vector2.Distance(transform.position,enemyPosition)<step)
+		else if(Vector2.Distance(transform.position,enemyPosition)<=0 && !movingIn)
 		{
-			sizeChangeSpeed = 1.0f;
+			movingIn=true;
+			transform.localScale = minSize;
 			attackTimer = 0;
 			fsm.PopState();//when attack is finished pop the state off the stack
 		}
@@ -292,7 +387,7 @@ public class Enemy : MonoBehaviour
 
 	protected virtual void OnLowHealth()
 	{
-		attackTime = 3.0f;
+		attackTime = attackTime * 0.5f;
 		fsm.PopState ();
 	}
 
@@ -395,6 +490,7 @@ public class Enemy : MonoBehaviour
 	{
 		PlayEnemySoundEffect ((int)EnemySoundEffect.EnemyHit);
 		enemyHealth -= damageAmount;
+		SpawnDamageText (-damageAmount);
 	}
 
 	public virtual void SlowDown(float speedDecrease, float timeOver)
@@ -402,22 +498,25 @@ public class Enemy : MonoBehaviour
 		soundSource.clip = iceEffectSound;
 		soundSource.Play ();
 		float resetEnemySpeed = enemySpeed;
+		float resetEnemySizeChange = enemySizeChange;
 		enemySpeed *= speedDecrease;
+		enemySizeChange *= speedDecrease;
 		if(iceEffectGameObject != null)
 		{
 			Destroy(iceEffectGameObject);
 		}
 		iceEffectGameObject = Instantiate (iceEffectPrefab, transform.position, transform.rotation) as GameObject;
 		isSlowed = true;
-		StartCoroutine (BackToFullSpeed(resetEnemySpeed,timeOver, iceEffectGameObject));
+		StartCoroutine (BackToFullSpeed(resetEnemySpeed,resetEnemySizeChange, timeOver, iceEffectGameObject));
 	}
 
-	IEnumerator BackToFullSpeed (float resetEnemySpeed, float timeOver, GameObject iceSprite)
+	IEnumerator BackToFullSpeed (float resetEnemySpeed, float resetEnemySizeChange, float timeOver, GameObject iceSprite)
 	{
 		yield return new WaitForSeconds (timeOver);
 		isSlowed = false;
 		Destroy (iceSprite);
 		enemySpeed = resetEnemySpeed;
+		enemySizeChange = resetEnemySizeChange;
 	}
 
 	public virtual void TakeDamageOverTime(float damageAmount, float timeOver)

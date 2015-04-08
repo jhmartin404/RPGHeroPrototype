@@ -160,12 +160,12 @@ public class PlayerStats
 		{
 			gameLevel = 1;
 			expLevel = 1;
-			currentExp = 0;
-			neededExp = 100;
 			leveledUp = 0;
-			maxStamina = 100;
-			maxMana = 100;
-			healthStat = 100;
+			currentExp = 0;
+			neededExp = 200;
+			maxStamina = 200;
+			maxMana = 200;
+			healthStat = 200;
 			wisdomStat = 50;
 			meleeStat = 50;
 			rangedStat = 50;

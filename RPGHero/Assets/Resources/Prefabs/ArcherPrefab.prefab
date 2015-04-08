@@ -153,7 +153,7 @@ MonoBehaviour:
   attackTime: 5
   expGiven: 50
   rangedShotPrefab: Prefabs/ArcherShotPrefab
-  rangedShotSpeed: 120
+  rangedShotSpeed: 200
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1

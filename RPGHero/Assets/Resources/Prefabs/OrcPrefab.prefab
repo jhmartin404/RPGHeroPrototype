@@ -146,12 +146,12 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 25626f4b7d28ea44e8748f783a2fad08, type: 3}
   - {fileID: 8300000, guid: d6bf1352be89eb745b2dc677ab8dd0e8, type: 3}
   - {fileID: 8300000, guid: faeefbeefd8dd26459109925b4767fee, type: 3}
-  enemySpeed: 5
+  enemySpeed: 6
   enemyType: 6
-  enemyHealth: 50
-  enemyAttackDamage: 10
-  attackTime: 5
-  expGiven: 50
+  enemyHealth: 80
+  enemyAttackDamage: 15
+  attackTime: 4
+  expGiven: 85
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1

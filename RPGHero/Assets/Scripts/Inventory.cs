@@ -131,12 +131,12 @@ public class Inventory
 			unequippedItems.Add (InventoryItemDatabase.Instance.GetItemByID(10));
 			unequippedItems.Add (InventoryItemDatabase.Instance.GetItemByID(1));
 			unequippedItems.Add (InventoryItemDatabase.Instance.GetItemByID(7));
-			unequippedItems.Add (InventoryItemDatabase.Instance.GetItemByID(8));
+			unequippedItems.Add (InventoryItemDatabase.Instance.GetItemByID(3));
 			equippedMagic1 = InventoryItemDatabase.Instance.GetItemByID (11) as Magic;
 			equippedMagic2 = InventoryItemDatabase.Instance.GetItemByID (5) as Magic;
 			equippedMeleeWeapon = (MeleeWeapon)InventoryItemDatabase.Instance.GetItemByID (6);
 			equippedRangedWeapon = (RangedWeapon)InventoryItemDatabase.Instance.GetItemByID (2);
-			equippedShield = (Shield)InventoryItemDatabase.Instance.GetItemByID (3);
+			equippedShield = (Shield)InventoryItemDatabase.Instance.GetItemByID (8);
 		}
 	}
 

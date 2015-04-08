@@ -14,6 +14,7 @@ public class ShieldControl : MonoBehaviour
 	private GameObject shieldDefence;
 	private Text shieldDefenceText;
 	private bool shieldTrigger;
+	private GameObject mainCamera;
 
 	public ControlState CntrlState
 	{
@@ -34,13 +35,13 @@ public class ShieldControl : MonoBehaviour
 		shield = GameObject.Find ("Shield");
 		shieldTrigger = shield.GetComponent<PolygonCollider2D> ().isTrigger;
 		equippedShield = Player.Instance.GetPlayerInventory ().EquippedShield;
-		//shield.GetComponent<SpriteRenderer> ().sprite = equippedShield.GetItemImage ();
 		controlPosition = transform.position;
 		Object shieldDefencePrefab = Resources.Load ("Prefabs/ShieldDefenceText");
 		shieldDefence = Instantiate (shieldDefencePrefab, transform.position, transform.rotation) as GameObject;
 		shieldDefence.transform.SetParent (GameObject.Find ("Canvas").transform, false);
 		shieldDefence.transform.position = transform.position;
 		shieldDefenceText = shieldDefence.GetComponent<Text> ();
+		mainCamera = GameObject.Find ("Main Camera");
 	}
 	
 	// Update is called once per frame
@@ -49,19 +50,18 @@ public class ShieldControl : MonoBehaviour
 		if (Input.touchCount > 0)
 		{
 			if((Input.GetTouch(0).phase == TouchPhase.Began || (Input.GetTouch(0).phase == TouchPhase.Moved)) && controlState == ControlState.Stationary && equippedShield.Defence>0
-			   && !GameObject.Find("Main Camera").GetComponent<LevelScript>().IconSelected)
+			   && !mainCamera.GetComponent<LevelScript>().IconSelected)
 			{
 				Vector2 touchPos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 				if (GetComponent<Collider2D>() == Physics2D.OverlapCircle(touchPos, fingerRadius))
 				{
 					controlState = ControlState.Active;
 					shield.GetComponent<Renderer>().enabled = true;//render the shield
-					//shield.GetComponent<PolygonCollider2D>().isTrigger = true;
 					shieldTrigger = true;
 					Vector3 pos = transform.position;
 					pos.z += 0.5f;
 					shield.transform.position = pos;
-					GameObject.Find("Main Camera").GetComponent<LevelScript>().IconSelected = true;
+					mainCamera.GetComponent<LevelScript>().IconSelected = true;
 				}
 				
 				

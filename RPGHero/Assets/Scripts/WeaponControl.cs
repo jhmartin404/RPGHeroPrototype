@@ -20,6 +20,7 @@ public class WeaponControl : MonoBehaviour
 	private float fingerRadius = 0.5f;
 	private float staminaRegen = 2.0f;
 	private float meleeStaminaCost;
+	private GameObject mainCamera;
 
 	public ControlState CntrlState
 	{
@@ -56,6 +57,7 @@ public class WeaponControl : MonoBehaviour
 		actionAreaCenter = actionArea.GetComponent<Renderer>().bounds.center;
 		actionAreaRadius = actionArea.GetComponent<CircleCollider2D>().radius;//Collider is used to get the radius the collider is not actually used though
 		meleeStaminaCost = meleeWeapon.GetMeleeCost();
+		mainCamera = GameObject.Find ("Main Camera");
 
 	}
 	
@@ -65,14 +67,14 @@ public class WeaponControl : MonoBehaviour
 		if (Input.touchCount > 0)
 		{
 			if((Input.GetTouch(0).phase == TouchPhase.Began || (Input.GetTouch(0).phase == TouchPhase.Moved)) && controlState == ControlState.Stationary 
-			   && Player.Instance.Stamina > meleeStaminaCost/*meleeWeapon.MeleeCost*/ && !GameObject.Find("Main Camera").GetComponent<LevelScript>().IconSelected)
+			   && Player.Instance.Stamina > meleeStaminaCost && !mainCamera.GetComponent<LevelScript>().IconSelected)
 			{
 				Vector2 touchPos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 				if (GetComponent<Collider2D>() == Physics2D.OverlapCircle(touchPos, fingerRadius))
 				{
 					controlState = ControlState.Grabbed;
 					actionArea.GetComponent<Renderer>().enabled = true;
-					GameObject.Find("Main Camera").GetComponent<LevelScript>().IconSelected = true;
+					mainCamera.GetComponent<LevelScript>().IconSelected = true;
 				}
 				
 				
