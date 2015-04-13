@@ -68,14 +68,20 @@ public class Enemy : MonoBehaviour
 	private float enemySizeChange;
 	protected float attackTimer = 0.0f;
 	private float magicTimer = 0.0f; //timer used to manage magic effects
+	private float slowedTimer = 0.0f; //timer used for managing enemy slowdown
+	private float resetEnemySpeed; //Stores the enemy's original speeed before slowing down
+	private float resetEnemySizeChange; //Stores the enemy's original size change before slowing down
 	protected float moveTimer; //Timer for handling enemy movement
 	protected float standTimer; //Timer for enemy standing
-	private float damageOverTimeAmount;
 	protected Vector3 enemyPosition;//Store y position before an attack
 	private GameObject enemyHealthBar;
 	private Image enemyHealthBarImage;
 	private Object damageTextPrefab;
 	private GameObject damageText;
+
+	//For damage over time
+	private float damageOverTimeAmountPerSec;
+	private float damageOverTimeTotalDamage;
 	private float damageOverTimeAccumulator;
 
 	protected Vector2 movement;
@@ -161,9 +167,6 @@ public class Enemy : MonoBehaviour
 
 		size = transform.localScale;
 		enemySizeChange = 2.5f;
-		//minSize = size * 0.5f;
-		//minSize = size;
-		//maxSize = size * 1.5f;
 		movingIn = true;
 
 		enemyPosition = transform.position;
@@ -225,25 +228,23 @@ public class Enemy : MonoBehaviour
 				if(!soundSource.isPlaying)
 					soundSource.Play();
 				magicTimer -= Time.deltaTime;
-				enemyHealth -= damageOverTimeAmount*Time.deltaTime;
-				damageOverTimeAccumulator += damageOverTimeAmount*Time.deltaTime;
-				if(damageOverTimeAccumulator >= 1.0f)
+				enemyHealth -= damageOverTimeAmountPerSec*Time.deltaTime;
+				damageOverTimeTotalDamage -= damageOverTimeAmountPerSec*Time.deltaTime;
+				damageOverTimeAccumulator += damageOverTimeAmountPerSec*Time.deltaTime;
+				if(damageOverTimeAccumulator >= 2.0f)
 				{
 					SpawnDamageText((int)-damageOverTimeAccumulator);
 					damageOverTimeAccumulator = 0;
 				}
 				if(magicTimer<=0)
 				{
+					SpawnDamageText((int)-damageOverTimeAccumulator);
 					damageOverTimeAccumulator = 0;
+					damageOverTimeTotalDamage = 0;
 					Destroy(fireEffectGameObject);
 					soundSource.Stop();
 					isDamageOverTime = false;
 				}
-			}
-
-			if(isSlowed)
-			{
-				iceEffectGameObject.transform.position = transform.position;
 			}
 
 			if(enemyHealth<=0)
@@ -269,11 +270,19 @@ public class Enemy : MonoBehaviour
 			{
 				UpdateEnemyHealthBar();
 			}
-			if(damageText != null)
+
+			if(isSlowed)
 			{
-				Vector3 pos = transform.position;
-				pos.y += enemyRenderer.bounds.extents.y;
-				damageText.transform.position = pos;
+				slowedTimer -= Time.deltaTime;
+				iceEffectGameObject.transform.position = transform.position;
+				if(slowedTimer <= 0)
+				{
+					Destroy(iceEffectGameObject);
+					isSlowed = false;
+					slowedTimer = 0.0f;
+					enemySpeed = resetEnemySpeed;
+					enemySizeChange = resetEnemySizeChange;
+				}
 			}
 		}
 	}
@@ -283,9 +292,7 @@ public class Enemy : MonoBehaviour
 		damageText = Instantiate (damageTextPrefab, transform.position,Quaternion.identity)as GameObject;
 		damageText.GetComponent<Text> ().text = damage.ToString ();
 		damageText.transform.SetParent (GameObject.Find ("Canvas").transform, false);
-		Vector3 pos = transform.position;
-		pos.y += enemyRenderer.bounds.extents.y;
-		damageText.transform.position = pos;
+		damageText.GetComponent<DamageText> ().SetParent (gameObject);
 	}
 
 	private void UpdateEnemyHealthBar()
@@ -347,10 +354,17 @@ public class Enemy : MonoBehaviour
 	protected virtual void OnAttack()
 	{
 		float attackLength = Vector3.Distance (enemyPosition, actionAreaCenter);
-		//float sizeLength = Vector3.Distance (minSize, maxSize);
-
+		//float attackLengthCovered = 0, sizeLengthCovered = 0;
+		//if(!isSlowed)
+		//{
 		float attackLengthCovered = (Time.time - startTime) * enemySpeed;
 		float sizeLengthCovered = (Time.time - startTime) * enemySizeChange;
+		//}
+		//else if (isSlowed)
+		//{
+		//	attackLengthCovered = (Time.time - startTime) * resetEnemySpeed;
+		//	sizeLengthCovered = (Time.time - startTime) * resetEnemySizeChange;
+		//}
 
 		float attackFraction = attackLengthCovered / attackLength;
 		float sizeFraction = sizeLengthCovered / sizeLength;
@@ -393,7 +407,27 @@ public class Enemy : MonoBehaviour
 
 	protected virtual void OnDie()
 	{
-		Player.Instance.AddExperience(expGiven);
+		if(damageText != null)
+		{
+			Destroy(damageText);
+		}
+
+		int statIncreased = Player.Instance.GetPlayerStats ().WisdomStat - 50;
+		int amountAdded = (int)(statIncreased * 0.2);
+
+		bool leveledUp = Player.Instance.AddExperience(expGiven+amountAdded);
+		GameObject exp = Instantiate (damageTextPrefab, transform.position,Quaternion.identity)as GameObject;
+		if(leveledUp)
+		{
+			exp.GetComponent<Text> ().text = "Leveled Up!";
+		}
+		else
+		{
+			exp.GetComponent<Text> ().text = (expGiven+amountAdded).ToString () + "Exp";
+		}
+		exp.transform.SetParent (GameObject.Find ("Canvas").transform, false);
+		exp.GetComponent<DamageText> ().SetParent (GameObject.Find("TextLocation"));
+
 		AudioSource.PlayClipAtPoint(GetSoundEffect((int)EnemySoundEffect.EnemyDeath), transform.position);
 		enemySpawner.GetComponent<EnemySpawner> ().NotifyEnemyDied ();
 		fsm.PopState ();
@@ -497,38 +531,28 @@ public class Enemy : MonoBehaviour
 	{
 		soundSource.clip = iceEffectSound;
 		soundSource.Play ();
-		float resetEnemySpeed = enemySpeed;
-		float resetEnemySizeChange = enemySizeChange;
-		enemySpeed *= speedDecrease;
-		enemySizeChange *= speedDecrease;
-		if(iceEffectGameObject != null)
+		if(iceEffectGameObject == null)
 		{
-			Destroy(iceEffectGameObject);
+			resetEnemySpeed = enemySpeed;
+			resetEnemySizeChange = enemySizeChange;
+			enemySpeed *= speedDecrease;
+			enemySizeChange *= speedDecrease;
+			iceEffectGameObject = Instantiate (iceEffectPrefab, transform.position, transform.rotation) as GameObject;
 		}
-		iceEffectGameObject = Instantiate (iceEffectPrefab, transform.position, transform.rotation) as GameObject;
 		isSlowed = true;
-		StartCoroutine (BackToFullSpeed(resetEnemySpeed,resetEnemySizeChange, timeOver, iceEffectGameObject));
-	}
-
-	IEnumerator BackToFullSpeed (float resetEnemySpeed, float resetEnemySizeChange, float timeOver, GameObject iceSprite)
-	{
-		yield return new WaitForSeconds (timeOver);
-		isSlowed = false;
-		Destroy (iceSprite);
-		enemySpeed = resetEnemySpeed;
-		enemySizeChange = resetEnemySizeChange;
+		slowedTimer += timeOver;
 	}
 
 	public virtual void TakeDamageOverTime(float damageAmount, float timeOver)
 	{
-		if(fireEffectGameObject != null)
+		if(fireEffectGameObject == null)
 		{
-			Destroy(fireEffectGameObject);
+			fireEffectGameObject = Instantiate (fireEffectPrefab, transform.position, transform.rotation) as GameObject;
 		}
-		fireEffectGameObject = Instantiate (fireEffectPrefab, transform.position, transform.rotation) as GameObject;
 		isDamageOverTime = true;
-		magicTimer = timeOver;
-		damageOverTimeAmount = damageAmount;
+		damageOverTimeTotalDamage += damageAmount;
+		magicTimer += timeOver;
+		damageOverTimeAmountPerSec = damageOverTimeTotalDamage/magicTimer;
 	}
 
 	protected virtual void OnHitByRanged(RangedIcon rangedIcon)

@@ -23,6 +23,14 @@
      id="defs4">
     <inkscape:path-effect
        effect="spiro"
+       id="path-effect3988"
+       is_visible="true" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3965"
+       is_visible="true" />
+    <inkscape:path-effect
+       effect="spiro"
        id="path-effect3955"
        is_visible="true" />
     <clipPath
@@ -383,9 +391,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="9.839719"
-     inkscape:cx="-450.13743"
-     inkscape:cy="-342.91532"
+     inkscape:zoom="2.397042"
+     inkscape:cx="-1885.426"
+     inkscape:cy="477.1514"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -2577,7 +2585,7 @@
        sodipodi:rx="40"
        sodipodi:ry="40"
        d="m 344.28571,555.93359 a 40,40 0 1 1 -80,0 40,40 0 1 1 80,0 z"
-       transform="matrix(1.1294118,0,0,1.1294118,-260.4637,65.22526)"
+       transform="matrix(1.1294118,0,0,1.1294118,-1053.5695,460.16133)"
        inkscape:export-filename="C:\Users\James\SkyDrive\CS483\AnimationResources\slot.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
@@ -4889,6 +4897,69 @@
        inkscape:original-d="m -500.97631,1386.6691 -8.62228,13.1651 4.382,0.8716 -5.6931,8.7246 4.25511,0.104 -5.45963,8.4802 11.9028,-10.191 -5.34573,-0.7316 5.99945,-8.226 -4.62619,-0.5832 7.28817,-10.1639 z"
        inkscape:connector-curvature="0"
        inkscape:export-filename="C:\Users\James\SkyDrive\CS483\GameArtResources\LightningBolt.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:type="arc"
+       style="opacity:0.98999999;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:4.99994755;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="path3503-1-1-1-1"
+       sodipodi:cx="304.28571"
+       sodipodi:cy="555.93359"
+       sodipodi:rx="40"
+       sodipodi:ry="40"
+       d="m 344.28571,555.93359 a 40,40 0 1 1 -80,0 40,40 0 1 1 80,0 z"
+       transform="matrix(1.1294118,0,0,1.1294118,-1305.6472,507.57237)"
+       inkscape:export-filename="C:\Users\James\SkyDrive\CS483\GameArtResources\LockedLevel.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <g
+       id="g4744"
+       inkscape:export-filename="C:\Users\James\SkyDrive\CS483\GameArtResources\LockedLevel.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <g
+         transform="translate(1.0763325,-5.6924216)"
+         id="g4735">
+        <path
+           style="fill:none;stroke:#999999;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+           d="m -976.37471,1140.1876 c -0.82216,-2.2743 -1.04845,-4.7611 -0.65031,-7.1465 0.39814,-2.3853 1.41982,-4.6638 2.93605,-6.5478 1.51623,-1.8841 3.52358,-3.3693 5.76863,-4.2683 2.24506,-0.899 4.72274,-1.2096 7.12025,-0.8928 3.87631,0.5123 7.49974,2.7115 9.74339,5.9137 2.24365,3.2022 3.07346,7.3588 2.23136,11.1771"
+           id="path3963"
+           inkscape:path-effect="#path-effect3965"
+           inkscape:original-d="m -976.37471,1140.1876 c 0,0 5.53409,-17.9634 15.17462,-18.8554 9.91902,-0.9178 11.97475,17.0908 11.97475,17.0908"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ccc" />
+        <rect
+           style="fill:#999999;fill-opacity:0.97647059;fill-rule:evenodd;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+           id="rect3961"
+           width="32.172729"
+           height="27.28401"
+           x="-979.14606"
+           y="1136.2899"
+           rx="4.6352129"
+           ry="3.0648615" />
+      </g>
+      <path
+         inkscape:connector-curvature="0"
+         id="path4739"
+         d="m -961.98338,1134.3513 c -2.2919,0 -4.1562,1.9983 -4.1562,4.454 0,1.6882 0.8939,3.1222 2.1875,3.8751 -0.1666,0.9034 -0.25,1.924 -0.25,3.0196 0,3.5574 0.9909,6.4419 2.2187,6.4419 1.2279,0 2.2188,-2.8845 2.2188,-6.4419 0,-1.0956 -0.0834,-2.1162 -0.25,-3.0196 1.2936,-0.7529 2.1875,-2.1869 2.1875,-3.8751 0,-2.4557 -1.8643,-4.454 -4.1563,-4.454 z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.8973487;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+    </g>
+    <path
+       id="path3185-1"
+       style="fill:none;stroke:#373535;stroke-width:1.74125004;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;stroke-dasharray:none"
+       d="m -203.94019,1230.3633 c 0.29,0 0.58125,0 0.87125,0.02 36.885,0.3475 66.645,24.145 67.26375,53.69 0.02,0.31 0.02,0.64 0.02,0.95"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:#67462f;fill-opacity:1;stroke:#000000;stroke-width:3.19066286px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -2246.1235,588.34302 c 13.0637,-50.43065 52.0713,-93.38913 101.0117,-111.24256 42.2168,-15.40065 90.8776,-12.11082 130.6373,8.83204 39.7597,20.94286 69.9962,59.21109 81.1743,102.73677 -0.395,-31.6267 -10.7791,-63.05542 -29.304,-88.69196 -22.1443,-30.64543 -55.872,-52.67819 -92.8075,-60.75824 -36.9354,-8.08005 -76.7391,-2.15891 -109.7808,16.21931 -23.7033,13.1841 -43.9024,32.60322 -58.0091,55.7693 -14.1068,23.16608 -22.0883,50.02496 -22.9219,77.13534"
+       id="path3986"
+       inkscape:path-effect="#path-effect3988"
+       inkscape:original-d="m -2246.1235,588.34302 c 0,0 59.8212,-90.37632 101.0117,-111.24256 41.1909,-20.86611 19.1292,41.80379 211.8116,111.56881 0,0 1.2748,-48.35434 -29.304,-88.69196 -30.5787,-40.33763 -120.6058,-75.88494 -202.5883,-44.53893 -81.9825,31.34612 -80.931,132.90464 -80.931,132.90464 z"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="csc"
+       inkscape:transform-center-y="-79.399121"
+       inkscape:transform-center-x="-0.03233902"
+       inkscape:export-filename="C:\Users\James\SkyDrive\CS483\GameArtResources\BowSprite.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
   </g>

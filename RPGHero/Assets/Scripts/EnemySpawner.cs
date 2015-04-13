@@ -279,12 +279,12 @@ public class EnemySpawner : MonoBehaviour
 			if(won)
 			{
 				Text endGameText = endGame.GetComponentInChildren<Text>();
-				endGameText.text = "Level Won";
+				endGameText.text = "Level Won\nCoins Collected\n" + Player.Instance.TemporaryCoins + "\nExeperience Earned\n" + Player.Instance.ExperienceCollected;
 			}
 			else if(!won)
 			{
 				Text endGameText = endGame.GetComponentInChildren<Text>();
-				endGameText.text = "Level Lost";
+				endGameText.text = "Level Lost\nCoins Collected\n0\nExeperience Earned\n" + Player.Instance.ExperienceCollected;
 			}
 		}
 		else

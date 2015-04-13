@@ -62,8 +62,8 @@ public class CharacterScene : MonoBehaviour
 	{
 		if(Player.Instance.GetPlayerStats().LeveledUp() > 0 && !levelingUp)
 		{
-			Vector3 plusPosition = new Vector3(80,5,0);
-			Vector3 minusPosition = new Vector3(100,5,0);
+			Vector3 plusPosition = new Vector3(85,5,0);
+			Vector3 minusPosition = new Vector3(105,5,0);
 			levelingUp = true;
 			skillPoints = defaultPointsAmount*Player.Instance.GetPlayerStats().LeveledUp();
 

@@ -14,13 +14,14 @@ public class WeaponControl : MonoBehaviour
 	private GameObject actionArea;
 	private MeleeWeapon meleeWeapon;
 	private ControlState controlState;
-	private Vector2 controlPosition;//Original position of the control
+	private Vector3 controlPosition;//Original position of the control
 	private Vector3 actionAreaCenter;
 	private float actionAreaRadius;
 	private float fingerRadius = 0.5f;
 	private float staminaRegen = 2.0f;
 	private float meleeStaminaCost;
 	private GameObject mainCamera;
+	private TrailRenderer weaponTrailRenderer;
 
 	public ControlState CntrlState
 	{
@@ -58,7 +59,7 @@ public class WeaponControl : MonoBehaviour
 		actionAreaRadius = actionArea.GetComponent<CircleCollider2D>().radius;//Collider is used to get the radius the collider is not actually used though
 		meleeStaminaCost = meleeWeapon.GetMeleeCost();
 		mainCamera = GameObject.Find ("Main Camera");
-
+		weaponTrailRenderer = weapon.GetComponentInChildren<TrailRenderer> ();
 	}
 	
 	// Update is called once per frame
@@ -75,6 +76,8 @@ public class WeaponControl : MonoBehaviour
 					controlState = ControlState.Grabbed;
 					actionArea.GetComponent<Renderer>().enabled = true;
 					mainCamera.GetComponent<LevelScript>().IconSelected = true;
+					if(weaponTrailRenderer != null)
+						weaponTrailRenderer.enabled = true;
 				}
 				
 				
@@ -82,13 +85,13 @@ public class WeaponControl : MonoBehaviour
 			else if(Input.GetTouch(0).phase == TouchPhase.Moved && controlState == ControlState.Grabbed) 
 			{
 				Vector2 pos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-				transform.position = pos;
+				transform.position = new Vector3(pos.x, pos.y, controlPosition.z);;
 			}
 			else if(Input.GetTouch(0).phase == TouchPhase.Moved &&controlState == ControlState.Active)
 			{
 				float degrees = 10;
 				Vector2 pos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-				transform.position = pos;
+				transform.position = new Vector3(pos.x, pos.y, controlPosition.z);
 				Vector2 delta = Input.GetTouch(0).deltaPosition;
 				if(delta.x >0)
 				{
@@ -106,7 +109,9 @@ public class WeaponControl : MonoBehaviour
 				weapon.GetComponent<Renderer>().enabled = false;//disable the renderer for the weapon
 				weapon.GetComponent<PolygonCollider2D>().isTrigger = false;
 				actionArea.GetComponent<Renderer>().enabled = false;
-				GameObject.Find("Main Camera").GetComponent<LevelScript>().IconSelected = false;
+				mainCamera.GetComponent<LevelScript>().IconSelected = false;
+				if(weaponTrailRenderer != null)
+					weaponTrailRenderer.enabled = false;
 			}
 		}
 		
@@ -125,7 +130,9 @@ public class WeaponControl : MonoBehaviour
 			controlState = ControlState.Active;
 			weapon.GetComponent<Renderer>().enabled = true;//render the weapon
 			weapon.GetComponent<PolygonCollider2D>().isTrigger = true;
-			weapon.transform.position = actionAreaCenter;
+			Vector3 weaponPos = actionAreaCenter;
+			weaponPos.z -= 0.1f;
+			weapon.transform.position = weaponPos;
 		}
 	}
 }

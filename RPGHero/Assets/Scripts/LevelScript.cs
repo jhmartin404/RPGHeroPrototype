@@ -124,6 +124,7 @@ public class LevelScript : MonoBehaviour
 				playerStats.GameLevel++;
 			}
 		}
+		Player.Instance.ExperienceCollected = 0;
 		enemySpawner.GetComponent<EnemySpawner>().RemoveMethods();
 		iconSpawner.GetComponent<IconSpawner>().RemoveMethods();
 		Player.Instance.TemporaryCoins = 0;

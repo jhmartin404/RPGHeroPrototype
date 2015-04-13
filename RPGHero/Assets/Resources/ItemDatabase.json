@@ -42,7 +42,7 @@
 			{
 				"__type": "LightningMagic, Assembly-CSharp",
 				"ManaCost": 10,
-				"lightningDamage": 5,
+				"lightningDamage": 7,
 				"itemType": "Magic",
 				"itemID": 10,
 				"itemName": "Lightning Attack",
@@ -53,8 +53,8 @@
 			{
 				"__type": "FireBlastMagic, Assembly-CSharp",
 				"ManaCost": 10,
-				"fireDuration": 3,
-				"fireDamage": 5,
+				"fireDuration": 5,
+				"fireDamage": 10,
 				"itemType": "Magic",
 				"itemID": 11,
 				"itemName": "Fire Blast",
@@ -65,7 +65,7 @@
 			{
 				"__type": "FrostBlastMagic, Assembly-CSharp",
 				"ManaCost": 10,
-				"frostDuration": 2.5,
+				"frostDuration": 3.0,
 				"speedDecreaseRate": 0.5,
 				"itemType": "Magic",
 				"itemID": 5,

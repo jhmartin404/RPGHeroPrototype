@@ -69,7 +69,7 @@ public class ShieldControl : MonoBehaviour
 			else if(Input.GetTouch(0).phase == TouchPhase.Moved && controlState == ControlState.Active) 
 			{
 				Vector3 pos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-				pos.z = -1;
+				pos.z = controlPosition.z;
 				transform.position = pos;
 				Vector3 shieldPos = pos;
 				shieldPos.z += 0.5f;

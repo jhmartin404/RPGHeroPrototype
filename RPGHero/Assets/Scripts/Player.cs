@@ -10,6 +10,7 @@ public class Player
 	private float health;
 	private float stamina;
 	private float mana;
+	private int expereienceCollected;
 	private int temporaryCoins;
 	private bool isDefending;
 	private int currentLevel;
@@ -49,6 +50,18 @@ public class Player
 		set
 		{
 			mana = value;
+		}
+	}
+
+	public int ExperienceCollected
+	{
+		get
+		{
+			return expereienceCollected;
+		}
+		set
+		{
+			expereienceCollected = value;
 		}
 	}
 
@@ -203,12 +216,11 @@ public class Player
 		}
 	}
 
-	public void AddExperience(int exp)
+	public bool AddExperience(int exp)
 	{
-		int statIncreased = Player.Instance.GetPlayerStats ().WisdomStat - 50;
-		int amountAdded = (int)(statIncreased * 0.2);
-		playerStats.CurrentExp += exp + amountAdded;
-		playerStats.CheckLevelUp();
+		playerStats.CurrentExp += exp;
+		expereienceCollected += exp;
+		return playerStats.CheckLevelUp();
 	}
 
 	public void Save()

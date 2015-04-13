@@ -1,14 +1,19 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class CoinBag : MonoBehaviour 
 {
+	public Canvas canvas;
+	public GameObject textLocation;
 	private bool coinCollected;
 	private Vector3 size;
 	private Vector3 maxSize = new Vector3(1.0f,1.0f,0);
 	private Vector3 minSize;
 	private float sizeChangeSpeed = 0.2f;
 	private AudioClip coinCollectedSound;
+	private Object textPrefab;
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -16,6 +21,7 @@ public class CoinBag : MonoBehaviour
 		minSize = transform.localScale;
 		size = minSize;
 		coinCollectedSound = Resources.Load<AudioClip> ("CoinCollectedSound");
+		textPrefab = Resources.Load ("Prefabs/DamageText");
 	}
 	
 	// Update is called once per frame
@@ -41,7 +47,6 @@ public class CoinBag : MonoBehaviour
 	void AddCoin()
 	{
 		Player.Instance.TemporaryCoins++;
-		//Player.Instance.GetPlayerInventory ().Coins++;
 	}
 
 	void OnTriggerEnter2D(Collider2D col)
@@ -53,6 +58,10 @@ public class CoinBag : MonoBehaviour
 			{
 				AudioSource.PlayClipAtPoint(coinCollectedSound,transform.position);
 				AddCoin();
+				GameObject text = Instantiate(textPrefab,transform.position,Quaternion.identity) as GameObject;
+				text.transform.SetParent (canvas.transform, false);
+				text.GetComponent<DamageText>().SetParent(textLocation);
+				text.GetComponent<Text>().text = "+1";
 				coinCollected = true;
 				icon.OnDestroy();
 			}

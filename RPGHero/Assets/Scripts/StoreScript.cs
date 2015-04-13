@@ -60,7 +60,7 @@ public class StoreScript : MonoBehaviour
 		}
 	}
 
-	void GoBack()
+	public void GoBack()
 	{
 		Player.Instance.Save();
 		Application.LoadLevel("LevelSelectScene");

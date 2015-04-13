@@ -5,7 +5,7 @@ using System.Collections;
 public class InventorySlot : MonoBehaviour 
 {
 	private InventoryItem item;
-	private float fingerRadius = 0.5f;
+	private float fingerRadius = 0.3f;
 	private Object inventoryItemDetailsPrefab;
 	private Object equipButtonPrefab;
 	private float saleRatio = 0.8f;

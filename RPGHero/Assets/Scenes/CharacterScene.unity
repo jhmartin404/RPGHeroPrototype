@@ -823,15 +823,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22400002, guid: d63e0bf4558081d4ea0390893bc6ce8c, type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 19.0999985
+      value: 23.1000004
       objectReference: {fileID: 0}
     - target: {fileID: 22400002, guid: d63e0bf4558081d4ea0390893bc6ce8c, type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -16.3000031
+      value: -16.2999992
       objectReference: {fileID: 0}
     - target: {fileID: 22400002, guid: d63e0bf4558081d4ea0390893bc6ce8c, type: 2}
       propertyPath: m_SizeDelta.x
-      value: 25
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 22400002, guid: d63e0bf4558081d4ea0390893bc6ce8c, type: 2}
       propertyPath: m_SizeDelta.y

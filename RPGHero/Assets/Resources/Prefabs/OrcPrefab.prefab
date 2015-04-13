@@ -13,6 +13,7 @@ GameObject:
   - 114: {fileID: 11400000}
   - 50: {fileID: 5000000}
   - 82: {fileID: 8258168}
+  - 60: {fileID: 6097842}
   m_Layer: 0
   m_Name: OrcPrefab
   m_TagString: Enemy
@@ -47,13 +48,50 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
+--- !u!60 &6097842
+PolygonCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  m_Points:
+    m_Paths:
+    - - {x: .305724144, y: -.34853828}
+      - {x: .320277482, y: -.16333878}
+      - {x: .220096126, y: .0205829144}
+      - {x: .289417118, y: .139999986}
+      - {x: .342524052, y: .198154926}
+      - {x: .379999995, y: .300000012}
+      - {x: .379999995, y: .479999989}
+      - {x: .289999992, y: .519999981}
+      - {x: .189999998, y: .600000024}
+      - {x: .140000001, y: .620000005}
+      - {x: -.100000001, y: .620000005}
+      - {x: -.150000006, y: .600000024}
+      - {x: -.230000004, y: .529999971}
+      - {x: -.289999992, y: .479999989}
+      - {x: -.379999995, y: .479999989}
+      - {x: -.379999995, y: .340000004}
+      - {x: -.270000011, y: .109999999}
+      - {x: -.20378615, y: .065631032}
+      - {x: -.201262012, y: -.0168930888}
+      - {x: -.284951955, y: -.16359365}
+      - {x: -.223786145, y: -.45184496}
+      - {x: -.239999995, y: -.620000005}
+      - {x: .319999993, y: -.620000005}
+      - {x: .24698925, y: -.4817487}
 --- !u!61 &6100000
 BoxCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_UsedByEffector: 0
