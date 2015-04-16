@@ -179,7 +179,7 @@ public class PlayerStats
 		{
 			expLevel++;
 			currentExp = currentExp - neededExp;
-			neededExp += 100;
+			neededExp += 100+50*(expLevel-1);
 			leveledUp++;
 			return true;
 		}

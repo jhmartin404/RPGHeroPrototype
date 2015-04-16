@@ -96,8 +96,10 @@ public class Enemy : MonoBehaviour
 	private Object iceEffectPrefab;
 	private GameObject iceEffectGameObject;
 	private AudioClip iceEffectSound;
+	private Object iceEffectExplosion;
 	private Object fireEffectPrefab;
 	private GameObject fireEffectGameObject;
+	private Object fireEffectExplosion;
 	private AudioClip fireEffectSound;
 	private GameObject electrocutedGameObject;
 	private AudioClip electrocutedSound;
@@ -157,6 +159,8 @@ public class Enemy : MonoBehaviour
 
 		iceEffectPrefab = Resources.Load("Prefabs/IceBlock");
 		iceEffectSound = Resources.Load<AudioClip> ("IceEffectSound");
+		iceEffectExplosion = Resources.Load ("Prefabs/IceEffectExplosion");
+		fireEffectExplosion = Resources.Load ("Prefabs/FireEffectExplosion");
 		fireEffectPrefab = Resources.Load ("Prefabs/FireEffect");
 		fireEffectSound = Resources.Load<AudioClip> ("FireEffectSound");
 		electrocutedSound = Resources.Load<AudioClip> ("ElectrocutedSound");
@@ -208,7 +212,7 @@ public class Enemy : MonoBehaviour
 				isLowHealth = true;
 			}
 
-			if(attackTimer > attackTime && enemyHealth>0 && fsm.GetCurrentState() == move)
+			if(attackTimer > attackTime && enemyHealthBarImage.fillAmount > 0.0f && fsm.GetCurrentState() == move)
 			{
 				startTime = Time.time;
 				sizeLength = Vector3.Distance (minSize, maxSize);
@@ -247,7 +251,8 @@ public class Enemy : MonoBehaviour
 				}
 			}
 
-			if(enemyHealth<=0)
+			//if(enemyHealth<=0)
+			if(enemyHealthBarImage.fillAmount <= 0.0f)
 			{
 				if(fsm.GetCurrentState() != die)
 				{
@@ -266,7 +271,8 @@ public class Enemy : MonoBehaviour
 
 			Debug.Log("State: " +fsm.GetCurrentState ().Method.Name);//used for testing
 			fsm.DoState ();//Run the method associated with the current state the enemy is in
-			if(enemyHealth>0)
+			//if(enemyHealth>0)
+			if(enemyHealthBarImage.fillAmount > 0.0f)
 			{
 				UpdateEnemyHealthBar();
 			}
@@ -300,7 +306,7 @@ public class Enemy : MonoBehaviour
 		Vector3 pos = transform.position;
 		pos.y += enemyRenderer.bounds.extents.y;
 		enemyHealthBar.transform.position = pos; 
-		enemyHealthBarImage.fillAmount = enemyHealth / fullEnemyHealth;
+		enemyHealthBarImage.fillAmount = Mathf.MoveTowards (enemyHealthBarImage.fillAmount, enemyHealth / fullEnemyHealth, Time.deltaTime*0.1f);
 	}
 
 	public void SetLayer(float xVal,int layer)
@@ -563,7 +569,15 @@ public class Enemy : MonoBehaviour
 
 	protected virtual void OnHitByMagic(MagicIcon magicIcon)
 	{
-		if(magicIcon.EquippedMagic.GetType() == typeof(LightningMagic))
+		if(magicIcon.EquippedMagic.GetType() == typeof(FireBlastMagic))
+		{
+			Instantiate(fireEffectExplosion,transform.position,Quaternion.identity);
+		}
+		else if(magicIcon.EquippedMagic.GetType() == typeof(FrostBlastMagic))
+		{
+			Instantiate(iceEffectExplosion,transform.position,Quaternion.identity);
+		}
+		else if(magicIcon.EquippedMagic.GetType() == typeof(LightningMagic))
 		{
 			AudioSource.PlayClipAtPoint(electrocutedSound,transform.position);
 		}

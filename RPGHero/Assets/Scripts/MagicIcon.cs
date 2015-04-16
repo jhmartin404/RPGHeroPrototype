@@ -3,7 +3,7 @@ using System.Collections;
 
 public class MagicIcon : Icon 
 {
-	private Object fireBlastParticleSystemPrefab;
+	private Object fireEffectTrail;
 	private Object frostBlastParticleSystemPrefab;
 	private Object lightningMagicPrefab;
 	private GameObject magicParticleSystem;
@@ -30,7 +30,7 @@ public class MagicIcon : Icon
 	public override void Start () 
 	{
 		base.Start ();
-		fireBlastParticleSystemPrefab = Resources.Load ("Prefabs/FireEffect");
+		fireEffectTrail = Resources.Load ("Prefabs/FireEffectTrail");
 		frostBlastParticleSystemPrefab = Resources.Load ("Prefabs/FrostBlastParticles");
 		lightningMagicPrefab = Resources.Load ("Prefabs/LightningEffect");
 		gameObject.GetComponent<SpriteRenderer> ().sprite = equippedMagic.GetItemImage ();
@@ -45,7 +45,7 @@ public class MagicIcon : Icon
 
 	protected override bool OnCheckSelected()
 	{
-		return Player.Instance.Mana >= magicManaCost;//equippedMagic.ManaCost;
+		return Player.Instance.Mana >= magicManaCost;
 	}
 
 	protected override void OnIconTouched()
@@ -55,14 +55,14 @@ public class MagicIcon : Icon
 		if(equippedMagic.GetType() == typeof(FireBlastMagic))
 		{
 			source.clip = fireSound;
-			magicParticleSystem = Instantiate(fireBlastParticleSystemPrefab, transform.position, transform.rotation) as GameObject;
-			if(!magicParticleSystem.GetComponent<ParticleSystem>().isPlaying)
-				magicParticleSystem.GetComponent<ParticleSystem>().Play();
+			GameObject fireEffect = Instantiate(fireEffectTrail, transform.position, transform.rotation) as GameObject;
+			fireEffect.transform.SetParent(transform);
 		}
 		else if(equippedMagic.GetType() == typeof(FrostBlastMagic))
 		{
 			source.clip = iceSound;
 			magicParticleSystem = Instantiate(frostBlastParticleSystemPrefab, transform.position, transform.rotation) as GameObject;
+			magicParticleSystem.transform.SetParent(transform);
 			if(!magicParticleSystem.GetComponent<ParticleSystem>().isPlaying)
 				magicParticleSystem.GetComponent<ParticleSystem>().Play();
 		}
@@ -70,6 +70,7 @@ public class MagicIcon : Icon
 		{
 			source.clip = lightningSound;
 			magicParticleSystem = Instantiate(lightningMagicPrefab, transform.position, transform.rotation) as GameObject;
+			magicParticleSystem.transform.SetParent(transform);
 		}
 
 	}
@@ -79,32 +80,7 @@ public class MagicIcon : Icon
 		base.OnIconLetGo ();
 		actionArea.GetComponent<Renderer>().enabled = false;
 		endPosition = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-		Player.Instance.Mana -= magicManaCost;//equippedMagic.ManaCost;
-	}
-
-	protected override void OnGrabbedState()
-	{
-		base.OnGrabbedState ();
-		if(magicParticleSystem != null)
-		{
-			if(!source.isPlaying)
-			{
-				source.Play();
-			}
-			magicParticleSystem.transform.position = transform.position;
-		}
-	}
-
-	protected override void OnThrownState()
-	{
-		if(magicParticleSystem != null)
-		{
-			if(!source.isPlaying)
-			{
-				source.Play();
-			}
-			magicParticleSystem.transform.position = transform.position;
-		}
+		Player.Instance.Mana -= magicManaCost;
 	}
 
 	public override void OnDestroy()

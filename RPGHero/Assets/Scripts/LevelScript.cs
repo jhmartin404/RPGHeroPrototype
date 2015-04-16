@@ -95,11 +95,15 @@ public class LevelScript : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		healthBar.fillAmount = (float)(Player.Instance.Health/ (float)playerStats.HealthStat);
+		healthBar.fillAmount = Mathf.MoveTowards (healthBar.fillAmount, (float)(Player.Instance.Health/ (float)playerStats.HealthStat), Time.deltaTime*0.1f);
+		//POSSIBLY COME BACK TO THIS!!!!!!!!!!!!!!!!
+		manaBar.fillAmount = Mathf.MoveTowards (manaBar.fillAmount, (float)(Player.Instance.Mana/ (float)playerStats.MaxMana), Time.deltaTime*0.1f);
+		//healthBar.fillAmount = (float)(Player.Instance.Health/ (float)playerStats.HealthStat);
 		staminaBar.fillAmount = (float)(Player.Instance.Stamina/ (float)playerStats.MaxStamina);
-		manaBar.fillAmount = (float)(Player.Instance.Mana/ (float)playerStats.MaxMana);
+		//manaBar.fillAmount = (float)(Player.Instance.Mana/ (float)playerStats.MaxMana);
 
-		if(Player.Instance.Health <= 0  && !playerLost)
+		//if(Player.Instance.Health <= 0  && !playerLost)
+		if(healthBar.fillAmount <= 0.0f && !playerLost)
 		{
 			playerLost = true;
 			enemySpawner.GetComponent<EnemySpawner>().NotifyPlayerDied();
