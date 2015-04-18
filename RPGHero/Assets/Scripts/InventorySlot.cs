@@ -83,7 +83,7 @@ public class InventorySlot : MonoBehaviour
 							Destroy(itemButton2);
 						}
 						
-						selected.GetComponent<InventoryItemDetails>().SetItem(item);
+						selected.GetComponent<InventoryItemDetails>().SetItem(item,false);
 
 						if(compared == null)
 						{
@@ -133,10 +133,10 @@ public class InventorySlot : MonoBehaviour
 								compared2.name = "ComparedItem2";
 								compared2.transform.SetParent(GameObject.Find ("ComparedItemPanel").transform, false);
 							}
-							compared2.GetComponent<InventoryItemDetails>().SetItem(comparedItem2);
+							compared2.GetComponent<InventoryItemDetails>().SetItem(comparedItem2,true);
 							break;
 						}
-						compared.GetComponent<InventoryItemDetails>().SetItem(comparedItem);
+						compared.GetComponent<InventoryItemDetails>().SetItem(comparedItem,true);
 					}
 				}				
 			}
@@ -246,8 +246,8 @@ public class InventorySlot : MonoBehaviour
 			{
 				InventoryItem prevMagic2 = Player.Instance.GetPlayerInventory ().EquippedMagic2;
 				EquipMagic2(selectedItem);
-				GameObject.Find("ComparedItem2").GetComponent<InventoryItemDetails>().SetItem(selectedItem);
-				GameObject.Find("SelectedItem").GetComponent<InventoryItemDetails>().SetItem(prevMagic2);
+				GameObject.Find("ComparedItem2").GetComponent<InventoryItemDetails>().SetItem(selectedItem,true);
+				GameObject.Find("SelectedItem").GetComponent<InventoryItemDetails>().SetItem(prevMagic2,false);
 				//SetComparedAndSelected(selectedItem,prevMagic2);
 			}
 			break;
@@ -328,13 +328,13 @@ public class InventorySlot : MonoBehaviour
 
 	private void SetCompared (InventoryItem compared)
 	{
-		GameObject.Find("ComparedItem").GetComponent<InventoryItemDetails>().SetItem(compared);
+		GameObject.Find("ComparedItem").GetComponent<InventoryItemDetails>().SetItem(compared,true);
 	}
 
 	private void SetComparedAndSelected (InventoryItem compared, InventoryItem selected)
 	{
-		GameObject.Find("ComparedItem").GetComponent<InventoryItemDetails>().SetItem(compared);
-		GameObject.Find("SelectedItem").GetComponent<InventoryItemDetails>().SetItem(selected);
+		GameObject.Find("ComparedItem").GetComponent<InventoryItemDetails>().SetItem(compared,true);
+		GameObject.Find("SelectedItem").GetComponent<InventoryItemDetails>().SetItem(selected,false);
 	}
 
 	public void SetItem(InventoryItem itm)

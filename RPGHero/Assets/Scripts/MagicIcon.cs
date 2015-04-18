@@ -55,12 +55,14 @@ public class MagicIcon : Icon
 		if(equippedMagic.GetType() == typeof(FireBlastMagic))
 		{
 			source.clip = fireSound;
+			source.Play();
 			GameObject fireEffect = Instantiate(fireEffectTrail, transform.position, transform.rotation) as GameObject;
 			fireEffect.transform.SetParent(transform);
 		}
 		else if(equippedMagic.GetType() == typeof(FrostBlastMagic))
 		{
 			source.clip = iceSound;
+			source.Play();
 			magicParticleSystem = Instantiate(frostBlastParticleSystemPrefab, transform.position, transform.rotation) as GameObject;
 			magicParticleSystem.transform.SetParent(transform);
 			if(!magicParticleSystem.GetComponent<ParticleSystem>().isPlaying)
@@ -69,6 +71,7 @@ public class MagicIcon : Icon
 		else if(equippedMagic.GetType() == typeof(LightningMagic))
 		{
 			source.clip = lightningSound;
+			source.Play();
 			magicParticleSystem = Instantiate(lightningMagicPrefab, transform.position, transform.rotation) as GameObject;
 			magicParticleSystem.transform.SetParent(transform);
 		}

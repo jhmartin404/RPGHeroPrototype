@@ -43,10 +43,12 @@ public class DamageText : MonoBehaviour
 		Color textColor = text.color;
 		textColor.a -= Time.deltaTime;
 		text.color = textColor;   
+		if(text.fontSize > 1)
 		text.fontSize--;
 
 		if(text.color.a <= 0.0f)
 		{
+			text.fontSize--;
 			fadeIn = false;
 			fadeOut = false;
 			Destroy (gameObject);

@@ -16,6 +16,7 @@ public class StoreScript : MonoBehaviour
 	private ItemType filter;
 	public Text coinsText;
 	public GameObject[] storeSlots;
+	public Button buyButton, sellButton, weaponButton, shieldButton, miscButton;
 	private int slotCount;
 	private Clerk clerk;
 	private StoreMode mode;
@@ -41,8 +42,10 @@ public class StoreScript : MonoBehaviour
 	{
 		clerk = new Clerk ();
 		mode = StoreMode.Buy;
+		buyButton.image.color = Color.gray;
 		SoundManager.Instance.PlayBackgroundMusic ("Store_Scene_BackgroundMusic");
 		filter = ItemType.Misc;
+		miscButton.image.color = Color.gray;
 		unequippedItems = Player.Instance.GetPlayerInventory().GetUnequippedItems ();
 		coinsText.text = "" + Player.Instance.GetPlayerInventory().Coins;
 		ResetBoard ();
@@ -71,6 +74,8 @@ public class StoreScript : MonoBehaviour
 	{
 		SoundManager.Instance.PlayUISound ("Filter_Mode_Select");
 		filter = ItemType.Weapon;
+		ResetButtonColors ();
+		weaponButton.image.color = Color.gray;
 		ResetBoard ();
 		ResetComparedAndSelected ();
 	}
@@ -79,6 +84,8 @@ public class StoreScript : MonoBehaviour
 	{
 		SoundManager.Instance.PlayUISound ("Filter_Mode_Select");
 		filter = ItemType.Shield;
+		ResetButtonColors ();
+		shieldButton.image.color = Color.gray;
 		ResetBoard ();
 		ResetComparedAndSelected ();
 	}
@@ -87,6 +94,8 @@ public class StoreScript : MonoBehaviour
 	{
 		SoundManager.Instance.PlayUISound ("Filter_Mode_Select");
 		filter = ItemType.Misc;
+		ResetButtonColors ();
+		miscButton.image.color = Color.gray;
 		ResetBoard ();
 		ResetComparedAndSelected ();
 	}
@@ -95,6 +104,8 @@ public class StoreScript : MonoBehaviour
 	{
 		SoundManager.Instance.PlayUISound ("Filter_Mode_Select");
 		mode = StoreMode.Buy;
+		sellButton.image.color = sellButton.colors.normalColor;
+		buyButton.image.color = Color.gray;
 		ResetBoard ();
 		ResetComparedAndSelected ();
 	}
@@ -103,8 +114,17 @@ public class StoreScript : MonoBehaviour
 	{
 		SoundManager.Instance.PlayUISound ("Filter_Mode_Select");
 		mode = StoreMode.Sell;
+		sellButton.image.color = Color.gray;
+		buyButton.image.color = buyButton.colors.normalColor;
 		ResetBoard ();
 		ResetComparedAndSelected ();
+	}
+
+	public void ResetButtonColors()
+	{
+		weaponButton.image.color = weaponButton.colors.normalColor;
+		shieldButton.image.color = shieldButton.colors.normalColor;
+		miscButton.image.color = miscButton.colors.normalColor;
 	}
 
 	public void ResetComparedAndSelected()
@@ -112,13 +132,13 @@ public class StoreScript : MonoBehaviour
 		GameObject selected = GameObject.Find ("SelectedItem");
 		if(selected != null)
 		{
-			selected.GetComponent<InventoryItemDetails> ().SetItem (null);
+			selected.GetComponent<InventoryItemDetails> ().SetItem (null,false);
 		}
 
 		GameObject compared = GameObject.Find ("ComparedItem");
 		if(compared != null)
 		{
-			compared.GetComponent<InventoryItemDetails> ().SetItem (null);
+			compared.GetComponent<InventoryItemDetails> ().SetItem (null,false);
 		}
 		Destroy(GameObject.Find ("ItemButton"));
 		Destroy(GameObject.Find ("ItemButton2"));

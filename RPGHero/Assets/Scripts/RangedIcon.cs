@@ -8,8 +8,6 @@ public class RangedIcon : Icon
 	private float actionAreaRadius;
 	private Vector3 actionAreaCenter;
 	private RangedWeapon equippedRanged;
-	private Vector3 leftSide = new Vector3(-1.5f,-1.8f,0);
-	private Vector3 rightSide = new Vector3 (1.5f,-1.8f,0);
 	private bool startThrow;
 	private float rangedStaminaCost;
 	private AudioClip rangedIconSound;
@@ -47,6 +45,7 @@ public class RangedIcon : Icon
 		rangedIconSound = Resources.Load<AudioClip> ("RangedIconSound");
 		trailRenderer = gameObject.GetComponent<TrailRenderer> ();
 		trailRenderer.enabled = false;
+		iconSpeed = 8.0f;
 	}
 	
 	// Update is called once per frame
@@ -102,19 +101,10 @@ public class RangedIcon : Icon
 			transform.rotation = result;
 			bowSprite.transform.rotation = result;
 
-			//Quaternion store = transform.rotation;
-			//transform.rotation = Quaternion.identity;
-			//Bounds bowBounds = bowSprite.GetComponent<Renderer>().bounds;
-
-			//Vector3 bowLeftPosition = new Vector3(bowBounds.extents.x,0,-2.0f)+transform.position;
-			//bowPos.x += bowSprite.GetComponent<Renderer>().bounds.extents.x;
 			lineRenderer.SetPosition(0,bowLeftSide.transform.position);
 			lineRenderer.SetPosition(1,transform.position);
-			//bowPos.x -= 2*bowSprite.GetComponent<Renderer>().bounds.extents.x;
-			//Vector3 bowRightPosition = new Vector3(-bowBounds.extents.x,0,-2.0f)+transform.position;
 			lineRenderer.SetPosition(2,bowRightSide.transform.position);
 			lineRenderer.SetPosition(3,transform.position);
-			//transform.rotation = store;
 		}
 		else if(!startThrow)
 		{

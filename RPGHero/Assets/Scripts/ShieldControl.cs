@@ -15,6 +15,7 @@ public class ShieldControl : MonoBehaviour
 	private Text shieldDefenceText;
 	private bool shieldTrigger;
 	private GameObject mainCamera;
+	private Collider2D shieldControlCollider;
 
 	public ControlState CntrlState
 	{
@@ -33,7 +34,11 @@ public class ShieldControl : MonoBehaviour
 	{
 		controlState = ControlState.Stationary;
 		shield = GameObject.Find ("Shield");
+		Vector3 pos = transform.position;
+		pos.z += 0.5f;
+		shield.transform.position = pos;
 		shieldTrigger = shield.GetComponent<PolygonCollider2D> ().isTrigger;
+		shield.GetComponent<Renderer>().enabled = false;
 		equippedShield = Player.Instance.GetPlayerInventory ().EquippedShield;
 		controlPosition = transform.position;
 		Object shieldDefencePrefab = Resources.Load ("Prefabs/ShieldDefenceText");
@@ -42,6 +47,7 @@ public class ShieldControl : MonoBehaviour
 		shieldDefence.transform.position = transform.position;
 		shieldDefenceText = shieldDefence.GetComponent<Text> ();
 		mainCamera = GameObject.Find ("Main Camera");
+		shieldControlCollider = GetComponent<Collider2D> ();
 	}
 	
 	// Update is called once per frame
@@ -53,7 +59,7 @@ public class ShieldControl : MonoBehaviour
 			   && !mainCamera.GetComponent<LevelScript>().IconSelected)
 			{
 				Vector2 touchPos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-				if (GetComponent<Collider2D>() == Physics2D.OverlapCircle(touchPos, fingerRadius))
+				if (shieldControlCollider == Physics2D.OverlapCircle(touchPos, fingerRadius))
 				{
 					controlState = ControlState.Active;
 					shield.GetComponent<Renderer>().enabled = true;//render the shield
@@ -84,7 +90,6 @@ public class ShieldControl : MonoBehaviour
 				}
 				controlState = ControlState.Stationary;
 				shield.GetComponent<Renderer>().enabled = false;//disable the renderer for the shield
-				//shield.GetComponent<PolygonCollider2D>().isTrigger = false;
 				shieldTrigger = false;
 				transform.position = controlPosition;
 				Vector3 shieldPos = controlPosition;
@@ -93,7 +98,6 @@ public class ShieldControl : MonoBehaviour
 				GameObject.Find("Main Camera").GetComponent<LevelScript>().IconSelected = false;
 			}
 		}
-		
 		Vector3 newPosition = shield.transform.position;
 		newPosition.x = transform.position.x;
 		shield.transform.position = newPosition;

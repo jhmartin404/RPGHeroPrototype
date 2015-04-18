@@ -10,6 +10,7 @@ public class InventoryScript : MonoBehaviour
 	public Text coinsText;
 	public Text healthPotionText;
 	public Text manaPotionText;
+	public Button weaponButton, shieldButton, magicButton;
 	public GameObject[] inventorySlots;
 	private List<InventoryItem> unequippedItems;
 	private int slotCount;
@@ -23,6 +24,7 @@ public class InventoryScript : MonoBehaviour
 		healthPotionText.text = "" + playerInventory.HealthPotions;
 		manaPotionText.text = "" + playerInventory.ManaPotions;
 		filter = ItemType.Weapon;
+		weaponButton.image.color = Color.gray;
 		SoundManager.Instance.PlayBackgroundMusic ("Store_Scene_BackgroundMusic");
 
 		ResetBoard ();
@@ -50,6 +52,8 @@ public class InventoryScript : MonoBehaviour
 	{
 		SoundManager.Instance.PlayUISound ("Filter_Mode_Select");
 		filter = ItemType.Weapon;
+		ResetButtonColors ();
+		weaponButton.image.color = Color.gray;
 		ResetBoard ();
 		ResetComparedAndSelected ();
 	}
@@ -58,6 +62,8 @@ public class InventoryScript : MonoBehaviour
 	{
 		SoundManager.Instance.PlayUISound ("Filter_Mode_Select");
 		filter = ItemType.Shield;
+		ResetButtonColors();
+		shieldButton.image.color = Color.gray;
 		ResetBoard ();
 		ResetComparedAndSelected ();
 	}
@@ -66,6 +72,8 @@ public class InventoryScript : MonoBehaviour
 	{
 		SoundManager.Instance.PlayUISound ("Filter_Mode_Select");
 		filter = ItemType.Magic;
+		ResetButtonColors ();
+		magicButton.image.color = Color.gray;
 		ResetBoard ();
 		ResetComparedAndSelected ();
 	}
@@ -75,13 +83,13 @@ public class InventoryScript : MonoBehaviour
 		GameObject selected = GameObject.Find ("SelectedItem");
 		if(selected != null)
 		{
-			selected.GetComponent<InventoryItemDetails> ().SetItem (null);
+			selected.GetComponent<InventoryItemDetails> ().SetItem (null,false);
 		}
 		
 		GameObject compared = GameObject.Find ("ComparedItem");
 		if(compared != null)
 		{
-			compared.GetComponent<InventoryItemDetails> ().SetItem (null);
+			compared.GetComponent<InventoryItemDetails> ().SetItem (null,false);
 		}
 		GameObject compared2 = GameObject.Find ("ComparedItem2");
 		if(compared2 != null)
@@ -90,6 +98,13 @@ public class InventoryScript : MonoBehaviour
 		}
 		Destroy(GameObject.Find ("ItemButton"));
 		Destroy(GameObject.Find ("ItemButton2"));
+	}
+
+	public void ResetButtonColors()
+	{
+		weaponButton.image.color = weaponButton.colors.normalColor;
+		shieldButton.image.color = shieldButton.colors.normalColor;
+		magicButton.image.color = magicButton.colors.normalColor;
 	}
 
 	public void ResetBoard()

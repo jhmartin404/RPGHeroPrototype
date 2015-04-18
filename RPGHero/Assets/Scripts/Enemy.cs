@@ -100,8 +100,10 @@ public class Enemy : MonoBehaviour
 	private Object fireEffectPrefab;
 	private GameObject fireEffectGameObject;
 	private Object fireEffectExplosion;
+	private AudioClip fireEffectExplosionSound;
 	private AudioClip fireEffectSound;
-	private GameObject electrocutedGameObject;
+	private Object lightningBolt;
+	//private GameObject electrocutedGameObject;
 	private AudioClip electrocutedSound;
 
 	private float startTime;
@@ -163,7 +165,10 @@ public class Enemy : MonoBehaviour
 		fireEffectExplosion = Resources.Load ("Prefabs/FireEffectExplosion");
 		fireEffectPrefab = Resources.Load ("Prefabs/FireEffect");
 		fireEffectSound = Resources.Load<AudioClip> ("FireEffectSound");
+		fireEffectExplosionSound = Resources.Load<AudioClip> ("FireExplosionSound");
 		electrocutedSound = Resources.Load<AudioClip> ("ElectrocutedSound");
+
+		lightningBolt = Resources.Load ("Prefabs/ThunderEffect");
 
 		GetComponent<Rigidbody2D>().isKinematic = true;
 		actionAreaCenter = GameObject.Find ("ActionArea").transform.GetComponent<Renderer>().bounds.center;
@@ -271,7 +276,6 @@ public class Enemy : MonoBehaviour
 
 			Debug.Log("State: " +fsm.GetCurrentState ().Method.Name);//used for testing
 			fsm.DoState ();//Run the method associated with the current state the enemy is in
-			//if(enemyHealth>0)
 			if(enemyHealthBarImage.fillAmount > 0.0f)
 			{
 				UpdateEnemyHealthBar();
@@ -360,17 +364,8 @@ public class Enemy : MonoBehaviour
 	protected virtual void OnAttack()
 	{
 		float attackLength = Vector3.Distance (enemyPosition, actionAreaCenter);
-		//float attackLengthCovered = 0, sizeLengthCovered = 0;
-		//if(!isSlowed)
-		//{
 		float attackLengthCovered = (Time.time - startTime) * enemySpeed;
 		float sizeLengthCovered = (Time.time - startTime) * enemySizeChange;
-		//}
-		//else if (isSlowed)
-		//{
-		//	attackLengthCovered = (Time.time - startTime) * resetEnemySpeed;
-		//	sizeLengthCovered = (Time.time - startTime) * resetEnemySizeChange;
-		//}
 
 		float attackFraction = attackLengthCovered / attackLength;
 		float sizeFraction = sizeLengthCovered / sizeLength;
@@ -572,6 +567,7 @@ public class Enemy : MonoBehaviour
 		if(magicIcon.EquippedMagic.GetType() == typeof(FireBlastMagic))
 		{
 			Instantiate(fireEffectExplosion,transform.position,Quaternion.identity);
+			AudioSource.PlayClipAtPoint(fireEffectExplosionSound,transform.position);
 		}
 		else if(magicIcon.EquippedMagic.GetType() == typeof(FrostBlastMagic))
 		{
@@ -580,6 +576,11 @@ public class Enemy : MonoBehaviour
 		else if(magicIcon.EquippedMagic.GetType() == typeof(LightningMagic))
 		{
 			AudioSource.PlayClipAtPoint(electrocutedSound,transform.position);
+			GameObject lightning = Instantiate(lightningBolt,transform.position,transform.rotation) as GameObject;
+			lightning.transform.SetParent (GameObject.Find ("Canvas").transform, false);
+			Vector3 pos = transform.position;
+			pos.y += enemyRenderer.bounds.extents.y;
+			lightning.transform.position = pos; 
 		}
 		magicIcon.EquippedMagic.DealDamage(this);
 		magicIcon.OnDestroy ();

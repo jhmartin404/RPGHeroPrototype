@@ -357,6 +357,11 @@ MonoBehaviour:
   - {fileID: 886602226}
   - {fileID: 1748071911}
   - {fileID: 407990597}
+  buyButton: {fileID: 1923386062}
+  sellButton: {fileID: 285747790}
+  weaponButton: {fileID: 684247629}
+  shieldButton: {fileID: 535774501}
+  miscButton: {fileID: 925309305}
 --- !u!1 &236580418
 GameObject:
   m_ObjectHideFlags: 0
