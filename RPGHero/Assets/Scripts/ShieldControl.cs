@@ -16,6 +16,7 @@ public class ShieldControl : MonoBehaviour
 	private bool shieldTrigger;
 	private GameObject mainCamera;
 	private Collider2D shieldControlCollider;
+	private Renderer controlRenderer;
 
 	public ControlState CntrlState
 	{
@@ -33,12 +34,14 @@ public class ShieldControl : MonoBehaviour
 	void Start () 
 	{
 		controlState = ControlState.Stationary;
+		controlRenderer = GetComponent<Renderer> ();
 		shield = GameObject.Find ("Shield");
 		Vector3 pos = transform.position;
 		pos.z += 0.5f;
 		shield.transform.position = pos;
 		shieldTrigger = shield.GetComponent<PolygonCollider2D> ().isTrigger;
 		shield.GetComponent<Renderer>().enabled = false;
+		shield.SetActive(false);
 		equippedShield = Player.Instance.GetPlayerInventory ().EquippedShield;
 		controlPosition = transform.position;
 		Object shieldDefencePrefab = Resources.Load ("Prefabs/ShieldDefenceText");
@@ -53,15 +56,27 @@ public class ShieldControl : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
+		if(!OnCheckSelected())
+		{
+			controlRenderer.material.SetColor("_Color",Color.gray);
+		}
+		else if(OnCheckSelected())
+		{
+			if(controlRenderer.material.GetColor("_Color") ==  Color.gray)
+			{
+				controlRenderer.material.SetColor("_Color",Color.white);
+			}
+		}
 		if (Input.touchCount > 0)
 		{
-			if((Input.GetTouch(0).phase == TouchPhase.Began || (Input.GetTouch(0).phase == TouchPhase.Moved)) && controlState == ControlState.Stationary && equippedShield.Defence>0
+			if((Input.GetTouch(0).phase == TouchPhase.Began || (Input.GetTouch(0).phase == TouchPhase.Moved)) && controlState == ControlState.Stationary && OnCheckSelected()
 			   && !mainCamera.GetComponent<LevelScript>().IconSelected)
 			{
 				Vector2 touchPos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 				if (shieldControlCollider == Physics2D.OverlapCircle(touchPos, fingerRadius))
 				{
 					controlState = ControlState.Active;
+					shield.SetActive(true);
 					shield.GetComponent<Renderer>().enabled = true;//render the shield
 					shieldTrigger = true;
 					Vector3 pos = transform.position;
@@ -95,6 +110,7 @@ public class ShieldControl : MonoBehaviour
 				Vector3 shieldPos = controlPosition;
 				shieldPos.z += 0.5f;
 				shield.transform.position = shieldPos;
+				shield.SetActive(false);
 				GameObject.Find("Main Camera").GetComponent<LevelScript>().IconSelected = false;
 			}
 		}
@@ -103,6 +119,11 @@ public class ShieldControl : MonoBehaviour
 		shield.transform.position = newPosition;
 		shieldDefence.transform.position = transform.position;
 		shieldDefenceText.text = "" + equippedShield.Defence;
+	}
+
+	private bool OnCheckSelected()
+	{
+		return equippedShield.Defence>0;
 	}
 
 	protected virtual void OnTriggerEnter2D(Collider2D other)

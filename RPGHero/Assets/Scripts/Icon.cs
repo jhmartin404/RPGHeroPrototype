@@ -28,6 +28,7 @@ public class Icon : MonoBehaviour
 	protected Vector2 startPosition;//start position
 	protected Vector2 prevPostiton;
 	protected Vector2 endPosition;//end position
+	private Renderer iconRenderer;
 
 	public GameObject Slot
 	{
@@ -70,6 +71,9 @@ public class Icon : MonoBehaviour
 	{
 		mainCamera = GameObject.Find ("Main Camera");
 		iconState = IconState.Rotating;
+		iconRenderer = GetComponent<Renderer> ();
+		//normalColor = iconRenderer.material.color;
+		//disabledColor = new Color (90, 75, 75, 255);
 	}
 	
 	// Update is called once per frame
@@ -77,6 +81,17 @@ public class Icon : MonoBehaviour
 	{
 		if(iconState != IconState.Stopped)
 		{
+			if(!OnCheckSelected())
+			{
+				iconRenderer.material.SetColor("_Color",Color.gray);
+			}
+			else if(OnCheckSelected())
+			{
+				if(iconRenderer.material.GetColor("_Color") ==  Color.gray)
+				{
+					iconRenderer.material.SetColor("_Color",Color.white);
+				}
+			}
 			if (Input.touchCount > 0 && iconState != IconState.Thrown)
 			{
 				if((Input.GetTouch(0).phase == TouchPhase.Began || Input.GetTouch(0).phase == TouchPhase.Moved) && iconState == IconState.Rotating
@@ -177,33 +192,6 @@ public class Icon : MonoBehaviour
 	{
 		iconState = IconState.Rotating;
 	}
-
-	//protected virtual void OnTriggerStay2D(Collider2D other)
-	//{
-	//	OnHit (other);
-	//}
-
-	//protected virtual void OnHit(Collider2D col)
-	//{
-	//	if(col.gameObject.tag == "Enemy")
-	//	{
-	//		OnHitEnemy(col);
-	//	}
-	//	else if(col.gameObject.tag == "Player")
-	//	{
-	//		OnHitPlayer(col);
-	//	}
-	//}
-
-	//protected virtual void OnHitEnemy(Collider2D col)
-	//{
-	//
-	//}
-	
-	//protected virtual void OnHitPlayer(Collider2D col)
-	//{
-	//
-	//}
 
 	public virtual void OnDestroy()
 	{

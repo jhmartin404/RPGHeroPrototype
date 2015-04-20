@@ -11,6 +11,7 @@ public class IconSlot : MonoBehaviour
 	private GameObject iconSpawner;
 	private Icon icon;
 	private bool isStopped;
+	private bool invisible;
 
 	public Icon SlotIcon
 	{
@@ -81,13 +82,28 @@ public class IconSlot : MonoBehaviour
 		{
 			v = Quaternion.AngleAxis (degreesPerSecond * Time.deltaTime, Vector3.forward) * v;
 			transform.position = center.position + v;
-
-			if((icon == null /*|| icon.State == IconState.Thrown*/) && !notified)
+		
+			if(icon == null && !notified && invisible)
 			{
-				Debug.Log("Spawn Icon In Slot");
 				iconSpawner.GetComponent<IconSpawner>().NotifyEmpty(gameObject);
 				notified = true;
 			}
+		}
+	}
+
+	void OnBecameVisible()
+	{
+		if(!isStopped)
+		{
+			invisible = false;
+		}
+	}
+
+	void OnBecameInvisible()
+	{
+		if(!isStopped)
+		{
+			invisible = true;
 		}
 	}
 }

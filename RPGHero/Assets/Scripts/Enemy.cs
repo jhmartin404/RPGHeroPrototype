@@ -578,9 +578,7 @@ public class Enemy : MonoBehaviour
 			AudioSource.PlayClipAtPoint(electrocutedSound,transform.position);
 			GameObject lightning = Instantiate(lightningBolt,transform.position,transform.rotation) as GameObject;
 			lightning.transform.SetParent (GameObject.Find ("Canvas").transform, false);
-			Vector3 pos = transform.position;
-			pos.y += enemyRenderer.bounds.extents.y;
-			lightning.transform.position = pos; 
+			lightning.GetComponent<LightningBolt>().SetParent(gameObject);
 		}
 		magicIcon.EquippedMagic.DealDamage(this);
 		magicIcon.OnDestroy ();

@@ -14,6 +14,7 @@ public class RangedIcon : Icon
 	private TrailRenderer trailRenderer;
 	private GameObject bowSprite;
 	private GameObject bowLeftSide, bowRightSide;
+	private LineRenderer arrowTrajectoryRenderer;
 
 	public RangedWeapon EquippedRanged
 	{
@@ -33,6 +34,7 @@ public class RangedIcon : Icon
 		base.Start ();
 		iconType = IconType.Ranged;
 		lineRenderer = GameObject.Find ("LineRenderer").GetComponent<LineRenderer> ();
+		arrowTrajectoryRenderer = GameObject.Find ("ArrowTrajectoryRenderer").GetComponent<LineRenderer> ();
 		equippedRanged = Player.Instance.GetPlayerInventory ().EquippedRangedWeapon;
 		startThrow = false;
 		actionArea = GameObject.Find ("ActionArea");
@@ -45,6 +47,7 @@ public class RangedIcon : Icon
 		rangedIconSound = Resources.Load<AudioClip> ("RangedIconSound");
 		trailRenderer = gameObject.GetComponent<TrailRenderer> ();
 		trailRenderer.enabled = false;
+		arrowTrajectoryRenderer.enabled = false;
 		iconSpeed = 8.0f;
 	}
 	
@@ -79,10 +82,11 @@ public class RangedIcon : Icon
 	{
 		base.OnIconLetGo ();
 		lineRenderer.enabled = false;
+		arrowTrajectoryRenderer.enabled = false;
 		trailRenderer.enabled = true;
 		actionArea.GetComponent<Renderer>().enabled = false;
 		bowSprite.GetComponent<Renderer> ().enabled = false;
-		endPosition = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
+		endPosition = transform.position;//Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 		Player.Instance.Stamina -= rangedStaminaCost;//equippedRanged.RangedCost;
 		AudioSource.PlayClipAtPoint (rangedIconSound, transform.position);
 	}
@@ -96,6 +100,8 @@ public class RangedIcon : Icon
 				transform.position = pos;
 			if(!lineRenderer.enabled)
 				lineRenderer.enabled = true;
+			if(!arrowTrajectoryRenderer.enabled)
+				arrowTrajectoryRenderer.enabled = true;
 			Quaternion rotation = Quaternion.LookRotation(actionAreaCenter - transform.position, transform.TransformDirection(Vector3.back));
 			Quaternion result = new Quaternion(0, 0, rotation.z, rotation.w);
 			transform.rotation = result;
@@ -105,6 +111,11 @@ public class RangedIcon : Icon
 			lineRenderer.SetPosition(1,transform.position);
 			lineRenderer.SetPosition(2,bowRightSide.transform.position);
 			lineRenderer.SetPosition(3,transform.position);
+
+			Vector2 arrowVel = (startPosition - (Vector2)transform.position).normalized*iconSpeed;
+
+			arrowTrajectoryRenderer.SetPosition(0,transform.position);
+			arrowTrajectoryRenderer.SetPosition(1,(Vector2)transform.position+(arrowVel*2));
 		}
 		else if(!startThrow)
 		{

@@ -237,6 +237,7 @@ public class EnemySpawner : MonoBehaviour
 			enemy.GetComponent<Enemy> ().SetLayer (-1.5f,2);
 			break;
 		}
+		LoadingScreen.Hide ();
 	}
 
 	public void OnLevelRunning()
@@ -279,12 +280,12 @@ public class EnemySpawner : MonoBehaviour
 			if(won)
 			{
 				Text endGameText = endGame.GetComponentInChildren<Text>();
-				endGameText.text = "Level Won\nCoins Collected\n" + Player.Instance.TemporaryCoins + "\nExeperience Earned\n" + Player.Instance.ExperienceCollected;
+				endGameText.text = "Level Won\nCoins Collected\n" + Player.Instance.TemporaryCoins + "\nExperience Earned\n" + Player.Instance.ExperienceCollected;
 			}
 			else if(!won)
 			{
 				Text endGameText = endGame.GetComponentInChildren<Text>();
-				endGameText.text = "Level Lost\nCoins Collected\n0\nExeperience Earned\n" + Player.Instance.ExperienceCollected;
+				endGameText.text = "Level Lost\nCoins Collected\n0\nExperience Earned\n" + Player.Instance.ExperienceCollected;
 			}
 		}
 		else

@@ -22,6 +22,7 @@ public class WeaponControl : MonoBehaviour
 	private float meleeStaminaCost;
 	private GameObject mainCamera;
 	private TrailRenderer weaponTrailRenderer;
+	private Renderer controlRenderer;
 
 	public ControlState CntrlState
 	{
@@ -51,6 +52,7 @@ public class WeaponControl : MonoBehaviour
 	void Start () 
 	{
 		controlState = ControlState.Stationary;
+		controlRenderer = GetComponent<Renderer> ();
 		actionArea = GameObject.Find ("ActionArea");
 		weapon = GameObject.Find ("Weapon");
 		meleeWeapon = Player.Instance.GetPlayerInventory ().EquippedMeleeWeapon;
@@ -65,10 +67,21 @@ public class WeaponControl : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
+		if(!OnCheckSelected())
+		{
+			controlRenderer.material.SetColor("_Color",Color.gray);
+		}
+		else if(OnCheckSelected())
+		{
+			if(controlRenderer.material.GetColor("_Color") ==  Color.gray)
+			{
+				controlRenderer.material.SetColor("_Color",Color.white);
+			}
+		}
 		if (Input.touchCount > 0)
 		{
 			if((Input.GetTouch(0).phase == TouchPhase.Began || (Input.GetTouch(0).phase == TouchPhase.Moved)) && controlState == ControlState.Stationary 
-			   && Player.Instance.Stamina > meleeStaminaCost && !mainCamera.GetComponent<LevelScript>().IconSelected)
+			   && OnCheckSelected() && !mainCamera.GetComponent<LevelScript>().IconSelected)
 			{
 				Vector2 touchPos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 				if (GetComponent<Collider2D>() == Physics2D.OverlapCircle(touchPos, fingerRadius))
@@ -134,5 +147,10 @@ public class WeaponControl : MonoBehaviour
 			weaponPos.z -= 0.1f;
 			weapon.transform.position = weaponPos;
 		}
+	}
+
+	private bool OnCheckSelected()
+	{
+		return Player.Instance.Stamina > meleeStaminaCost;
 	}
 }

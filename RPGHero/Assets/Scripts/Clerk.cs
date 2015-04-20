@@ -15,9 +15,9 @@ public class Clerk
 			itemsForSale[i].Add(new HealthPotion(20,ItemType.Misc,12,"Health Potion","healthPotionUI",3,true));
 			itemsForSale[i].Add(new ManaPotion(20, ItemType.Misc,13,"Mana Potion","manaPotionUI",3,true));
 			itemsForSale[i].Add(new RepairHammer(15, ItemType.Misc,14,"Repair Hammer","RepairHammer",3,true));
-			itemsForSale[i].Add(new MeleeWeapon(35,"Prefabs/SteelSwordPrefab",25,WeaponType.Melee,ItemType.Weapon,20,"Strong Steel Sword","SteelSwordImage",30,true));
-			itemsForSale[i].Add(new RangedWeapon(10,10,WeaponType.Ranged, ItemType.Weapon,26,"Strong Wooden Bow","bow",25,true));
-			itemsForSale[i].Add(new Shield(100,100,"Prefabs/Shield1Prefab", ItemType.Shield,27,"Strong Metal Shield","BigShield",50,true));
+			itemsForSale[i].Add(InventoryItemDatabase.Instance.GetItemByID(25));
+			itemsForSale[i].Add(InventoryItemDatabase.Instance.GetItemByID(26));
+			itemsForSale[i].Add(InventoryItemDatabase.Instance.GetItemByID(27));
 		}
 	}
 

@@ -28,6 +28,18 @@
 				"purchasable": true
 			},
 			{
+				"__type": "RangedWeapon, Assembly-CSharp",
+				"RangedCost": 10,
+				"Damage": 10,
+				"WpnType": "Ranged",
+				"itemType": "Weapon",
+				"itemID": 26,
+				"itemName": "Strong Wooden Bow",
+				"itemImagePath": "bow",
+				"itemCost": 25,
+				"purchasable": true
+			},
+			{
 				"__type": "Shield, Assembly-CSharp",
 				"Defence": 30,
 				"maxDefence": 30,
@@ -37,6 +49,18 @@
 				"itemName": "Weak Shield",
 				"itemImagePath": "BigShield",
 				"itemCost": 5,
+				"purchasable": true
+			},
+			{
+				"__type": "Shield, Assembly-CSharp",
+				"Defence": 100,
+				"maxDefence": 100,
+				"shieldPrefabPath": "Prefabs/Shield1Prefab",
+				"itemType": "Shield",
+				"itemID": 27,
+				"itemName": "Strong Metal Shield",
+				"itemImagePath": "BigShield",
+				"itemCost": 50,
 				"purchasable": true
 			},
 			{
@@ -85,6 +109,19 @@
 				"itemName": "Steel Sword",
 				"itemImagePath": "SteelSwordImage",
 				"itemCost": 10,
+				"purchasable": true
+			},
+			{
+				"__type": "MeleeWeapon, Assembly-CSharp",
+				"MeleeWeaponPrefabPath": "Prefabs/SteelSwordPrefab",
+				"Damage": 15,
+				"WpnType": "Melee",
+				"meleeCost": 35,
+				"itemType": "Weapon",
+				"itemID": 25,
+				"itemName": "Strong Steel Sword",
+				"itemImagePath": "SteelSwordImage",
+				"itemCost": 30,
 				"purchasable": true
 			},
 			{

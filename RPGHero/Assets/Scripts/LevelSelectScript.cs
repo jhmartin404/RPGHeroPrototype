@@ -67,6 +67,7 @@ public class LevelSelectScript : MonoBehaviour
 		{
 			SoundManager.Instance.PlayUISound ("Level_Start");
 			Player.Instance.CurrentLevel = int.Parse(level.name);
+			LoadingScreen.Show();
 			Application.LoadLevel("LevelScene");
 		}
 		else
