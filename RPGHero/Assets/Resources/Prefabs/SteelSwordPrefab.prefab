@@ -40,7 +40,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .400000006, y: -1.13999999, z: 1}
+  m_LocalPosition: {x: .400000006, y: -2, z: 1}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_Children:
   - {fileID: 404886}
@@ -73,8 +73,8 @@ PolygonCollider2D:
     m_Paths:
     - - {x: 1.0411551, y: 1.09426141}
       - {x: .74271667, y: 1.03984237}
-      - {x: .212534532, y: .38706243}
-      - {x: .389045, y: .299273193}
+      - {x: .313249767, y: .506661713}
+      - {x: .486612856, y: .40628311}
 --- !u!96 &9692526
 TrailRenderer:
   m_ObjectHideFlags: 1

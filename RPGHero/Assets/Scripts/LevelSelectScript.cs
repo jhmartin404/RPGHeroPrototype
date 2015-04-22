@@ -18,6 +18,7 @@ public class LevelSelectScript : MonoBehaviour
 		{
 			levelButtons[i].GetComponent<Image>().sprite = unlockedSprite;
 		}
+		LoadingScreen.Hide ();
 	}
 
 	// Update is called once per frame
@@ -46,18 +47,21 @@ public class LevelSelectScript : MonoBehaviour
 	public void SelectStoreScene()
 	{
 		SoundManager.Instance.PlayUISound ("Store_Select");
+		LoadingScreen.Show();
 		Application.LoadLevel("StoreScene");
 	}
 
 	public void SelectCharacterScene()
 	{
 		SoundManager.Instance.PlayUISound ("Character_Select");
+		LoadingScreen.Show();
 		Application.LoadLevel("CharacterScene");
 	}
 
 	public void SelectInventoryScene()
 	{
 		SoundManager.Instance.PlayUISound ("Inventory_Select");
+		LoadingScreen.Show();
 		Application.LoadLevel("InventoryScene");
 	}
 

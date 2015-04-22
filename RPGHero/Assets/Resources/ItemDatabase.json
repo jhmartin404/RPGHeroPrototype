@@ -17,7 +17,7 @@
 			},
 			{
 				"__type": "RangedWeapon, Assembly-CSharp",
-				"RangedCost": 3,
+				"RangedCost": 10,
 				"Damage": 4,
 				"WpnType": "Ranged",
 				"itemType": "Weapon",
@@ -29,7 +29,7 @@
 			},
 			{
 				"__type": "RangedWeapon, Assembly-CSharp",
-				"RangedCost": 10,
+				"RangedCost": 15,
 				"Damage": 10,
 				"WpnType": "Ranged",
 				"itemType": "Weapon",
@@ -65,7 +65,7 @@
 			},
 			{
 				"__type": "LightningMagic, Assembly-CSharp",
-				"ManaCost": 10,
+				"ManaCost": 12,
 				"lightningDamage": 7,
 				"itemType": "Magic",
 				"itemID": 10,
@@ -76,7 +76,7 @@
 			},
 			{
 				"__type": "FireBlastMagic, Assembly-CSharp",
-				"ManaCost": 10,
+				"ManaCost": 15,
 				"fireDuration": 5,
 				"fireDamage": 10,
 				"itemType": "Magic",
@@ -103,7 +103,7 @@
 				"MeleeWeaponPrefabPath": "Prefabs/SteelSwordPrefab",
 				"Damage": 8,
 				"WpnType": "Melee",
-				"meleeCost": 10,
+				"meleeCost": 15,
 				"itemType": "Weapon",
 				"itemID": 6,
 				"itemName": "Steel Sword",
@@ -126,7 +126,7 @@
 			},
 			{
 				"__type": "RangedWeapon, Assembly-CSharp",
-				"RangedCost": 5,
+				"RangedCost": 12,
 				"Damage": 5,
 				"WpnType": "Ranged",
 				"itemType": "Weapon",

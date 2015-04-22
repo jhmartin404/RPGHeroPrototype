@@ -219,12 +219,12 @@ MonoBehaviour:
   - {fileID: 8300000, guid: f7d6885687bd8a448b776f922c1cb257, type: 3}
   enemySpeed: 6
   enemyType: 8
-  enemyHealth: 150
+  enemyHealth: 125
   enemyAttackDamage: 15
   attackTime: 5
   expGiven: 150
-  specialAttackTime: 7
-  spiderShotSpeed: 185
+  specialAttackTime: 7.5
+  spiderShotSpeed: 165
 --- !u!212 &21271168
 SpriteRenderer:
   m_ObjectHideFlags: 1

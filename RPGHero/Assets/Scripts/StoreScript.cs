@@ -49,6 +49,7 @@ public class StoreScript : MonoBehaviour
 		unequippedItems = Player.Instance.GetPlayerInventory().GetUnequippedItems ();
 		coinsText.text = "" + Player.Instance.GetPlayerInventory().Coins;
 		ResetBoard ();
+		LoadingScreen.Hide ();
 	}
 	
 	// Update is called once per frame

@@ -187,7 +187,7 @@ MonoBehaviour:
   enemySpeed: 6
   enemyType: 6
   enemyHealth: 80
-  enemyAttackDamage: 15
+  enemyAttackDamage: 20
   attackTime: 4
   expGiven: 85
 --- !u!212 &21200000

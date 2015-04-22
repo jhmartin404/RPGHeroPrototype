@@ -4,7 +4,6 @@ using System.Collections;
 
 public class DamageText : MonoBehaviour 
 {
-
 	private Color col = new Color(1.0f, 1.0f, 0.0f, 0.0f);
 	private float offset = 0.0f;  // scrolling velocity
 	private float duration = 1.5f; // time to die
@@ -44,7 +43,7 @@ public class DamageText : MonoBehaviour
 		textColor.a -= Time.deltaTime;
 		text.color = textColor;   
 		if(text.fontSize > 1)
-		text.fontSize--;
+			text.fontSize--;
 
 		if(text.color.a <= 0.0f)
 		{
@@ -72,6 +71,7 @@ public class DamageText : MonoBehaviour
 			else
 				pos.y += offset;
 			transform.position = pos;
+
 		}
 		else
 		{

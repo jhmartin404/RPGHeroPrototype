@@ -53,9 +53,10 @@ public class Shield : InventoryItem
 		shieldPrefab = Resources.Load(shieldPrefabPath);
 	}
 
-	public void RepairShield(float amount)
+	public void RepairShield()
 	{
-		Mathf.Min(defence += amount,maxDefence);
+		defence = maxDefence;
+		//Mathf.Min(defence += amount,maxDefence);
 	}
 
 	public float BlockDamage(float damage)

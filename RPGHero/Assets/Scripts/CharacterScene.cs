@@ -55,6 +55,7 @@ public class CharacterScene : MonoBehaviour
 
 		expBar.fillAmount = (float)((float)playerStats.CurrentExp / (float)playerStats.NeededExp);
 		SoundManager.Instance.PlayBackgroundMusic ("CharacterScene_BackgroundMusic");
+		LoadingScreen.Hide ();
 	}
 	
 	// Update is called once per frame

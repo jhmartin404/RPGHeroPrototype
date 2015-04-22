@@ -23,7 +23,7 @@ public class RepairHammer : InventoryItem
 	public override string ToString()
 	{
 		string result = base.ToString ();
-		result += "Amount: " + repairAmount + "\n";
+		result += "Fully Repairs Shield\n";
 		return result;
 	}
 }

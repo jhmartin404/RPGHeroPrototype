@@ -182,6 +182,7 @@ public class Player
 		{
 			Save();
 			Health -= enemy.enemyAttackDamage;
+			SoundManager.Instance.PlayUISound("Player_Hit");
 			return true;
 		}
 		else if(IsDefending)
@@ -191,10 +192,12 @@ public class Player
 			{
 				Save();
 				Health -= unblockedDamage;
+				SoundManager.Instance.PlayUISound("Player_Hit");
 				return true;
 			}
 			else
 			{
+				SoundManager.Instance.PlayUISound("Equip_Shield");
 				Save();
 				return false;
 			}
@@ -208,11 +211,20 @@ public class Player
 		if(!IsDefending)
 		{
 			Health -= damage;
+			SoundManager.Instance.PlayUISound("Player_Hit");
 		}
 		else if(IsDefending)
 		{
 			float unblockedDamage = playerInventory.EquippedShield.BlockDamage(damage);
-			Health -= unblockedDamage;
+			if(unblockedDamage > 0)
+			{
+				SoundManager.Instance.PlayUISound("Player_Hit");
+				Health -= unblockedDamage;
+			}
+			else
+			{
+				SoundManager.Instance.PlayUISound("Equip_Shield");
+			}
 		}
 	}
 

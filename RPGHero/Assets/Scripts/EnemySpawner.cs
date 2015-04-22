@@ -242,13 +242,14 @@ public class EnemySpawner : MonoBehaviour
 
 	public void OnLevelRunning()
 	{
-		//Debug.Log ("OnLevelRunning EnemySpawner");
+
 	}
 
 	public void OnLevelWon()
 	{
 		Debug.Log ("OnLevelWon EnemySpawner");
 		GameObject.Find ("Main Camera").GetComponent<LevelScript> ().PlayerWon = true;
+		SoundManager.Instance.PlayUISound("Player_Win");
 		CreateEndGameMenu (true);
 		RemoveMethods ();
 	}

@@ -175,7 +175,7 @@ public class Enemy : MonoBehaviour
 		enemySpawner = GameObject.Find ("EnemySpawner");
 
 		size = transform.localScale;
-		enemySizeChange = 2.5f;
+		enemySizeChange = 5.0f;
 		movingIn = true;
 
 		enemyPosition = transform.position;
@@ -363,21 +363,17 @@ public class Enemy : MonoBehaviour
 
 	protected virtual void OnAttack()
 	{
-		float attackLength = Vector3.Distance (enemyPosition, actionAreaCenter);
-		float attackLengthCovered = (Time.time - startTime) * enemySpeed;
-		float sizeLengthCovered = (Time.time - startTime) * enemySizeChange;
-
-		float attackFraction = attackLengthCovered / attackLength;
-		float sizeFraction = sizeLengthCovered / sizeLength;
+		float speedStep = enemySpeed * Time.deltaTime;
+		float sizeStep = speedStep*0.3f;
 		if(movingIn)
 		{
-			transform.localScale = Vector3.Lerp(minSize,maxSize,sizeFraction);
-			transform.position = Vector3.Lerp(enemyPosition,actionAreaCenter,attackFraction);
+			transform.position = Vector3.MoveTowards(transform.position,actionAreaCenter,speedStep);
+			transform.localScale = Vector3.MoveTowards(transform.localScale,maxSize,sizeStep);
 		}
 		else
 		{
-			transform.localScale = Vector3.Lerp(stoppedSize,minSize,sizeFraction);
-			transform.position = Vector3.Lerp(actionAreaCenter,enemyPosition,attackFraction);
+			transform.position = Vector3.MoveTowards(transform.position,enemyPosition,speedStep);
+			transform.localScale = Vector3.MoveTowards(transform.localScale,minSize,sizeStep);
 		}
 
 		if(Vector2.Distance(transform.position,actionAreaCenter) <= 0 && movingIn)
@@ -388,7 +384,6 @@ public class Enemy : MonoBehaviour
 			{
 				PlayEnemySoundEffect((int)EnemySoundEffect.EnemyAttack);
 			}
-			sizeLength = Vector3.Distance (transform.localScale, minSize);
 			stoppedSize = transform.localScale;
 		}
 		else if(Vector2.Distance(transform.position,enemyPosition)<=0 && !movingIn)
@@ -558,6 +553,8 @@ public class Enemy : MonoBehaviour
 
 	protected virtual void OnHitByRanged(RangedIcon rangedIcon)
 	{
+		Color collideColor = new Color (255, 0, 0, 255);
+		StartCoroutine(Flash(collideColor));
 		rangedIcon.EquippedRanged.DealDamage(this);
 		rangedIcon.OnDestroy ();
 	}

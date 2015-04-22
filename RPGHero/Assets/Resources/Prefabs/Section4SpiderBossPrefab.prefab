@@ -217,7 +217,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: f3024de14e3c5484faabbd88cc7012ec, type: 3}
   - {fileID: 8300000, guid: 2f4e33e23ae2d474691d8488cade8651, type: 3}
   - {fileID: 8300000, guid: f7d6885687bd8a448b776f922c1cb257, type: 3}
-  enemySpeed: 6
+  enemySpeed: 7
   enemyType: 8
   enemyHealth: 200
   enemyAttackDamage: 18

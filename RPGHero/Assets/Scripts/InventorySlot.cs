@@ -182,8 +182,8 @@ public class InventorySlot : MonoBehaviour
 				}
 				else if(selectedItem.GetType() == typeof(RepairHammer))
 				{
-					RepairHammer hammer = selectedItem as RepairHammer;
-					Player.Instance.GetPlayerInventory().EquippedShield.RepairShield(hammer.GetRepairAmount());
+					//RepairHammer hammer = selectedItem as RepairHammer;
+					Player.Instance.GetPlayerInventory().EquippedShield.RepairShield();
 				}
 				break;
 			}

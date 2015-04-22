@@ -28,6 +28,7 @@ public class StartScript : MonoBehaviour
 
 	public void ContinueGame()
 	{
+		LoadingScreen.Show ();
 		SoundManager.Instance.PlayUISound ("StartGame");
 		Application.LoadLevel("LevelSelectScene");
 	}

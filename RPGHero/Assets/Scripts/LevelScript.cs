@@ -40,6 +40,18 @@ public class LevelScript : MonoBehaviour
 		}
 	}
 
+	public bool PlayerLost
+	{
+		get
+		{
+			return playerLost;
+		}
+		set
+		{
+			playerLost = value;
+		}
+	}
+
 	void Awake()
 	{
 		string section = "Section1";
@@ -96,15 +108,12 @@ public class LevelScript : MonoBehaviour
 	void Update () 
 	{
 		healthBar.fillAmount = Mathf.MoveTowards (healthBar.fillAmount, (float)(Player.Instance.Health/ (float)playerStats.HealthStat), Time.deltaTime*0.1f);
-		//POSSIBLY COME BACK TO THIS!!!!!!!!!!!!!!!!
 		manaBar.fillAmount = Mathf.MoveTowards (manaBar.fillAmount, (float)(Player.Instance.Mana/ (float)playerStats.MaxMana), Time.deltaTime*0.1f);
-		//healthBar.fillAmount = (float)(Player.Instance.Health/ (float)playerStats.HealthStat);
 		staminaBar.fillAmount = (float)(Player.Instance.Stamina/ (float)playerStats.MaxStamina);
-		//manaBar.fillAmount = (float)(Player.Instance.Mana/ (float)playerStats.MaxMana);
 
-		//if(Player.Instance.Health <= 0  && !playerLost)
 		if(healthBar.fillAmount <= 0.0f && !playerLost)
 		{
+			SoundManager.Instance.PlayUISound("Player_Death");
 			playerLost = true;
 			enemySpawner.GetComponent<EnemySpawner>().NotifyPlayerDied();
 		}

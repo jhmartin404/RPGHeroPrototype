@@ -28,6 +28,7 @@ public class InventoryScript : MonoBehaviour
 		SoundManager.Instance.PlayBackgroundMusic ("Store_Scene_BackgroundMusic");
 
 		ResetBoard ();
+		LoadingScreen.Hide ();
 	}
 	
 	// Update is called once per frame
