@@ -18,7 +18,7 @@ public enum IconState
 
 public class Icon : MonoBehaviour
 {
-	protected const float fingerRadius = 0.5f;
+	protected const float fingerRadius = 0.4f;
 	protected GameObject mainCamera;
 	protected IconType iconType;
 	protected GameObject slot = null;

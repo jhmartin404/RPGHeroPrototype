@@ -223,7 +223,7 @@ MonoBehaviour:
   enemyHealth: 55
   enemyAttackDamage: 12
   attackTime: 4
-  expGiven: 40
+  expGiven: 50
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1

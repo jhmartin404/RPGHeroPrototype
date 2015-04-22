@@ -220,7 +220,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 7719c642370e9024a848e36be12f39f2, type: 3}
   enemySpeed: 5
   enemyType: 0
-  enemyHealth: 35
+  enemyHealth: 40
   enemyAttackDamage: 10
   attackTime: 5
   expGiven: 50
